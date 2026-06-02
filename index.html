@@ -72,6 +72,26 @@
   #report th { background: #f6f8fa; }
   .pending { color: var(--muted); font-style: italic; }
   footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px; }
+
+  /* 手機版：讓內容左右用滿、文字不再只擠在中間窄欄 */
+  @media (max-width: 640px) {
+    header { padding: 16px 12px 10px; }
+    header h1 { font-size: 18px; }
+    header .meta { font-size: 12px; }
+    main { padding: 10px; }
+    .cards { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .card { padding: 12px; }
+    .card .price { font-size: 20px; }
+    .charts { grid-template-columns: 1fr; gap: 12px; }
+    #report { padding: 18px 14px; max-width: 100%; font-size: 15px; line-height: 1.8; }
+    #report h1 { font-size: 20px; }
+    #report h2 { font-size: 17px; }
+    #report h3 { font-size: 15px; }
+    #report table { font-size: 12px; display: block; overflow-x: auto; }
+  }
+  @media (max-width: 380px) {
+    .cards { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
