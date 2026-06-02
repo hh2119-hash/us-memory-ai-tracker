@@ -1,0 +1,14 @@
+{
+  "updated_at_utc": "尚未執行首次更新",
+  "updated_at_tw": "尚未執行首次更新",
+  "note": "此為種子檔，GitHub Actions 首次執行後會以真實股價覆蓋。",
+  "stocks": {
+    "Micron (MU)": {"symbol": "MU", "last": 970.34, "day_change_pct": 5.07, "ytd_change_pct": 304.0, "high_52w": 981.21, "low_52w": 94.4, "dates": [], "closes": []},
+    "SanDisk (SNDK)": {"symbol": "SNDK", "last": 1757.5, "day_change_pct": null, "ytd_change_pct": 493.0, "high_52w": null, "low_52w": null, "dates": [], "closes": []},
+    "Dell (DELL)": {"symbol": "DELL", "last": 461.0, "day_change_pct": null, "ytd_change_pct": 234.0, "high_52w": null, "low_52w": null, "dates": [], "closes": []},
+    "Arm (ARM)": {"symbol": "ARM", "last": null, "day_change_pct": 8.91, "ytd_change_pct": 80.0, "high_52w": null, "low_52w": null, "dates": [], "closes": []},
+    "Kioxia (285A.T)": {"symbol": "285A.T", "last": 44450.0, "day_change_pct": null, "ytd_change_pct": null, "high_52w": null, "low_52w": null, "dates": [], "closes": []},
+    "Samsung (005930.KS)": {"symbol": "005930.KS", "last": null, "day_change_pct": null, "ytd_change_pct": null, "high_52w": null, "low_52w": null, "dates": [], "closes": []},
+    "SK Hynix (000660.KS)": {"symbol": "000660.KS", "last": null, "day_change_pct": null, "ytd_change_pct": null, "high_52w": null, "low_52w": null, "dates": [], "closes": []}
+  }
+}
