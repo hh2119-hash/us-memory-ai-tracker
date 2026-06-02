@@ -15,6 +15,8 @@ TICKERS = {
     "SanDisk (SNDK)": "SNDK",
     "Dell (DELL)": "DELL",
     "Arm (ARM)": "ARM",
+    "Marvell (MRVL)": "MRVL",
+    "ASE Tech (ASX)": "ASX",
     "Kioxia (285A.T)": "285A.T",
     "Samsung (005930.KS)": "005930.KS",
     "SK Hynix (000660.KS)": "000660.KS",
