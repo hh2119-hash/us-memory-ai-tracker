@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>美股記憶體 / AI 硬體追蹤儀表板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --up: #2ea043; --down: #f85149;
+    --accent: #58a6ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Noto Sans TC", Roboto, sans-serif;
+    line-height: 1.6;
+  }
+  header {
+    padding: 28px 20px 16px; border-bottom: 1px solid var(--border);
+  }
+  header h1 { margin: 0 0 6px; font-size: 22px; }
+  header .meta { color: var(--muted); font-size: 13px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 20px; }
+  .cards {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px; margin-bottom: 28px;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+  }
+  .card .name { font-size: 14px; color: var(--muted); }
+  .card .price { font-size: 24px; font-weight: 700; margin: 4px 0; }
+  .card .chg { font-size: 13px; }
+  .up { color: var(--up); } .down { color: var(--down); }
+  .charts {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 16px; margin-bottom: 32px;
+  }
+  .chart-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px;
+  }
+  .chart-box h3 { margin: 0 0 8px; font-size: 15px; }
+  canvas { width: 100% !important; height: 200px !important; }
+  h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  #report {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px 26px;
+  }
+  #report a { color: var(--accent); }
+  #report h1 { font-size: 22px; }
+  #report h2 { font-size: 18px; }
+  #report h3 { font-size: 16px; border: none; }
+  #report code { background: #21262d; padding: 1px 5px; border-radius: 4px; }
+  .pending { color: var(--muted); font-style: italic; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>📈 美股記憶體 / AI 硬體追蹤儀表板</h1>
+  <div class="meta">
+    追蹤：MU · SNDK · DELL · ARM · Kioxia · Samsung · SK Hynix
+    &nbsp;|&nbsp; 股價更新：<span id="updated">載入中…</span>
+  </div>
+</header>
+<main>
+  <section>
+    <h2>個股速覽</h2>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section>
+    <h2>近一年股價走勢</h2>
+    <div class="charts" id="charts"></div>
+  </section>
+
+  <section>
+    <h2>每日中文追蹤報告</h2>
+    <div id="report"><span class="pending">載入最新報告中…</span></div>
+  </section>
+</main>
+<footer>
+  資料僅供參考，非投資建議。股價由 GitHub Actions 每日自動更新（台灣時間 08:00 / 20:00）。
+</footer>
+
+<script>
+const COLORS = ["#58a6ff","#2ea043","#f0883e","#a371f7","#f85149","#d29922","#39c5cf"];
+
+function fmt(v) {
+  if (v === null || v === undefined) return "—";
+  return Number(v).toLocaleString(undefined, {maximumFractionDigits: 2});
+}
+function pct(v) {
+  if (v === null || v === undefined) return "—";
+  const cls = v >= 0 ? "up" : "down";
+  const sign = v >= 0 ? "+" : "";
+  return `<span class="${cls}">${sign}${v}%</span>`;
+}
+
+async function loadPrices() {
+  try {
+    const res = await fetch("./data/prices.json?_=" + Date.now());
+    const data = await res.json();
+    document.getElementById("updated").textContent = data.updated_at_tw || data.updated_at_utc || "—";
+
+    const cards = document.getElementById("cards");
+    const charts = document.getElementById("charts");
+    cards.innerHTML = ""; charts.innerHTML = "";
+
+    let i = 0;
+    for (const [name, s] of Object.entries(data.stocks || {})) {
+      // 速覽卡
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="name">${name}</div>
+        <div class="price">${fmt(s.last)}</div>
+        <div class="chg">當日 ${pct(s.day_change_pct)} &nbsp; YTD ${pct(s.ytd_change_pct)}</div>`;
+      cards.appendChild(card);
+
+      // 走勢圖
+      const box = document.createElement("div");
+      box.className = "chart-box";
+      box.innerHTML = `<h3>${name}</h3><canvas id="c${i}"></canvas>`;
+      charts.appendChild(box);
+
+      if (s.closes && s.closes.length) {
+        new Chart(document.getElementById("c" + i), {
+          type: "line",
+          data: {
+            labels: s.dates,
+            datasets: [{
+              data: s.closes, borderColor: COLORS[i % COLORS.length],
+              borderWidth: 2, pointRadius: 0, tension: 0.25,
+              fill: true, backgroundColor: COLORS[i % COLORS.length] + "22",
+            }]
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: "#8b949e", maxTicksLimit: 6 }, grid: { display: false } },
+              y: { ticks: { color: "#8b949e" }, grid: { color: "#21262d" } }
+            }
+          }
+        });
+      } else {
+        box.querySelector("canvas").outerHTML =
+          '<p class="pending">尚無歷史資料，待首次自動更新。</p>';
+      }
+      i++;
+    }
+  } catch (e) {
+    document.getElementById("updated").textContent = "讀取失敗";
+    console.error(e);
+  }
+}
+
+async function loadReport() {
+  try {
+    const res = await fetch("./reports/latest.md?_=" + Date.now());
+    if (!res.ok) throw new Error("no report");
+    const md = await res.text();
+    document.getElementById("report").innerHTML = marked.parse(md);
+  } catch (e) {
+    document.getElementById("report").innerHTML =
+      '<span class="pending">目前沒有可顯示的報告。</span>';
+  }
+}
+
+loadPrices();
+loadReport();
+</script>
+</body>
+</html>
