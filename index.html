@@ -8,9 +8,9 @@
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
 <style>
   :root {
-    --bg: #0d1117; --card: #161b22; --border: #30363d;
-    --text: #e6edf3; --muted: #8b949e; --up: #2ea043; --down: #f85149;
-    --accent: #58a6ff;
+    --bg: #f6f8fa; --card: #ffffff; --border: #d0d7de;
+    --text: #1f2328; --muted: #57606a; --up: #1a7f37; --down: #cf222e;
+    --accent: #0969da;
   }
   * { box-sizing: border-box; }
   body {
@@ -157,8 +157,8 @@ async function loadPrices() {
           options: {
             plugins: { legend: { display: false } },
             scales: {
-              x: { ticks: { color: "#8b949e", maxTicksLimit: 6 }, grid: { display: false } },
-              y: { ticks: { color: "#8b949e" }, grid: { color: "#21262d" } }
+              x: { ticks: { color: "#57606a", maxTicksLimit: 6 }, grid: { display: false } },
+              y: { ticks: { color: "#57606a" }, grid: { color: "#eaeef2" } }
             }
           }
         });
