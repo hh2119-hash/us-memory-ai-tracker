@@ -44,6 +44,27 @@
   table.quote tbody tr:hover { background: #f6f8fa; }
   .up { color: var(--up); } .down { color: var(--down); } .flat { color: var(--muted); }
 
+  /* 類別徽章 */
+  table.quote td.cat { text-align: left; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .badge-semi { background: #ddf4ff; color: #0550ae; }
+  .badge-pc   { background: #fff1e5; color: #bc4c00; }
+  /* 市值 / 估值 */
+  table.quote td.mcap { color: var(--muted); font-size: 13px; }
+  .fpe-cheap { color: #1a7f37; font-weight: 700; }
+  .fpe-mid   { color: var(--text); }
+  .fpe-rich  { color: #cf222e; font-weight: 700; }
+  /* 記憶體核心標的：名稱左側紫色強調條 */
+  table.quote tr.mem td.name { border-left: 3px solid #8250df; }
+  /* 分組標題列 */
+  table.quote tr.group td {
+    background: #eef2f6; color: var(--muted); font-weight: 700;
+    text-align: left; font-size: 12px; letter-spacing: .04em; padding: 7px 12px;
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 10px 2px 0; color: var(--muted); font-size: 12px; align-items: center; }
+  .legend .badge { font-size: 11px; padding: 1px 8px; }
+  .legend .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; }
+
   /* 報告區：淺色文件風格 */
   #report {
     background: #fbfbfa; color: #1f2328; border: 1px solid var(--border);
@@ -99,12 +120,23 @@
             <th>10日</th>
             <th>20日</th>
             <th>YTD</th>
+            <th class="cat">類別</th>
+            <th>市值</th>
+            <th>Fwd P/E</th>
           </tr>
         </thead>
         <tbody id="rows">
-          <tr><td class="name pending" colspan="7">載入中…</td></tr>
+          <tr><td class="name pending" colspan="10">載入中…</td></tr>
         </tbody>
       </table>
+    </div>
+    <div class="legend">
+      <span><span class="badge badge-semi">半導體業</span></span>
+      <span><span class="badge badge-pc">電腦及週邊設備業</span></span>
+      <span><span class="swatch" style="background:#8250df"></span>記憶體核心標的</span>
+      <span><span class="swatch" style="background:#1a7f37"></span>Fwd P/E 偏低（&lt;15）</span>
+      <span><span class="swatch" style="background:#cf222e"></span>Fwd P/E 偏高（&gt;40）</span>
+      <span>市值與 Fwd P/E 為靜態參考（約 2026-06-02），股價即時更新。</span>
     </div>
   </section>
 
@@ -129,6 +161,36 @@ function pctCell(v) {
   return `<td class="${cls}">${sign}${v}%</td>`;
 }
 
+// 靜態參考資料（類別 / 市值 / Forward P/E），約 2026-06-02。key = symbol。
+const META = {
+  "MU":        { cat: "半導體業", mem: true,  mcap: "1.17兆",   fpe: 10.1 },
+  "SNDK":      { cat: "半導體業", mem: true,  mcap: "2,619億",  fpe: 11.7 },
+  "DELL":      { cat: "電腦及週邊設備業", mem: false, mcap: "2,960億", fpe: 30 },
+  "ARM":       { cat: "半導體業", mem: false, mcap: "4,370億",  fpe: 190 },
+  "MRVL":      { cat: "半導體業", mem: false, mcap: "1,921億",  fpe: 50 },
+  "AMD":       { cat: "半導體業", mem: false, mcap: "8,318億",  fpe: 69 },
+  "INTC":      { cat: "半導體業", mem: false, mcap: "5,764億",  fpe: 103 },
+  "AVGO":      { cat: "半導體業", mem: false, mcap: "2.17兆",   fpe: 31 },
+  "ASX":       { cat: "半導體業", mem: false, mcap: "773億",    fpe: null },
+  "285A.T":    { cat: "半導體業", mem: true,  mcap: "日本第4大", fpe: 10 },
+  "005930.KS": { cat: "半導體業", mem: true,  mcap: "韓股權值股", fpe: 7.3 },
+  "000660.KS": { cat: "半導體業", mem: true,  mcap: "約1.2兆",   fpe: 7.7 }
+};
+
+function catCell(m) {
+  if (!m) return '<td class="cat">—</td>';
+  const cls = m.cat === "電腦及週邊設備業" ? "badge-pc" : "badge-semi";
+  return `<td class="cat"><span class="badge ${cls}">${m.cat}</span></td>`;
+}
+function mcapCell(m) {
+  return `<td class="mcap">${m && m.mcap ? m.mcap : "—"}</td>`;
+}
+function fpeCell(m) {
+  if (!m || m.fpe === null || m.fpe === undefined) return '<td class="fpe-mid">—</td>';
+  const cls = m.fpe < 15 ? "fpe-cheap" : (m.fpe > 40 ? "fpe-rich" : "fpe-mid");
+  return `<td class="${cls}">${m.fpe}</td>`;
+}
+
 async function loadPrices() {
   try {
     const res = await fetch("./data/prices.json?_=" + Date.now());
@@ -137,21 +199,24 @@ async function loadPrices() {
     const rows = document.getElementById("rows");
     rows.innerHTML = "";
     for (const [name, s] of Object.entries(data.stocks || {})) {
+      const m = META[s.symbol];
       const tr = document.createElement("tr");
+      if (m && m.mem) tr.className = "mem";
       tr.innerHTML =
         `<td class="name">${name}</td>` +
         `<td class="last">${fmtPrice(s.last)}</td>` +
         pctCell(s.ret_1d) + pctCell(s.ret_5d) + pctCell(s.ret_10d) +
-        pctCell(s.ret_20d) + pctCell(s.ret_ytd);
+        pctCell(s.ret_20d) + pctCell(s.ret_ytd) +
+        catCell(m) + mcapCell(m) + fpeCell(m);
       rows.appendChild(tr);
     }
     if (!rows.children.length) {
-      rows.innerHTML = '<tr><td class="name pending" colspan="7">尚無資料</td></tr>';
+      rows.innerHTML = '<tr><td class="name pending" colspan="10">尚無資料</td></tr>';
     }
   } catch (e) {
     document.getElementById("updated").textContent = "讀取失敗";
     document.getElementById("rows").innerHTML =
-      '<tr><td class="name pending" colspan="7">讀取失敗</td></tr>';
+      '<tr><td class="name pending" colspan="10">讀取失敗</td></tr>';
   }
 }
 
