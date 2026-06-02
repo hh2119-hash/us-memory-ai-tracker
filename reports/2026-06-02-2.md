@@ -2,6 +2,22 @@
 日期：2026-06-02
 執行時間：台灣時間 20:00
 
+## 個股總覽（類別 / 市值 / 換手率 / Forward P/E）
+
+| 標的 | 類別 | 市值 | 換手率（日，粗估） | Forward P/E |
+|---|---|---|---|---|
+| MU / Micron | 記憶體（DRAM / NAND / HBM） | 約 1.17 兆美元 | 約 3.0%（成交量約 33M ÷ 在外股數約 11.3 億股） | 約 10.1 |
+| SNDK / SanDisk | 記憶體（NAND / SSD） | 約 2,619 億美元 | 約 6.5%（成交量約 9.66M ÷ 約 1.49 億股） | 約 11.7 |
+| DELL / Dell | AI 伺服器 / 系統 | 約 2,960 億美元 | 約 2.1%（成交量約 13.6M ÷ 約 6.50 億股） | 約 30 |
+| ARM / Arm | IP 授權 / CPU 架構 | 約 4,370 億美元 | 資料不足（自由流通股佔比偏低，總股數約 10.7 億股） | 約 190 |
+| MRVL / Marvell | 客製化 ASIC / 光通訊・交換晶片 | 約 1,921 億美元 | 約 1.9%（成交量約 17M ÷ 約 8.75 億股） | 約 50 |
+| ASX / ASE Technology | 封測 / 先進封裝（OSAT，CoWoS / LEAP） | 約 773 億美元 | 資料不足 | 資料不足 |
+| Kioxia（285A.T） | 記憶體（NAND） | 日本市值第 4 大上市公司 | 資料不足 | 約 10 |
+| Samsung Electronics | 記憶體 / 晶圓代工 / 封裝 | 韓股大型權值股 | 資料不足 | 約 7.3 |
+| SK Hynix（000660） | 記憶體（HBM / DRAM） | 約 1,652 兆韓元（市值達 1 兆美元級） | 資料不足 | 約 7.7 |
+
+> 註：換手率 = 當日成交量 ÷ 在外流通股數，為依近期成交量推估之概略值；ARM、ASX 與三檔亞股（Kioxia、Samsung、SK Hynix）因即時成交量資料不足以核實，標示「資料不足」。市值與估值（Forward P/E）資料時點約為 2026-06-01～06-02，僅供參考，非即時報價。MU、SNDK 等記憶體股 Forward P/E 偏低，反映市場預期 FY2026 獲利大增（循環高峰特徵，須留意獲利見頂後本益比反向放大的風險）。
+
 ## 1. 今日重點摘要
 
 - **記憶體超級循環持續加速**：TrendForce 最新預估，2Q26 傳統 DRAM 合約價將季增 58–63%、NAND Flash 季增 70–75%，且 NAND 漲幅本季首度超越 DRAM，主因雲端業者大量吸納企業級 SSD 產能。供給吃緊狀況預期持續至 2026 全年，新增產能要到 2027 末至 2028 才會大量到位。
@@ -184,3 +200,4 @@
 - Kioxia：[BigGo Finance — Kioxia profit surge & US listing](https://finance.biggo.com/news/6A8nOJ4B-PfaobXfYxZa)、[TrendForce — Kioxia 48-fold profit, US ADS](https://www.trendforce.com/news/2026/05/15/news-kioxia-reportedly-forecasts-48-fold-april-quarter-profit-jump-eyes-u-s-ads-listing-amid-memory-boom/)、[Sedaily — Kioxia surge lifts SK Hynix stake](https://en.sedaily.com/finance/2026/03/04/kioxia-shares-surge-14-fold-boosting-sk-hynix-stake-value)
 - Samsung / SK Hynix / HBM：[TrendForce — Samsung/SK Hynix 20% HBM3E hike](https://www.trendforce.com/news/2025/12/24/news-samsung-sk-hynix-reportedly-plan-20-hbm3e-price-hike-for-2026-as-nvidia-h200-asic-demand-rises/)、[TradingKey — SK Hynix HBM shortage until 2028](https://www.tradingkey.com/analysis/stocks/more/261879241-sk-hynix-hbm-shortage-samsung-tracker-valuation-tradingkey)、[Digitimes — DRAM price increase up to 70%](https://www.digitimes.com/news/a20260106PD224/samsung-sk-hynix-dram-price-increase.html)
 - 產業趨勢：[Tom's Hardware — DRAM +63%, NAND +75% Q2](https://www.tomshardware.com/pc-components/dram/dram-and-nand-contract-prices-to-climb-again-in-q2)、[TrendForce — AI Server demand drives 2Q26 price increases](https://www.trendforce.com/presscenter/news/20260331-12995.html)
+- 市值 / 換手率 / Forward P/E：[CompaniesMarketCap — MU](https://companiesmarketcap.com/micron-technology/marketcap/)、[StockAnalysis — SNDK market cap](https://stockanalysis.com/stocks/sndk/market-cap/)、[CompaniesMarketCap — DELL](https://companiesmarketcap.com/dell/marketcap/)、[CompaniesMarketCap — ARM](https://companiesmarketcap.com/arm-holdings/marketcap/)、[CompaniesMarketCap — MRVL](https://companiesmarketcap.com/marvell/marketcap/)、[StockAnalysis — ASX](https://stockanalysis.com/stocks/asx/)、[StockAnalysis — SK hynix market cap](https://stockanalysis.com/quote/krx/000660/market-cap/)、[GuruFocus — Forward P/E（MU/SNDK/DELL/ARM/MRVL）](https://www.gurufocus.com/term/forward-pe-ratio/MU)、[Futunn — Goldman Sachs 記憶體三巨頭 forward PE](https://news.futunn.com/en/post/73895825/goldman-sachs-also-supports-storage-pe-valuation-and-has-raised)
