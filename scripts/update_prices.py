@@ -2,6 +2,7 @@
 """每日抓取追蹤清單股價，輸出 data/prices.json 供儀表板使用。
 
 於 GitHub Actions 中執行（GitHub runner 具完整網路），使用 yfinance 取得資料。
+每檔輸出多週期報酬率（當日/5日/10日/20日/YTD）與近一年收盤序列（供 sparkline）。
 """
 import json
 import os
@@ -16,6 +17,9 @@ TICKERS = {
     "Dell (DELL)": "DELL",
     "Arm (ARM)": "ARM",
     "Marvell (MRVL)": "MRVL",
+    "AMD (AMD)": "AMD",
+    "Intel (INTC)": "INTC",
+    "Broadcom (AVGO)": "AVGO",
     "ASE Tech (ASX)": "ASX",
     "Kioxia (285A.T)": "285A.T",
     "Samsung (005930.KS)": "005930.KS",
@@ -26,8 +30,16 @@ OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 OUT_FILE = os.path.join(OUT_DIR, "prices.json")
 
 
+def pct_n_back(values, n):
+    """近 n 個交易日報酬率（%）。"""
+    if len(values) > n:
+        base = values[-1 - n]
+        if base:
+            return round((values[-1] - base) / base * 100, 2)
+    return None
+
+
 def fetch_one(symbol: str):
-    """回傳近一年日線收盤序列與摘要統計。"""
     t = yf.Ticker(symbol)
     hist = t.history(period="1y", interval="1d", auto_adjust=False)
     if hist.empty:
@@ -36,27 +48,21 @@ def fetch_one(symbol: str):
     closes = hist["Close"].dropna()
     dates = [d.strftime("%Y-%m-%d") for d in closes.index]
     values = [round(float(v), 2) for v in closes.values]
-
     last = values[-1]
-    prev = values[-2] if len(values) > 1 else last
-    day_chg = round((last - prev) / prev * 100, 2) if prev else 0.0
 
-    # 年初至今
+    # YTD
     year = closes.index[-1].year
-    ytd_base = None
-    for d, v in zip(closes.index, values):
-        if d.year == year:
-            ytd_base = v
-            break
-    ytd_chg = round((last - ytd_base) / ytd_base * 100, 2) if ytd_base else None
+    ytd_base = next((v for d, v in zip(closes.index, values) if d.year == year), None)
+    ytd = round((last - ytd_base) / ytd_base * 100, 2) if ytd_base else None
 
     return {
         "symbol": symbol,
         "last": last,
-        "day_change_pct": day_chg,
-        "ytd_change_pct": ytd_chg,
-        "high_52w": round(float(closes.max()), 2),
-        "low_52w": round(float(closes.min()), 2),
+        "ret_1d": pct_n_back(values, 1),
+        "ret_5d": pct_n_back(values, 5),
+        "ret_10d": pct_n_back(values, 10),
+        "ret_20d": pct_n_back(values, 20),
+        "ret_ytd": ytd,
         "dates": dates,
         "closes": values,
     }
@@ -65,11 +71,9 @@ def fetch_one(symbol: str):
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     tw = timezone(timedelta(hours=8))
-    now_tw = datetime.now(tw)
-
     result = {
         "updated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
-        "updated_at_tw": now_tw.strftime("%Y-%m-%d %H:%M 台灣時間"),
+        "updated_at_tw": datetime.now(tw).strftime("%Y-%m-%d %H:%M 台灣時間"),
         "stocks": {},
     }
 
