@@ -1,0 +1,45 @@
+name: Daily price update
+
+# 台灣時間 08:00 與 20:00 = UTC 00:00 與 12:00
+on:
+  schedule:
+    - cron: "0 0,12 * * *"
+  workflow_dispatch: {}   # 允許手動觸發
+  push:
+    branches: [ main ]    # 首次推送即產生資料
+    paths:
+      - "scripts/**"
+      - ".github/workflows/**"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Fetch latest prices
+        run: python scripts/update_prices.py
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/prices.json
+          if git diff --staged --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore: daily price update ($(date -u +%Y-%m-%d' '%H:%M' UTC'))"
+            git push
+          fi
