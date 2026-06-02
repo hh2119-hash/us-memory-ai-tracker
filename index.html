@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>美股記憶體 / AI 硬體追蹤儀表板</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
 <style>
   :root {
@@ -18,40 +17,37 @@
     font-family: -apple-system, "Segoe UI", "Noto Sans TC", Roboto, sans-serif;
     line-height: 1.6;
   }
-  header {
-    padding: 28px 20px 16px; border-bottom: 1px solid var(--border);
-  }
+  header { padding: 28px 20px 16px; border-bottom: 1px solid var(--border); }
   header h1 { margin: 0 0 6px; font-size: 22px; }
   header .meta { color: var(--muted); font-size: 13px; }
-  main { max-width: 1100px; margin: 0 auto; padding: 20px; }
-  .cards {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px; margin-bottom: 28px;
+  main { max-width: 1000px; margin: 0 auto; padding: 20px; }
+  h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; font-size: 19px; }
+
+  /* 個股總覽表格 */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table.quote {
+    width: 100%; border-collapse: collapse; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    font-variant-numeric: tabular-nums;
   }
-  .card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 14px 16px;
+  table.quote th, table.quote td {
+    padding: 11px 12px; text-align: right; white-space: nowrap;
+    border-bottom: 1px solid #eaeef2; font-size: 14px;
   }
-  .card .name { font-size: 14px; color: var(--muted); }
-  .card .price { font-size: 24px; font-weight: 700; margin: 4px 0; }
-  .card .chg { font-size: 13px; }
-  .up { color: var(--up); } .down { color: var(--down); }
-  .charts {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-    gap: 16px; margin-bottom: 32px;
+  table.quote thead th {
+    background: #f0f3f6; color: var(--muted); font-weight: 600; font-size: 13px;
+    position: sticky; top: 0;
   }
-  .chart-box {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 12px 14px;
-  }
-  .chart-box h3 { margin: 0 0 8px; font-size: 15px; }
-  canvas { width: 100% !important; height: 200px !important; }
-  h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-  /* 報告區改為淺色「文件」風格，長文閱讀更舒適 */
+  table.quote td.name, table.quote th.name { text-align: left; font-weight: 600; }
+  table.quote td.last { font-weight: 700; }
+  table.quote tbody tr:last-child td { border-bottom: none; }
+  table.quote tbody tr:hover { background: #f6f8fa; }
+  .up { color: var(--up); } .down { color: var(--down); } .flat { color: var(--muted); }
+
+  /* 報告區：淺色文件風格 */
   #report {
     background: #fbfbfa; color: #1f2328; border: 1px solid var(--border);
-    border-radius: 10px; padding: 32px 40px;
-    max-width: 880px; margin: 0 auto;
+    border-radius: 10px; padding: 32px 40px; max-width: 880px; margin: 0 auto;
     font-size: 16px; line-height: 1.85;
   }
   #report > *:first-child { margin-top: 0; }
@@ -67,30 +63,17 @@
   #report code { background: #eff1f3; color: #b3261e; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
   #report hr { border: none; border-top: 1px solid #e5e5e5; margin: 24px 0; }
   #report blockquote { border-left: 4px solid #d0d7de; margin: 16px 0; padding: 4px 16px; color: #57606a; background: #f6f8fa; }
-  #report table { border-collapse: collapse; margin: 16px 0; width: 100%; font-size: 14px; }
-  #report th, #report td { border: 1px solid #d0d7de; padding: 8px 12px; text-align: left; }
-  #report th { background: #f6f8fa; }
   .pending { color: var(--muted); font-style: italic; }
   footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px; }
 
-  /* 手機版：讓內容左右用滿、文字不再只擠在中間窄欄 */
   @media (max-width: 640px) {
     header { padding: 16px 12px 10px; }
     header h1 { font-size: 18px; }
     header .meta { font-size: 12px; }
     main { padding: 10px; }
-    .cards { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .card { padding: 12px; }
-    .card .price { font-size: 20px; }
-    .charts { grid-template-columns: 1fr; gap: 12px; }
+    table.quote th, table.quote td { padding: 9px 8px; font-size: 13px; }
     #report { padding: 18px 14px; max-width: 100%; font-size: 15px; line-height: 1.8; }
-    #report h1 { font-size: 20px; }
-    #report h2 { font-size: 17px; }
-    #report h3 { font-size: 15px; }
-    #report table { font-size: 12px; display: block; overflow-x: auto; }
-  }
-  @media (max-width: 380px) {
-    .cards { grid-template-columns: 1fr; }
+    #report h1 { font-size: 20px; } #report h2 { font-size: 17px; } #report h3 { font-size: 15px; }
   }
 </style>
 </head>
@@ -98,19 +81,31 @@
 <header>
   <h1>📈 美股記憶體 / AI 硬體追蹤儀表板</h1>
   <div class="meta">
-    追蹤：MU · SNDK · DELL · ARM · Kioxia · Samsung · SK Hynix
+    追蹤：MU · SNDK · DELL · ARM · MRVL · AMD · INTC · AVGO · ASX · Kioxia · Samsung · SK Hynix
     &nbsp;|&nbsp; 股價更新：<span id="updated">載入中…</span>
   </div>
 </header>
 <main>
   <section>
-    <h2>個股速覽</h2>
-    <div class="cards" id="cards"></div>
-  </section>
-
-  <section>
-    <h2>近一年股價走勢</h2>
-    <div class="charts" id="charts"></div>
+    <h2>個股總覽</h2>
+    <div class="table-wrap">
+      <table class="quote">
+        <thead>
+          <tr>
+            <th class="name">股票</th>
+            <th>股價</th>
+            <th>當日</th>
+            <th>5日</th>
+            <th>10日</th>
+            <th>20日</th>
+            <th>YTD</th>
+          </tr>
+        </thead>
+        <tbody id="rows">
+          <tr><td class="name pending" colspan="7">載入中…</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <section>
@@ -123,17 +118,15 @@
 </footer>
 
 <script>
-const COLORS = ["#58a6ff","#2ea043","#f0883e","#a371f7","#f85149","#d29922","#39c5cf"];
-
-function fmt(v) {
+function fmtPrice(v) {
   if (v === null || v === undefined) return "—";
   return Number(v).toLocaleString(undefined, {maximumFractionDigits: 2});
 }
-function pct(v) {
-  if (v === null || v === undefined) return "—";
-  const cls = v >= 0 ? "up" : "down";
-  const sign = v >= 0 ? "+" : "";
-  return `<span class="${cls}">${sign}${v}%</span>`;
+function pctCell(v) {
+  if (v === null || v === undefined) return '<td class="flat">—</td>';
+  const cls = v > 0 ? "up" : (v < 0 ? "down" : "flat");
+  const sign = v > 0 ? "+" : "";
+  return `<td class="${cls}">${sign}${v}%</td>`;
 }
 
 async function loadPrices() {
@@ -141,56 +134,24 @@ async function loadPrices() {
     const res = await fetch("./data/prices.json?_=" + Date.now());
     const data = await res.json();
     document.getElementById("updated").textContent = data.updated_at_tw || data.updated_at_utc || "—";
-
-    const cards = document.getElementById("cards");
-    const charts = document.getElementById("charts");
-    cards.innerHTML = ""; charts.innerHTML = "";
-
-    let i = 0;
+    const rows = document.getElementById("rows");
+    rows.innerHTML = "";
     for (const [name, s] of Object.entries(data.stocks || {})) {
-      // 速覽卡
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <div class="name">${name}</div>
-        <div class="price">${fmt(s.last)}</div>
-        <div class="chg">當日 ${pct(s.day_change_pct)} &nbsp; YTD ${pct(s.ytd_change_pct)}</div>`;
-      cards.appendChild(card);
-
-      // 走勢圖
-      const box = document.createElement("div");
-      box.className = "chart-box";
-      box.innerHTML = `<h3>${name}</h3><canvas id="c${i}"></canvas>`;
-      charts.appendChild(box);
-
-      if (s.closes && s.closes.length) {
-        new Chart(document.getElementById("c" + i), {
-          type: "line",
-          data: {
-            labels: s.dates,
-            datasets: [{
-              data: s.closes, borderColor: COLORS[i % COLORS.length],
-              borderWidth: 2, pointRadius: 0, tension: 0.25,
-              fill: true, backgroundColor: COLORS[i % COLORS.length] + "22",
-            }]
-          },
-          options: {
-            plugins: { legend: { display: false } },
-            scales: {
-              x: { ticks: { color: "#57606a", maxTicksLimit: 6 }, grid: { display: false } },
-              y: { ticks: { color: "#57606a" }, grid: { color: "#eaeef2" } }
-            }
-          }
-        });
-      } else {
-        box.querySelector("canvas").outerHTML =
-          '<p class="pending">尚無歷史資料，待首次自動更新。</p>';
-      }
-      i++;
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        `<td class="name">${name}</td>` +
+        `<td class="last">${fmtPrice(s.last)}</td>` +
+        pctCell(s.ret_1d) + pctCell(s.ret_5d) + pctCell(s.ret_10d) +
+        pctCell(s.ret_20d) + pctCell(s.ret_ytd);
+      rows.appendChild(tr);
+    }
+    if (!rows.children.length) {
+      rows.innerHTML = '<tr><td class="name pending" colspan="7">尚無資料</td></tr>';
     }
   } catch (e) {
     document.getElementById("updated").textContent = "讀取失敗";
-    console.error(e);
+    document.getElementById("rows").innerHTML =
+      '<tr><td class="name pending" colspan="7">讀取失敗</td></tr>';
   }
 }
 
@@ -198,8 +159,7 @@ async function loadReport() {
   try {
     const res = await fetch("./reports/latest.md?_=" + Date.now());
     if (!res.ok) throw new Error("no report");
-    const md = await res.text();
-    document.getElementById("report").innerHTML = marked.parse(md);
+    document.getElementById("report").innerHTML = marked.parse(await res.text());
   } catch (e) {
     document.getElementById("report").innerHTML =
       '<span class="pending">目前沒有可顯示的報告。</span>';
