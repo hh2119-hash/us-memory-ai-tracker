@@ -142,7 +142,7 @@
           <tr>
             <th class="name">股票</th><th class="cat">類別</th><th>股價</th>
             <th>當日</th><th>5日</th><th>10日</th><th>20日</th><th>YTD</th>
-            <th>市值</th><th>Fwd P/E</th>
+            <th>Fwd P/E</th><th>市值</th>
           </tr>
         </thead>
         <tbody id="rows"><tr><td class="name pending" colspan="10">載入中…</td></tr></tbody>
@@ -267,7 +267,7 @@ async function loadOverview(baseDate){
       tr.innerHTML=`<td class="name">${disp}</td>`+catCell(m)+
         `<td class="last">${fmtPrice(snap.last)}</td>`+
         pctCell(snap.ret_1d)+pctCell(snap.ret_5d)+pctCell(snap.ret_10d)+
-        pctCell(snap.ret_20d)+pctCell(snap.ret_ytd)+mcapCell(m)+fpeCell(m);
+        pctCell(snap.ret_20d)+pctCell(snap.ret_ytd)+fpeCell(m)+mcapCell(m);
       rows.appendChild(tr);
     }
     document.getElementById("asOf").textContent = shownAsOf || (data.updated_at_tw||"—");
