@@ -159,7 +159,7 @@
       <span>&nbsp;|&nbsp;</span>
       <span><span class="swatch" style="background:#1a7f37"></span>Fwd P/E 偏低（&lt;15）</span>
       <span><span class="swatch" style="background:#cf222e"></span>Fwd P/E 偏高（&gt;40）</span>
-      <span>市值與 Fwd P/E 為靜態參考；股價與報酬率為該報告對應交易日之收盤計算。</span>
+      <span>市值以美元計（約 2026-06-03，亞股按即時匯率換算）、Fwd P/E 為靜態參考；股價與報酬率為該報告對應交易日之收盤計算。</span>
     </div>
     <div id="ovSummary" style="display:none"></div>
   </section>
@@ -174,28 +174,29 @@
 </footer>
 
 <script>
+// 市值為美元計（約 2026-06-03，亞股以即時匯率換算）。
 const META = {
-  "MU":{cat:"記憶體",badge:"badge-mem",mcap:"1.17兆",fpe:10.1},
-  "SNDK":{cat:"記憶體",badge:"badge-mem",mcap:"2,619億",fpe:11.7},
-  "DELL":{cat:"系統硬體",badge:"badge-systems",mcap:"2,960億",fpe:30},
-  "ARM":{cat:"半導體IP",badge:"badge-ip",mcap:"4,370億",fpe:190},
-  "MRVL":{cat:"客製晶片",badge:"badge-custom",mcap:"1,921億",fpe:50},
-  "AMD":{cat:"運算",badge:"badge-compute",mcap:"8,318億",fpe:69},
-  "INTC":{cat:"運算",badge:"badge-compute",mcap:"5,764億",fpe:103},
-  "AVGO":{cat:"客製晶片",badge:"badge-custom",mcap:"2.17兆",fpe:31},
-  "NVDA":{cat:"運算",badge:"badge-compute",mcap:"約4兆",fpe:36},
-  "TSM":{cat:"晶圓代工",badge:"badge-foundry",mcap:"約1.4兆",fpe:22},
-  "ASX":{cat:"封測",badge:"badge-osat",mcap:"773億",fpe:null},
-  "285A.T":{cat:"記憶體",badge:"badge-mem",mcap:"日本第4大",fpe:10},
-  "005930.KS":{cat:"記憶體",badge:"badge-mem",mcap:"韓股權值股",fpe:7.3},
-  "000660.KS":{cat:"記憶體",badge:"badge-mem",mcap:"約1.2兆",fpe:7.7}
+  "MU":{cat:"記憶體",badge:"badge-mem",mcap:"1.20兆",fpe:10.1},
+  "SNDK":{cat:"記憶體",badge:"badge-mem",mcap:"2,542億",fpe:11.7},
+  "DELL":{cat:"系統硬體",badge:"badge-systems",mcap:"2,828億",fpe:30},
+  "ARM":{cat:"半導體IP",badge:"badge-ip",mcap:"4,301億",fpe:190},
+  "MRVL":{cat:"客製晶片",badge:"badge-custom",mcap:"2,544億",fpe:50},
+  "AMD":{cat:"運算",badge:"badge-compute",mcap:"8,504億",fpe:69},
+  "INTC":{cat:"運算",badge:"badge-compute",mcap:"5,425億",fpe:103},
+  "AVGO":{cat:"客製晶片",badge:"badge-custom",mcap:"2.28兆",fpe:31},
+  "NVDA":{cat:"運算",badge:"badge-compute",mcap:"5.40兆",fpe:36},
+  "TSM":{cat:"晶圓代工",badge:"badge-foundry",mcap:"2.32兆",fpe:22},
+  "ASX":{cat:"封測",badge:"badge-osat",mcap:"861億",fpe:null},
+  "285A.T":{cat:"記憶體",badge:"badge-mem",mcap:"2,713億",fpe:10},
+  "005930.KS":{cat:"記憶體",badge:"badge-mem",mcap:"1.56兆",fpe:7.3},
+  "000660.KS":{cat:"記憶體",badge:"badge-mem",mcap:"1.10兆",fpe:7.7}
 };
-// 顯示名稱：美股代號 + 中文名（非美股者用中文名＋英文）
+// 顯示名稱：英文（代號/公司名）在前，中文在後
 const NAME = {
   "MU":"MU 美光", "SNDK":"SNDK 晟碟", "DELL":"DELL 戴爾", "ARM":"ARM 安謀",
   "MRVL":"MRVL 邁威爾", "AMD":"AMD 超微", "INTC":"INTC 英特爾", "AVGO":"AVGO 博通",
   "NVDA":"NVDA 輝達", "TSM":"TSM 台積電", "ASX":"ASX 日月光",
-  "285A.T":"鎧俠 Kioxia", "005930.KS":"三星 Samsung", "000660.KS":"SK 海力士"
+  "285A.T":"Kioxia 鎧俠", "005930.KS":"Samsung 三星", "000660.KS":"SK Hynix 海力士"
 };
 function fmtPrice(v){ return (v==null)?"—":Number(v).toLocaleString(undefined,{maximumFractionDigits:2}); }
 function pctCell(v){ if(v==null) return '<td class="flat">—</td>'; const c=v>0?"up":(v<0?"down":"flat"); return `<td class="${c}">${v>0?"+":""}${v}%</td>`; }
