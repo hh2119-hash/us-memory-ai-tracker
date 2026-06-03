@@ -91,7 +91,7 @@
   .pending { color: var(--muted); font-style: italic; }
   /* 個股總覽下方的當日盤面總結 */
   #ovSummary { margin: 18px 2px 0; padding: 16px 20px; background: #fff; border: 1px solid var(--border); border-left: 5px solid var(--accent); border-radius: 10px; box-shadow: 0 1px 4px rgba(27,31,36,.05); }
-  #ovSummary .ovs-title { display: inline-block; font-size: 12px; font-weight: 700; color: #fff; background: var(--accent); padding: 3px 10px; border-radius: 999px; letter-spacing: .04em; margin-bottom: 10px; }
+  #ovSummary .ovs-title { display: block; font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: .04em; margin-bottom: 8px; }
   #ovSummary .ovs-body { font-size: 17.5px; line-height: 1.95; color: #1f2328; }
   #ovSummary .ovs-body strong { color: #000; font-weight: 800; }
   #ovSummary .up { color: var(--up); font-weight: 700; }
@@ -299,7 +299,7 @@ async function loadReport(mdUrl){
       let html = marked.parseInline(summary)
         .replace(/([＋+]\s?\d[\d.]*\s?%)/g, '<span class="up">$1</span>')
         .replace(/([−–\-]\s?\d[\d.]*\s?%)/g, '<span class="down">$1</span>');
-      ov.innerHTML = '<span class="ovs-title">📊 當日盤面總結</span><div class="ovs-body">'+html+'</div>';
+      ov.innerHTML = '<span class="ovs-title">當日盤面總結</span><div class="ovs-body">'+html+'</div>';
       ov.style.display="block";
     }
     else { ov.innerHTML=""; ov.style.display="none"; }
