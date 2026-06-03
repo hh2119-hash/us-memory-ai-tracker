@@ -172,9 +172,10 @@ function fpeCell(m){ if(!m||m.fpe==null) return '<td class="fpe-mid">—</td>'; 
 function snapshotAsOf(stock, dateStr){
   const ds=stock.dates||[], cs=stock.closes||[];
   if(!ds.length) return null;
+  // 報告於台灣 D 日產出，涵蓋的是「前一個美股交易日」收盤，故取嚴格早於 D 的最後一筆
   let idx=-1;
-  for(let i=0;i<ds.length;i++){ if(ds[i]<=dateStr) idx=i; else break; }
-  if(idx<0) idx=ds.length-1; // 若該日早於序列起點，退而用最早一筆
+  for(let i=0;i<ds.length;i++){ if(ds[i]<dateStr) idx=i; else break; }
+  if(idx<0) idx=0; // 若該日早於序列起點，退而用最早一筆
   const last=cs[idx];
   const back=(n)=> (idx-n>=0 && cs[idx-n]) ? +(((last-cs[idx-n])/cs[idx-n])*100).toFixed(2) : null;
   const yr=ds[idx].slice(0,4);
