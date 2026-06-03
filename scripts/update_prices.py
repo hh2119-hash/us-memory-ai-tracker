@@ -7,8 +7,41 @@
 import json
 import os
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
 
 import yfinance as yf
+
+# 各市場交易時區與收盤時間（用來剔除「盤中尚未收盤」的當日 K 棒）
+# 後綴 -> (時區, 收盤時, 收盤分)
+MARKET_BY_SUFFIX = {
+    ".T": ("Asia/Tokyo", 15, 0),    # 東京 09:00–15:00 JST
+    ".KS": ("Asia/Seoul", 15, 30),  # 首爾 09:00–15:30 KST
+}
+US_MARKET = ("America/New_York", 16, 0)  # 美股 09:30–16:00 ET（含 ADR，如 ASX）
+
+
+def market_for(symbol: str):
+    for suf, info in MARKET_BY_SUFFIX.items():
+        if symbol.endswith(suf):
+            return info
+    return US_MARKET
+
+
+def drop_in_progress(symbol, closes):
+    """若最後一根日 K 是「當日盤中、尚未收盤」，剔除之，確保只用已收盤價。
+
+    這讓腳本在任何時間執行（含盤中手動觸發）都只會寫入已結算的收盤價，
+    而非盤中跳動的即時價。
+    """
+    if len(closes) == 0:
+        return closes
+    tz_name, ch, cm = market_for(symbol)
+    now = datetime.now(ZoneInfo(tz_name))
+    last_date = closes.index[-1].date()
+    market_close = now.replace(hour=ch, minute=cm, second=0, microsecond=0)
+    if last_date == now.date() and now < market_close:
+        return closes.iloc[:-1]
+    return closes
 
 # 追蹤清單：顯示名稱 -> Yahoo Finance 代碼
 TICKERS = {
@@ -46,6 +79,9 @@ def fetch_one(symbol: str):
         return None
 
     closes = hist["Close"].dropna()
+    closes = drop_in_progress(symbol, closes)  # 只保留已收盤價，剔除盤中未收盤 K 棒
+    if len(closes) == 0:
+        return None
     dates = [d.strftime("%Y-%m-%d") for d in closes.index]
     values = [round(float(v), 2) for v in closes.values]
     last = values[-1]
