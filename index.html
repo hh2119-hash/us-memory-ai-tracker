@@ -11,13 +11,11 @@
 </script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>美股記憶體 / AI 硬體追蹤儀表板</title>
-<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<title>美股記憶體 / AI 硬體追蹤 — 歷史報告索引</title>
 <style>
   :root {
     --bg: #f6f8fa; --card: #ffffff; --border: #d0d7de;
-    --text: #1f2328; --muted: #57606a; --up: #1a7f37; --down: #cf222e;
-    --accent: #0969da;
+    --text: #1f2328; --muted: #57606a; --accent: #0969da;
   }
   * { box-sizing: border-box; }
   body {
@@ -25,299 +23,170 @@
     font-family: -apple-system, "Segoe UI", "Noto Sans TC", Roboto, sans-serif;
     line-height: 1.6;
   }
-  header { padding: 28px 20px 16px; border-bottom: 1px solid var(--border); }
-  header h1 { margin: 0 0 6px; font-size: 22px; }
-  header .meta { color: var(--muted); font-size: 13px; }
-  main { max-width: 1180px; margin: 0 auto; padding: 20px; }
-  h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; font-size: 19px; }
+  main { max-width: 980px; margin: 0 auto; padding: 28px 20px 40px; }
+  .title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 4px 0 18px; }
+  .title h1 { font-size: 26px; margin: 0; }
+  .title .tag { background: #ddf4ff; color: #0969da; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
 
-  /* 個股總覽表格 */
-  .table-wrap { width: 100%; }
-  table.quote {
-    width: 100%; border-collapse: collapse; background: var(--card);
-    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
-    font-variant-numeric: tabular-nums; table-layout: auto;
-  }
-  table.quote th, table.quote td {
-    padding: 9px 7px; text-align: right; white-space: nowrap;
-    border-bottom: 1px solid #eaeef2; font-size: 13px;
-  }
-  table.quote thead th {
-    background: #f0f3f6; color: var(--muted); font-weight: 600; font-size: 13px;
-    position: sticky; top: 0;
-  }
-  table.quote td.name, table.quote th.name { text-align: left; font-weight: 600; }
-  table.quote td.last { font-weight: 700; }
-  table.quote tbody tr:last-child td { border-bottom: none; }
-  table.quote tbody tr:hover { background: #f6f8fa; }
-  .up { color: var(--up); } .down { color: var(--down); } .flat { color: var(--muted); }
+  .note { background: #eef6ff; border-left: 4px solid var(--accent); color: #24405e; font-size: 14px; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; }
 
-  /* 類別徽章（美股次產業 / GICS-style sub-sector） */
-  table.quote td.cat, table.quote th.cat { text-align: left; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
-  .badge-mem     { background: #f3eafd; color: #8250df; } /* Memory 記憶體 */
-  .badge-compute { background: #ddf4ff; color: #0969da; } /* Compute 運算 */
-  .badge-custom  { background: #d7f3f7; color: #0c7b93; } /* Custom Silicon 客製晶片 */
-  .badge-ip      { background: #fff1e5; color: #bc4c00; } /* Semi IP 半導體IP */
-  .badge-osat    { background: #f5ecd7; color: #8a6d1a; } /* OSAT 封測 */
-  .badge-systems { background: #eaeef2; color: #57606a; } /* Systems 系統硬體 */
-  /* 市值 / 估值 */
-  table.quote td.mcap { color: var(--muted); }
-  .fpe-cheap { color: #1a7f37; font-weight: 700; }
-  .fpe-mid   { color: var(--text); }
-  .fpe-rich  { color: #cf222e; font-weight: 700; }
-  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 2px 0; color: var(--muted); font-size: 12px; align-items: center; }
-  .legend .badge { font-size: 11px; padding: 1px 8px; }
-  .legend .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; }
-
-  /* 報告區：淺色文件風格 */
-  #report {
-    background: #fbfbfa; color: #1f2328; border: 1px solid var(--border);
-    border-radius: 10px; padding: 32px 40px; max-width: 880px; margin: 0 auto;
-    font-size: 16px; line-height: 1.85;
+  /* 最新一期卡片 */
+  .latest {
+    display: block; text-decoration: none; color: inherit;
+    background: linear-gradient(135deg, #fff7ed 0%, #fffdf8 60%);
+    border: 1px solid #f3d9b5; border-radius: 14px; padding: 22px 24px; margin-bottom: 28px;
+    transition: box-shadow .15s, transform .15s;
   }
-  #report > *:first-child { margin-top: 0; }
-  #report h1 { font-size: 26px; color: #111; border-bottom: 2px solid #e5e5e5; padding-bottom: 10px; margin: 32px 0 16px; }
-  #report h2 { font-size: 21px; color: #111; border-bottom: 1px solid #ececec; padding-bottom: 6px; margin: 30px 0 14px; }
-  #report h3 { font-size: 17px; color: #1f2328; border: none; margin: 22px 0 8px; }
-  #report p { margin: 12px 0; }
-  #report ul, #report ol { margin: 12px 0; padding-left: 24px; }
-  #report li { margin: 6px 0; }
-  #report a { color: #0969da; text-decoration: none; }
-  #report a:hover { text-decoration: underline; }
-  #report strong { color: #000; }
-  #report code { background: #eff1f3; color: #b3261e; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
-  #report hr { border: none; border-top: 1px solid #e5e5e5; margin: 24px 0; }
-  #report blockquote { border-left: 4px solid #d0d7de; margin: 16px 0; padding: 4px 16px; color: #57606a; background: #f6f8fa; }
-  .pending { color: var(--muted); font-style: italic; }
+  .latest:hover { box-shadow: 0 6px 20px rgba(188,76,0,.12); transform: translateY(-1px); }
+  .latest .pill { display: inline-block; background: #fb8500; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 999px; }
+  .latest .date { font-size: 22px; font-weight: 800; margin: 12px 0 6px; }
+  .latest .head { color: #1f2328; font-size: 15px; font-weight: 600; }
+  .latest .go { color: #bc4c00; font-size: 13px; margin-top: 10px; font-weight: 600; }
 
-  /* 報告歷史選擇層 */
-  .report-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; }
-  .report-head h2 { border: none; padding: 0; margin: 0; }
-  .report-nav { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
-  .report-nav label { white-space: nowrap; }
-  .report-nav select {
-    font-size: 14px; padding: 6px 30px 6px 10px; border: 1px solid var(--border);
-    border-radius: 8px; background: var(--card); color: var(--text); cursor: pointer;
-    max-width: 240px; font-variant-numeric: tabular-nums; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%2357606a' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 10px center;
+  .section-h { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700; margin: 8px 2px 12px; }
+
+  .list { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .row {
+    display: flex; align-items: center; gap: 14px; padding: 16px 18px;
+    text-decoration: none; color: inherit; border-bottom: 1px solid #eaeef2;
+    transition: background .12s;
   }
-  .report-nav .count { font-size: 12px; }
+  .row:last-child { border-bottom: none; }
+  .row:hover { background: #f6f8fa; }
+  .row .datebadge {
+    flex: 0 0 auto; min-width: 92px; text-align: center;
+    background: #f3eafd; color: #8250df; font-weight: 700; font-size: 13px;
+    padding: 6px 8px; border-radius: 8px; font-variant-numeric: tabular-nums;
+  }
+  .row .rhead { flex: 1 1 auto; font-size: 15px; }
+  .row .chev { flex: 0 0 auto; color: var(--muted); font-size: 18px; }
+  .row.empty { color: var(--muted); font-style: italic; justify-content: center; }
 
-  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 28px 16px; }
+  footer a { color: var(--accent); text-decoration: none; }
 
   @media (max-width: 640px) {
-    header { padding: 16px 12px 10px; }
-    header h1 { font-size: 18px; }
-    header .meta { font-size: 12px; }
-    main { padding: 10px; }
-    table.quote th, table.quote td { padding: 9px 8px; font-size: 13px; }
-    #report { padding: 18px 14px; max-width: 100%; font-size: 15px; line-height: 1.8; }
-    #report h1 { font-size: 20px; } #report h2 { font-size: 17px; } #report h3 { font-size: 15px; }
+    main { padding: 18px 12px 30px; }
+    .title h1 { font-size: 21px; }
+    .latest .date { font-size: 19px; }
+    .row .datebadge { min-width: 78px; font-size: 12px; }
+    .row .rhead { font-size: 14px; }
   }
 </style>
 </head>
 <body>
-<header>
-  <h1>📈 美股記憶體 / AI 硬體追蹤儀表板</h1>
-  <div class="meta">
-    追蹤：MU · SNDK · DELL · ARM · MRVL · AMD · INTC · AVGO · ASX · Kioxia · Samsung · SK Hynix
-    &nbsp;|&nbsp; 股價更新：<span id="updated">載入中…</span>
-  </div>
-</header>
 <main>
-  <section>
-    <h2>個股總覽</h2>
-    <div class="table-wrap">
-      <table class="quote">
-        <thead>
-          <tr>
-            <th class="name">股票</th>
-            <th class="cat">類別</th>
-            <th>股價</th>
-            <th>當日</th>
-            <th>5日</th>
-            <th>10日</th>
-            <th>20日</th>
-            <th>YTD</th>
-            <th>市值</th>
-            <th>Fwd P/E</th>
-          </tr>
-        </thead>
-        <tbody id="rows">
-          <tr><td class="name pending" colspan="10">載入中…</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="legend">
-      <span><span class="badge badge-mem">記憶體 Memory</span></span>
-      <span><span class="badge badge-compute">運算 Compute</span></span>
-      <span><span class="badge badge-custom">客製晶片 Custom Si</span></span>
-      <span><span class="badge badge-ip">半導體IP</span></span>
-      <span><span class="badge badge-osat">封測 OSAT</span></span>
-      <span><span class="badge badge-systems">系統 Systems</span></span>
-      <span>&nbsp;|&nbsp;</span>
-      <span><span class="swatch" style="background:#1a7f37"></span>Fwd P/E 偏低（&lt;15）</span>
-      <span><span class="swatch" style="background:#cf222e"></span>Fwd P/E 偏高（&gt;40）</span>
-      <span>類別採美股次產業分類；市值與 Fwd P/E 為靜態參考（約 2026-06-02），股價即時更新。</span>
-    </div>
-  </section>
+  <div class="title">
+    <h1>📈 美股記憶體 / AI 硬體追蹤</h1>
+    <span class="tag">每日 08:00 / 20:00</span>
+  </div>
+  <div class="note">
+    📅 報告於台灣時間每天 <b>08:00</b> 與 <b>20:00</b> 自動產出，每一期都保留「個股總覽 + 當日中文追蹤報告」完整版面。追蹤：MU · SNDK · DELL · ARM · MRVL · ASX · Kioxia · Samsung · SK Hynix。
+  </div>
 
-  <section>
-    <div class="report-head">
-      <h2>每日個股追蹤報告</h2>
-      <div class="report-nav">
-        <label for="reportPicker">📅 歷史報告</label>
-        <select id="reportPicker"><option>載入中…</option></select>
-        <span class="count" id="reportCount"></span>
-      </div>
-    </div>
-    <div id="report"><span class="pending">載入最新報告中…</span></div>
-  </section>
+  <a class="latest" id="latestCard" href="#">
+    <span class="pill">最新</span>
+    <div class="date" id="latestDate">載入中…</div>
+    <div class="head" id="latestHead"></div>
+    <div class="go">點此開啟最新一期 ➜</div>
+  </a>
+
+  <div class="section-h">📚 歷史報告</div>
+  <div class="list" id="list">
+    <div class="row empty">載入中…</div>
+  </div>
 </main>
 <footer>
-  資料僅供參考，非投資建議。股價由 GitHub Actions 每日自動更新（台灣時間 08:00 / 20:00）。
+  資料僅供參考，非投資建議。股價由 GitHub Actions 每日自動更新。 &nbsp;|&nbsp;
+  GitHub repo：<a href="https://github.com/hh2119-hash/us-memory-ai-tracker" target="_blank" rel="noopener">hh2119-hash/us-memory-ai-tracker</a>
 </footer>
 
 <script>
-function fmtPrice(v) {
-  if (v === null || v === undefined) return "—";
-  return Number(v).toLocaleString(undefined, {maximumFractionDigits: 2});
-}
-function pctCell(v) {
-  if (v === null || v === undefined) return '<td class="flat">—</td>';
-  const cls = v > 0 ? "up" : (v < 0 ? "down" : "flat");
-  const sign = v > 0 ? "+" : "";
-  return `<td class="${cls}">${sign}${v}%</td>`;
-}
-
-// 靜態參考資料（類別 / 市值 / Forward P/E），約 2026-06-02。key = symbol。
-// 類別採美股次產業（GICS-style sub-sector）分類。
-const META = {
-  "MU":        { cat: "記憶體",   badge: "badge-mem",     mcap: "1.17兆",   fpe: 10.1 },
-  "SNDK":      { cat: "記憶體",   badge: "badge-mem",     mcap: "2,619億",  fpe: 11.7 },
-  "DELL":      { cat: "系統硬體", badge: "badge-systems", mcap: "2,960億",  fpe: 30 },
-  "ARM":       { cat: "半導體IP", badge: "badge-ip",      mcap: "4,370億",  fpe: 190 },
-  "MRVL":      { cat: "客製晶片", badge: "badge-custom",  mcap: "1,921億",  fpe: 50 },
-  "AMD":       { cat: "運算",     badge: "badge-compute", mcap: "8,318億",  fpe: 69 },
-  "INTC":      { cat: "運算",     badge: "badge-compute", mcap: "5,764億",  fpe: 103 },
-  "AVGO":      { cat: "客製晶片", badge: "badge-custom",  mcap: "2.17兆",   fpe: 31 },
-  "ASX":       { cat: "封測",     badge: "badge-osat",    mcap: "773億",    fpe: null },
-  "285A.T":    { cat: "記憶體",   badge: "badge-mem",     mcap: "日本第4大", fpe: 10 },
-  "005930.KS": { cat: "記憶體",   badge: "badge-mem",     mcap: "韓股權值股", fpe: 7.3 },
-  "000660.KS": { cat: "記憶體",   badge: "badge-mem",     mcap: "約1.2兆",   fpe: 7.7 }
-};
-
-function catCell(m) {
-  if (!m) return '<td class="cat">—</td>';
-  return `<td class="cat"><span class="badge ${m.badge}">${m.cat}</span></td>`;
-}
-function mcapCell(m) {
-  return `<td class="mcap">${m && m.mcap ? m.mcap : "—"}</td>`;
-}
-function fpeCell(m) {
-  if (!m || m.fpe === null || m.fpe === undefined) return '<td class="fpe-mid">—</td>';
-  const cls = m.fpe < 15 ? "fpe-cheap" : (m.fpe > 40 ? "fpe-rich" : "fpe-mid");
-  return `<td class="${cls}">${m.fpe}</td>`;
-}
-
-async function loadPrices() {
-  try {
-    const res = await fetch("./data/prices.json?_=" + Date.now());
-    const data = await res.json();
-    document.getElementById("updated").textContent = data.updated_at_tw || data.updated_at_utc || "—";
-    const rows = document.getElementById("rows");
-    rows.innerHTML = "";
-    for (const [name, s] of Object.entries(data.stocks || {})) {
-      const m = META[s.symbol];
-      const tr = document.createElement("tr");
-      tr.innerHTML =
-        `<td class="name">${name}</td>` +
-        catCell(m) +
-        `<td class="last">${fmtPrice(s.last)}</td>` +
-        pctCell(s.ret_1d) + pctCell(s.ret_5d) + pctCell(s.ret_10d) +
-        pctCell(s.ret_20d) + pctCell(s.ret_ytd) +
-        mcapCell(m) + fpeCell(m);
-      rows.appendChild(tr);
-    }
-    if (!rows.children.length) {
-      rows.innerHTML = '<tr><td class="name pending" colspan="10">尚無資料</td></tr>';
-    }
-  } catch (e) {
-    document.getElementById("updated").textContent = "讀取失敗";
-    document.getElementById("rows").innerHTML =
-      '<tr><td class="name pending" colspan="10">讀取失敗</td></tr>';
-  }
-}
-
 const REPO = "hh2119-hash/us-memory-ai-tracker";
+const WD = ["日","一","二","三","四","五","六"];
 
-// 由檔名產生顯示標籤：2026-06-03.md -> 2026-06-03；2026-06-02-2.md -> 2026-06-02（第2次）
-function reportLabel(name) {
-  const base = name.replace(/\.md$/, "");
-  const m = base.match(/^(\d{4}-\d{2}-\d{2})(?:-(\d+))?$/);
-  if (!m) return base;
-  return m[2] ? `${m[1]}（第${m[2]}次）` : m[1];
+function rkey(name){
+  const m = name.replace(/\.md$/,"").match(/^(\d{4})-(\d{2})-(\d{2})(?:-(\d+))?$/);
+  if(!m) return [0,0];
+  return [Number(m[1]+m[2]+m[3]), m[4]?Number(m[4]):0];
 }
-
-async function loadReport(url) {
-  url = url || "./reports/latest.md";
-  const el = document.getElementById("report");
-  el.innerHTML = '<span class="pending">載入報告中…</span>';
-  try {
-    const res = await fetch(url + (url.includes("?") ? "&" : "?") + "_=" + Date.now());
-    if (!res.ok) throw new Error("no report");
-    el.innerHTML = marked.parse(await res.text());
-  } catch (e) {
-    el.innerHTML = '<span class="pending">目前沒有可顯示的報告。</span>';
+function weekday(dstr){
+  const d = new Date(dstr+"T00:00:00");
+  return isNaN(d) ? "" : ("週"+WD[d.getDay()]);
+}
+function mmdd(dstr){ const p=dstr.split("-"); return p.length===3 ? (p[1]+"/"+p[2]) : dstr; }
+function stripMd(s){
+  return s.replace(/\*\*/g,"").replace(/\[([^\]]+)\]\([^)]*\)/g,"$1").replace(/[#>`_]/g,"").replace(/\s+/g," ").trim();
+}
+// 從報告 markdown 擷取一句標題（取「今日重點摘要」第一點，否則退回結論）
+function headlineFrom(md){
+  let i = md.indexOf("今日重點摘要");
+  if(i>=0){
+    const m = md.slice(i).match(/\n\s*1\.\s*(.+)/);
+    if(m){ const h = stripMd(m[1]); if(h) return h.length>64 ? h.slice(0,64)+"…" : h; }
   }
+  let j = md.indexOf("結論");
+  if(j>=0){
+    const seg = stripMd(md.slice(j).replace(/^[^\n]*\n/,""));
+    const first = seg.split(/。/)[0];
+    if(first) return (first.length>64 ? first.slice(0,64)+"…" : first) + "。";
+  }
+  return "每日記憶體 / AI 硬體追蹤報告";
 }
 
-// 列出 reports/ 內所有每日報告，建立歷史下拉選單（自動隨新報告更新，無需維護索引檔）
-async function loadReportList() {
-  const picker = document.getElementById("reportPicker");
-  const countEl = document.getElementById("reportCount");
+async function build(){
+  const listEl = document.getElementById("list");
   let files = [];
-  try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/reports?_=` + Date.now());
-    if (res.ok) {
-      const arr = await res.json();
-      const rkey = (name) => {
-        const m = name.replace(/\.md$/, "").match(/^(\d{4})-(\d{2})-(\d{2})(?:-(\d+))?$/);
-        if (!m) return [0, 0];
-        return [Number(m[1] + m[2] + m[3]), m[4] ? Number(m[4]) : 0];
-      };
-      files = arr
-        .filter(f => f.name.endsWith(".md") && f.name !== "latest.md")
-        .map(f => f.name)
-        .sort((a, b) => { const ka = rkey(a), kb = rkey(b); return (kb[0] - ka[0]) || (kb[1] - ka[1]); }); // 日期新→舊；同日較晚一次在前
+  try{
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/reports?_=`+Date.now());
+    if(r.ok){
+      const a = await r.json();
+      files = a.filter(f => f.name.endsWith(".md") && f.name!=="latest.md")
+               .map(f => f.name)
+               .sort((x,y)=>{ const kx=rkey(x), ky=rkey(y); return (ky[0]-kx[0])||(ky[1]-kx[1]); });
     }
-  } catch (e) { /* 靜默，改用 latest.md */ }
+  }catch(e){ /* 靜默 */ }
 
-  picker.innerHTML = "";
-  if (files.length) {
-    files.forEach((name, i) => {
-      const opt = document.createElement("option");
-      opt.value = "./reports/" + name;
-      opt.textContent = reportLabel(name) + (i === 0 ? "（最新）" : "");
-      picker.appendChild(opt);
-    });
-    countEl.textContent = `共 ${files.length} 份`;
-  } else {
-    const opt = document.createElement("option");
-    opt.value = "./reports/latest.md";
-    opt.textContent = "最新報告";
-    picker.appendChild(opt);
-    countEl.textContent = "";
+  if(!files.length){
+    // 後備：至少提供 latest
+    document.getElementById("latestDate").textContent = "最新報告";
+    document.getElementById("latestHead").textContent = "";
+    document.getElementById("latestCard").href = "./report.html?d=latest";
+    listEl.innerHTML = '<a class="row" href="./report.html?d=latest"><span class="datebadge">最新</span><span class="rhead">開啟最新報告</span><span class="chev">›</span></a>';
+    return;
   }
 
-  picker.addEventListener("change", () => loadReport(picker.value));
-  loadReport(picker.value); // 預設載入最新一份
-}
+  // 擷取每期標題
+  const items = await Promise.all(files.map(async name=>{
+    const base = name.replace(/\.md$/,"");
+    const m = base.match(/^(\d{4}-\d{2}-\d{2})(?:-(\d+))?$/);
+    const date = m ? m[1] : base;
+    const seq  = (m && m[2]) ? `（第${m[2]}次）` : "";
+    let head = "每日記憶體 / AI 硬體追蹤報告";
+    try{ head = headlineFrom(await (await fetch("./reports/"+name+"?_="+Date.now())).text()); }catch(e){}
+    return { base, date, seq, head };
+  }));
 
-loadPrices();
-loadReportList();
+  // 最新卡片
+  const top = items[0];
+  document.getElementById("latestDate").textContent = `${top.date}（${weekday(top.date)}）${top.seq} 報告`;
+  document.getElementById("latestHead").textContent = top.head;
+  document.getElementById("latestCard").href = `./report.html?d=${top.base}`;
+
+  // 歷史清單
+  listEl.innerHTML = "";
+  items.forEach(it=>{
+    const a = document.createElement("a");
+    a.className = "row";
+    a.href = `./report.html?d=${it.base}`;
+    a.innerHTML =
+      `<span class="datebadge">${mmdd(it.date)} ${weekday(it.date)}</span>` +
+      `<span class="rhead">${it.seq?`<b>${it.seq.replace(/[（）]/g,"")}</b> `:""}${it.head}</span>` +
+      `<span class="chev">›</span>`;
+    listEl.appendChild(a);
+  });
+}
+build();
 </script>
 </body>
 </html>

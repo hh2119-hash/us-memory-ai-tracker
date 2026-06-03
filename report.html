@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GM4REZK2EC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GM4REZK2EC');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>美股記憶體 / AI 硬體追蹤報告</title>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<style>
+  :root {
+    --bg: #f6f8fa; --card: #ffffff; --border: #d0d7de;
+    --text: #1f2328; --muted: #57606a; --up: #1a7f37; --down: #cf222e;
+    --accent: #0969da;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Noto Sans TC", Roboto, sans-serif;
+    line-height: 1.6;
+  }
+  header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
+  header .back { display: inline-block; color: var(--accent); text-decoration: none; font-size: 13px; margin-bottom: 10px; }
+  header .back:hover { text-decoration: underline; }
+  header h1 { margin: 0 0 6px; font-size: 22px; }
+  header .meta { color: var(--muted); font-size: 13px; }
+  header .meta b { color: var(--text); }
+  main { max-width: 1180px; margin: 0 auto; padding: 20px; }
+  h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; font-size: 19px; }
+
+  .table-wrap { width: 100%; overflow-x: auto; }
+  table.quote {
+    width: 100%; border-collapse: collapse; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    font-variant-numeric: tabular-nums; table-layout: auto;
+  }
+  table.quote th, table.quote td {
+    padding: 9px 7px; text-align: right; white-space: nowrap;
+    border-bottom: 1px solid #eaeef2; font-size: 13px;
+  }
+  table.quote thead th { background: #f0f3f6; color: var(--muted); font-weight: 600; font-size: 13px; }
+  table.quote td.name, table.quote th.name { text-align: left; font-weight: 600; }
+  table.quote td.last { font-weight: 700; }
+  table.quote tbody tr:last-child td { border-bottom: none; }
+  table.quote tbody tr:hover { background: #f6f8fa; }
+  .up { color: var(--up); } .down { color: var(--down); } .flat { color: var(--muted); }
+  table.quote td.cat, table.quote th.cat { text-align: left; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .badge-mem { background: #f3eafd; color: #8250df; }
+  .badge-compute { background: #ddf4ff; color: #0969da; }
+  .badge-custom { background: #d7f3f7; color: #0c7b93; }
+  .badge-ip { background: #fff1e5; color: #bc4c00; }
+  .badge-osat { background: #f5ecd7; color: #8a6d1a; }
+  .badge-systems { background: #eaeef2; color: #57606a; }
+  table.quote td.mcap { color: var(--muted); }
+  .fpe-cheap { color: #1a7f37; font-weight: 700; }
+  .fpe-mid { color: var(--text); }
+  .fpe-rich { color: #cf222e; font-weight: 700; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 2px 0; color: var(--muted); font-size: 12px; align-items: center; }
+  .legend .badge { font-size: 11px; padding: 1px 8px; }
+  .legend .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; }
+
+  #report {
+    background: #fbfbfa; color: #1f2328; border: 1px solid var(--border);
+    border-radius: 10px; padding: 32px 40px; max-width: 880px; margin: 0 auto;
+    font-size: 16px; line-height: 1.85;
+  }
+  #report > *:first-child { margin-top: 0; }
+  #report h1 { font-size: 26px; color: #111; border-bottom: 2px solid #e5e5e5; padding-bottom: 10px; margin: 32px 0 16px; }
+  #report h2 { font-size: 21px; color: #111; border-bottom: 1px solid #ececec; padding-bottom: 6px; margin: 30px 0 14px; }
+  #report h3 { font-size: 17px; color: #1f2328; border: none; margin: 22px 0 8px; }
+  #report p { margin: 12px 0; }
+  #report ul, #report ol { margin: 12px 0; padding-left: 24px; }
+  #report li { margin: 6px 0; }
+  #report a { color: #0969da; text-decoration: none; }
+  #report a:hover { text-decoration: underline; }
+  #report strong { color: #000; }
+  #report table { border-collapse: collapse; margin: 14px 0; font-size: 0.95em; }
+  #report th, #report td { border: 1px solid #e5e5e5; padding: 6px 10px; text-align: left; }
+  #report th { background: #f0f3f6; }
+  #report code { background: #eff1f3; color: #b3261e; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  #report hr { border: none; border-top: 1px solid #e5e5e5; margin: 24px 0; }
+  #report blockquote { border-left: 4px solid #d0d7de; margin: 16px 0; padding: 4px 16px; color: #57606a; background: #f6f8fa; }
+  .pending { color: var(--muted); font-style: italic; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px; }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    header { padding: 14px 12px 10px; }
+    header h1 { font-size: 18px; }
+    main { padding: 10px; }
+    #report { padding: 18px 14px; max-width: 100%; font-size: 15px; line-height: 1.8; }
+    #report h1 { font-size: 20px; } #report h2 { font-size: 17px; } #report h3 { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="./index.html">← 返回歷史報告索引</a>
+  <h1>📈 美股記憶體 / AI 硬體追蹤報告</h1>
+  <div class="meta">
+    報告：<b id="repDate">載入中…</b>
+    &nbsp;|&nbsp; 個股總覽收盤日：<b id="asOf">—</b>
+  </div>
+</header>
+<main>
+  <section>
+    <h2>個股總覽（當日收盤）</h2>
+    <div class="table-wrap">
+      <table class="quote">
+        <thead>
+          <tr>
+            <th class="name">股票</th><th class="cat">類別</th><th>股價</th>
+            <th>當日</th><th>5日</th><th>10日</th><th>20日</th><th>YTD</th>
+            <th>市值</th><th>Fwd P/E</th>
+          </tr>
+        </thead>
+        <tbody id="rows"><tr><td class="name pending" colspan="10">載入中…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><span class="badge badge-mem">記憶體 Memory</span></span>
+      <span><span class="badge badge-compute">運算 Compute</span></span>
+      <span><span class="badge badge-custom">客製晶片 Custom Si</span></span>
+      <span><span class="badge badge-ip">半導體IP</span></span>
+      <span><span class="badge badge-osat">封測 OSAT</span></span>
+      <span><span class="badge badge-systems">系統 Systems</span></span>
+      <span>&nbsp;|&nbsp;</span>
+      <span><span class="swatch" style="background:#1a7f37"></span>Fwd P/E 偏低（&lt;15）</span>
+      <span><span class="swatch" style="background:#cf222e"></span>Fwd P/E 偏高（&gt;40）</span>
+      <span>市值與 Fwd P/E 為靜態參考；股價與報酬率為該報告對應交易日之收盤計算。</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>當日追蹤報告</h2>
+    <div id="report"><span class="pending">載入報告中…</span></div>
+  </section>
+</main>
+<footer>
+  資料僅供參考，非投資建議。 &nbsp;|&nbsp; <a href="./index.html">← 歷史報告索引</a>
+</footer>
+
+<script>
+const META = {
+  "MU":{cat:"記憶體",badge:"badge-mem",mcap:"1.17兆",fpe:10.1},
+  "SNDK":{cat:"記憶體",badge:"badge-mem",mcap:"2,619億",fpe:11.7},
+  "DELL":{cat:"系統硬體",badge:"badge-systems",mcap:"2,960億",fpe:30},
+  "ARM":{cat:"半導體IP",badge:"badge-ip",mcap:"4,370億",fpe:190},
+  "MRVL":{cat:"客製晶片",badge:"badge-custom",mcap:"1,921億",fpe:50},
+  "AMD":{cat:"運算",badge:"badge-compute",mcap:"8,318億",fpe:69},
+  "INTC":{cat:"運算",badge:"badge-compute",mcap:"5,764億",fpe:103},
+  "AVGO":{cat:"客製晶片",badge:"badge-custom",mcap:"2.17兆",fpe:31},
+  "ASX":{cat:"封測",badge:"badge-osat",mcap:"773億",fpe:null},
+  "285A.T":{cat:"記憶體",badge:"badge-mem",mcap:"日本第4大",fpe:10},
+  "005930.KS":{cat:"記憶體",badge:"badge-mem",mcap:"韓股權值股",fpe:7.3},
+  "000660.KS":{cat:"記憶體",badge:"badge-mem",mcap:"約1.2兆",fpe:7.7}
+};
+function fmtPrice(v){ return (v==null)?"—":Number(v).toLocaleString(undefined,{maximumFractionDigits:2}); }
+function pctCell(v){ if(v==null) return '<td class="flat">—</td>'; const c=v>0?"up":(v<0?"down":"flat"); return `<td class="${c}">${v>0?"+":""}${v}%</td>`; }
+function catCell(m){ return m?`<td class="cat"><span class="badge ${m.badge}">${m.cat}</span></td>`:'<td class="cat">—</td>'; }
+function mcapCell(m){ return `<td class="mcap">${m&&m.mcap?m.mcap:"—"}</td>`; }
+function fpeCell(m){ if(!m||m.fpe==null) return '<td class="fpe-mid">—</td>'; const c=m.fpe<15?"fpe-cheap":(m.fpe>40?"fpe-rich":"fpe-mid"); return `<td class="${c}">${m.fpe}</td>`; }
+
+// 由歷史收盤序列計算「截至某日」的快照（股價＋各期報酬率）
+function snapshotAsOf(stock, dateStr){
+  const ds=stock.dates||[], cs=stock.closes||[];
+  if(!ds.length) return null;
+  let idx=-1;
+  for(let i=0;i<ds.length;i++){ if(ds[i]<=dateStr) idx=i; else break; }
+  if(idx<0) idx=ds.length-1; // 若該日早於序列起點，退而用最早一筆
+  const last=cs[idx];
+  const back=(n)=> (idx-n>=0 && cs[idx-n]) ? +(((last-cs[idx-n])/cs[idx-n])*100).toFixed(2) : null;
+  const yr=ds[idx].slice(0,4);
+  let ytdBase=null;
+  for(let i=0;i<=idx;i++){ if(ds[i].slice(0,4)===yr){ ytdBase=cs[i]; break; } }
+  const ytd=ytdBase?+(((last-ytdBase)/ytdBase)*100).toFixed(2):null;
+  return { last, ret_1d:back(1), ret_5d:back(5), ret_10d:back(10), ret_20d:back(20), ret_ytd:ytd, asOf:ds[idx] };
+}
+
+function getParam(){
+  const p=new URLSearchParams(location.search).get("d");
+  return p || "latest";
+}
+// 由 d 參數取得：報告檔路徑、顯示標題、價格快照基準日
+function resolve(d){
+  if(d==="latest"){
+    return { mdUrl:"./reports/latest.md", label:"最新", baseDate:null };
+  }
+  const m=d.match(/^(\d{4}-\d{2}-\d{2})(?:-(\d+))?$/);
+  const baseDate=m?m[1]:null;
+  const label=m?(m[2]?`${m[1]}（第${m[2]}次）`:m[1]):d;
+  return { mdUrl:"./reports/"+d+".md", label, baseDate };
+}
+
+async function loadOverview(baseDate){
+  const rows=document.getElementById("rows");
+  try{
+    const data=await (await fetch("./data/prices.json?_="+Date.now())).json();
+    // baseDate 為 null（latest）時用各檔最後一筆
+    const refDate = baseDate || "9999-12-31";
+    document.getElementById("asOf").textContent = "—";
+    rows.innerHTML="";
+    let shownAsOf=null;
+    for(const [name,s] of Object.entries(data.stocks||{})){
+      const snap=snapshotAsOf(s, refDate);
+      if(!snap) continue;
+      if(!shownAsOf || snap.asOf>shownAsOf) shownAsOf=snap.asOf;
+      const m=META[s.symbol];
+      const tr=document.createElement("tr");
+      tr.innerHTML=`<td class="name">${name}</td>`+catCell(m)+
+        `<td class="last">${fmtPrice(snap.last)}</td>`+
+        pctCell(snap.ret_1d)+pctCell(snap.ret_5d)+pctCell(snap.ret_10d)+
+        pctCell(snap.ret_20d)+pctCell(snap.ret_ytd)+mcapCell(m)+fpeCell(m);
+      rows.appendChild(tr);
+    }
+    document.getElementById("asOf").textContent = shownAsOf || (data.updated_at_tw||"—");
+    if(!rows.children.length) rows.innerHTML='<tr><td class="name pending" colspan="10">尚無資料</td></tr>';
+  }catch(e){
+    rows.innerHTML='<tr><td class="name pending" colspan="10">股價讀取失敗</td></tr>';
+  }
+}
+
+async function loadReport(mdUrl){
+  const el=document.getElementById("report");
+  try{
+    const res=await fetch(mdUrl+"?_="+Date.now());
+    if(!res.ok) throw new Error("no report");
+    el.innerHTML=marked.parse(await res.text());
+  }catch(e){
+    el.innerHTML='<span class="pending">找不到這一天的報告。</span>';
+  }
+}
+
+(function init(){
+  const d=getParam();
+  const r=resolve(d);
+  document.getElementById("repDate").textContent=r.label;
+  document.title="美股記憶體/AI 追蹤報告 — "+r.label;
+  loadOverview(r.baseDate);
+  loadReport(r.mdUrl);
+})();
+</script>
+</body>
+</html>
