@@ -244,10 +244,22 @@ async function loadOverview(baseDate){
     document.getElementById("asOf").textContent = "—";
     rows.innerHTML="";
     let shownAsOf=null;
+    // 先算各檔快照，再依 20 日報酬由強到弱排序（無資料者排最後）
+    const list=[];
     for(const [name,s] of Object.entries(data.stocks||{})){
       const snap=snapshotAsOf(s, refDate);
       if(!snap) continue;
       if(!shownAsOf || snap.asOf>shownAsOf) shownAsOf=snap.asOf;
+      list.push({name, s, snap});
+    }
+    list.sort((a,b)=>{
+      const av=a.snap.ret_20d, bv=b.snap.ret_20d;
+      if(av==null && bv==null) return 0;
+      if(av==null) return 1;
+      if(bv==null) return -1;
+      return bv-av; // 20D 由大到小
+    });
+    for(const {name, s, snap} of list){
       const m=META[s.symbol];
       const disp=NAME[s.symbol]||name;
       const tr=document.createElement("tr");
