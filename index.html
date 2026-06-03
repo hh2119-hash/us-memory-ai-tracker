@@ -283,10 +283,15 @@ async function loadReportList() {
     const res = await fetch(`https://api.github.com/repos/${REPO}/contents/reports?_=` + Date.now());
     if (res.ok) {
       const arr = await res.json();
+      const rkey = (name) => {
+        const m = name.replace(/\.md$/, "").match(/^(\d{4})-(\d{2})-(\d{2})(?:-(\d+))?$/);
+        if (!m) return [0, 0];
+        return [Number(m[1] + m[2] + m[3]), m[4] ? Number(m[4]) : 0];
+      };
       files = arr
         .filter(f => f.name.endsWith(".md") && f.name !== "latest.md")
         .map(f => f.name)
-        .sort((a, b) => (a < b ? 1 : (a > b ? -1 : 0))); // 日期新→舊；同日第2次在前
+        .sort((a, b) => { const ka = rkey(a), kb = rkey(b); return (kb[0] - ka[0]) || (kb[1] - ka[1]); }); // 日期新→舊；同日較晚一次在前
     }
   } catch (e) { /* 靜默，改用 latest.md */ }
 
