@@ -41,9 +41,12 @@
     font-variant-numeric: tabular-nums; table-layout: auto;
   }
   table.quote th, table.quote td {
-    padding: 9px 7px; text-align: right; white-space: nowrap;
+    padding: 9px 11px; text-align: right; white-space: nowrap;
     border-bottom: 1px solid #eaeef2; font-size: 13px;
   }
+  /* 數值欄位給予一致最小寬度，讓欄距平均 */
+  table.quote th:not(.name):not(.cat), table.quote td:not(.name):not(.cat) { min-width: 74px; }
+  table.quote td.ni, table.quote th.ni-h { min-width: 92px; }
   table.quote thead th { background: #f0f3f6; color: var(--muted); font-weight: 600; font-size: 13px; }
   table.quote td.name, table.quote th.name { text-align: left; font-weight: 600; }
   table.quote td.last { font-weight: 700; }
@@ -63,6 +66,8 @@
   .fpe-cheap { color: #1a7f37; font-weight: 700; }
   .fpe-mid { color: var(--text); }
   .fpe-rich { color: #cf222e; font-weight: 700; }
+  table.quote td.ni { color: var(--text); }
+  .ni-amt { font-weight: 700; }
   .ni-asof { display: block; font-size: 10.5px; color: var(--muted); font-weight: 400; margin-top: 1px; }
   .legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 2px 0; color: var(--muted); font-size: 12px; align-items: center; }
   .legend .badge { font-size: 11px; padding: 1px 8px; }
@@ -110,7 +115,9 @@
     /* 手機版個股總覽：保留股票/類別/股價/當日/5日/YTD/市值/Fwd P/E，僅隱藏 10日·20日；過寬時可橫向捲動 */
     table.quote th:nth-child(6), table.quote td:nth-child(6),
     table.quote th:nth-child(7), table.quote td:nth-child(7) { display: none; }
-    table.quote th, table.quote td { padding: 9px 6px; font-size: 12.5px; }
+    table.quote th, table.quote td { padding: 9px 7px; font-size: 12.5px; }
+    table.quote th:not(.name):not(.cat), table.quote td:not(.name):not(.cat) { min-width: 56px; }
+    table.quote td.ni, table.quote th.ni-h { min-width: 78px; }
     .legend { font-size: 11px; }
     #ovSummary { padding: 14px 16px; }
     #ovSummary .ovs-body { font-size: 16.5px; line-height: 1.9; }
@@ -143,7 +150,7 @@
           <tr>
             <th class="name">股票</th><th class="cat">類別</th><th>股價</th>
             <th>當日</th><th>5日</th><th>10日</th><th>20日</th><th>YTD</th>
-            <th>Fwd P/E</th><th>市值</th><th>今年淨利</th>
+            <th>Fwd P/E</th><th class="ni-h">今年淨利</th><th>市值</th>
           </tr>
         </thead>
         <tbody id="rows"><tr><td class="name pending" colspan="11">載入中…</td></tr></tbody>
@@ -203,9 +210,26 @@ const NAME = {
 function fmtPrice(v){ return (v==null)?"—":Number(v).toLocaleString(undefined,{maximumFractionDigits:2}); }
 function pctCell(v){ if(v==null) return '<td class="flat">—</td>'; const c=v>0?"up":(v<0?"down":"flat"); return `<td class="${c}">${v>0?"+":""}${v}%</td>`; }
 function catCell(m){ return m?`<td class="cat"><span class="badge ${m.badge}">${m.cat}</span></td>`:'<td class="cat">—</td>'; }
-function mcapCell(m){ return `<td class="mcap">${m&&m.mcap?m.mcap:"—"}</td>`; }
+// 將美元金額格式化為「兆 / 億」
+function fmtUSD(v){
+  if(v==null||isNaN(v)) return null;
+  const neg=v<0, a=Math.abs(v);
+  let s; if(a>=1e12) s=(a/1e12).toFixed(2)+"兆";
+  else { const yi=a/1e8; s=(yi>=100?Math.round(yi).toLocaleString():yi.toFixed(1))+"億"; }
+  return (neg?"-":"")+s;
+}
+// 市值：優先用 prices.json 動態值（每日自動更新），否則退回 META 靜態值
+function mcapCell(s,m){ const v=(s&&s.mcap_usd!=null)?fmtUSD(s.mcap_usd):(m&&m.mcap); return `<td class="mcap">${v||"—"}</td>`; }
 function fpeCell(m){ if(!m||m.fpe==null) return '<td class="fpe-mid">—</td>'; const c=m.fpe<15?"fpe-cheap":(m.fpe>40?"fpe-rich":"fpe-mid"); return `<td class="${c}">${m.fpe}</td>`; }
-function niCell(m){ if(!m||!m.ni) return '<td class="mcap">—</td>'; const neg=m.ni.indexOf("-")===0; return `<td class="mcap"><span class="${neg?'down':''}">${m.ni}</span>${m.niAsOf?`<span class="ni-asof">至${m.niAsOf}</span>`:""}</td>`; }
+// 今年淨利：優先用 prices.json 動態值（季度財報後自動刷新），否則退回 META 靜態值
+function niCell(s,m){
+  const ni=(s&&s.ni_usd!=null)?fmtUSD(s.ni_usd):(m&&m.ni);
+  const asof=(s&&s.ni_asof)?s.ni_asof:(m&&m.niAsOf);
+  if(!ni) return '<td class="ni">—</td>';
+  const neg=String(ni).indexOf("-")===0;
+  const disp=neg?('-$'+String(ni).replace(/^-/,'')):('$'+ni);
+  return `<td class="ni"><span class="ni-amt ${neg?'down':''}">${disp}</span><span class="ni-asof">${asof?'截至 '+asof:''}</span></td>`;
+}
 
 // 由歷史收盤序列計算「截至某日」的快照（股價＋各期報酬率）
 function snapshotAsOf(stock, dateStr){
@@ -270,7 +294,7 @@ async function loadOverview(baseDate){
       tr.innerHTML=`<td class="name">${disp}</td>`+catCell(m)+
         `<td class="last">${fmtPrice(snap.last)}</td>`+
         pctCell(snap.ret_1d)+pctCell(snap.ret_5d)+pctCell(snap.ret_10d)+
-        pctCell(snap.ret_20d)+pctCell(snap.ret_ytd)+fpeCell(m)+mcapCell(m)+niCell(m);
+        pctCell(snap.ret_20d)+pctCell(snap.ret_ytd)+fpeCell(m)+niCell(s,m)+mcapCell(s,m);
       rows.appendChild(tr);
     }
     document.getElementById("asOf").textContent = shownAsOf || (data.updated_at_tw||"—");
