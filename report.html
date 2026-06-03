@@ -106,12 +106,10 @@
     main { padding: 10px; }
     h2 { font-size: 17px; }
 
-    /* 手機版個股總覽：只保留重點欄位（股票/類別/股價/當日/5日/YTD），隱藏 10日·20日·市值·Fwd P/E */
+    /* 手機版個股總覽：保留股票/類別/股價/當日/5日/YTD/市值/Fwd P/E，僅隱藏 10日·20日；過寬時可橫向捲動 */
     table.quote th:nth-child(6), table.quote td:nth-child(6),
-    table.quote th:nth-child(7), table.quote td:nth-child(7),
-    table.quote th:nth-child(9), table.quote td:nth-child(9),
-    table.quote th:nth-child(10), table.quote td:nth-child(10) { display: none; }
-    table.quote th, table.quote td { padding: 10px 8px; font-size: 13px; }
+    table.quote th:nth-child(7), table.quote td:nth-child(7) { display: none; }
+    table.quote th, table.quote td { padding: 9px 6px; font-size: 12.5px; }
     .legend { font-size: 11px; }
     #ovSummary { padding: 14px 16px; }
     #ovSummary .ovs-body { font-size: 16.5px; line-height: 1.9; }
@@ -192,6 +190,13 @@ const META = {
   "005930.KS":{cat:"記憶體",badge:"badge-mem",mcap:"韓股權值股",fpe:7.3},
   "000660.KS":{cat:"記憶體",badge:"badge-mem",mcap:"約1.2兆",fpe:7.7}
 };
+// 顯示名稱：美股代號 + 中文名（非美股者用中文名＋英文）
+const NAME = {
+  "MU":"MU 美光", "SNDK":"SNDK 晟碟", "DELL":"DELL 戴爾", "ARM":"ARM 安謀",
+  "MRVL":"MRVL 邁威爾", "AMD":"AMD 超微", "INTC":"INTC 英特爾", "AVGO":"AVGO 博通",
+  "NVDA":"NVDA 輝達", "TSM":"TSM 台積電", "ASX":"ASX 日月光",
+  "285A.T":"鎧俠 Kioxia", "005930.KS":"三星 Samsung", "000660.KS":"SK 海力士"
+};
 function fmtPrice(v){ return (v==null)?"—":Number(v).toLocaleString(undefined,{maximumFractionDigits:2}); }
 function pctCell(v){ if(v==null) return '<td class="flat">—</td>'; const c=v>0?"up":(v<0?"down":"flat"); return `<td class="${c}">${v>0?"+":""}${v}%</td>`; }
 function catCell(m){ return m?`<td class="cat"><span class="badge ${m.badge}">${m.cat}</span></td>`:'<td class="cat">—</td>'; }
@@ -244,8 +249,9 @@ async function loadOverview(baseDate){
       if(!snap) continue;
       if(!shownAsOf || snap.asOf>shownAsOf) shownAsOf=snap.asOf;
       const m=META[s.symbol];
+      const disp=NAME[s.symbol]||name;
       const tr=document.createElement("tr");
-      tr.innerHTML=`<td class="name">${name}</td>`+catCell(m)+
+      tr.innerHTML=`<td class="name">${disp}</td>`+catCell(m)+
         `<td class="last">${fmtPrice(snap.last)}</td>`+
         pctCell(snap.ret_1d)+pctCell(snap.ret_5d)+pctCell(snap.ret_10d)+
         pctCell(snap.ret_20d)+pctCell(snap.ret_ytd)+mcapCell(m)+fpeCell(m);
