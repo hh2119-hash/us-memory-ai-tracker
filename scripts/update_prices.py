@@ -53,6 +53,8 @@ TICKERS = {
     "AMD (AMD)": "AMD",
     "Intel (INTC)": "INTC",
     "Broadcom (AVGO)": "AVGO",
+    "NVIDIA (NVDA)": "NVDA",
+    "TSMC (TSM)": "TSM",
     "ASE Tech (ASX)": "ASX",
     "Kioxia (285A.T)": "285A.T",
     "Samsung (005930.KS)": "005930.KS",
