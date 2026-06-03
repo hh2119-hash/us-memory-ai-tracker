@@ -58,6 +58,7 @@
   .badge-ip { background: #fff1e5; color: #bc4c00; }
   .badge-osat { background: #f5ecd7; color: #8a6d1a; }
   .badge-systems { background: #eaeef2; color: #57606a; }
+  .badge-foundry { background: #e6f4ea; color: #1a7f37; }
   table.quote td.mcap { color: var(--muted); }
   .fpe-cheap { color: #1a7f37; font-weight: 700; }
   .fpe-mid { color: var(--text); }
@@ -88,6 +89,9 @@
   #report hr { border: none; border-top: 1px solid #e5e5e5; margin: 24px 0; }
   #report blockquote { border-left: 4px solid #d0d7de; margin: 16px 0; padding: 4px 16px; color: #57606a; background: #f6f8fa; }
   .pending { color: var(--muted); font-style: italic; }
+  /* 個股總覽下方的當日盤面總結 */
+  #ovSummary { margin: 14px 2px 0; padding: 12px 16px; background: #f6f8fa; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 8px; font-size: 14px; line-height: 1.75; color: var(--text); }
+  #ovSummary strong { color: #000; }
   footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px; }
   footer a { color: var(--accent); text-decoration: none; }
 
@@ -146,12 +150,14 @@
       <span><span class="badge badge-custom">客製晶片 Custom Si</span></span>
       <span><span class="badge badge-ip">半導體IP</span></span>
       <span><span class="badge badge-osat">封測 OSAT</span></span>
+      <span><span class="badge badge-foundry">晶圓代工 Foundry</span></span>
       <span><span class="badge badge-systems">系統 Systems</span></span>
       <span>&nbsp;|&nbsp;</span>
       <span><span class="swatch" style="background:#1a7f37"></span>Fwd P/E 偏低（&lt;15）</span>
       <span><span class="swatch" style="background:#cf222e"></span>Fwd P/E 偏高（&gt;40）</span>
       <span>市值與 Fwd P/E 為靜態參考；股價與報酬率為該報告對應交易日之收盤計算。</span>
     </div>
+    <div id="ovSummary" style="display:none"></div>
   </section>
 
   <section>
@@ -173,6 +179,8 @@ const META = {
   "AMD":{cat:"運算",badge:"badge-compute",mcap:"8,318億",fpe:69},
   "INTC":{cat:"運算",badge:"badge-compute",mcap:"5,764億",fpe:103},
   "AVGO":{cat:"客製晶片",badge:"badge-custom",mcap:"2.17兆",fpe:31},
+  "NVDA":{cat:"運算",badge:"badge-compute",mcap:"約4兆",fpe:36},
+  "TSM":{cat:"晶圓代工",badge:"badge-foundry",mcap:"約1.4兆",fpe:22},
   "ASX":{cat:"封測",badge:"badge-osat",mcap:"773億",fpe:null},
   "285A.T":{cat:"記憶體",badge:"badge-mem",mcap:"日本第4大",fpe:10},
   "005930.KS":{cat:"記憶體",badge:"badge-mem",mcap:"韓股權值股",fpe:7.3},
@@ -244,14 +252,42 @@ async function loadOverview(baseDate){
   }
 }
 
+// 從報告 markdown 抽出「收盤價快照」區塊：移除標題與表格，並取出其下方總結文字。
+// 回傳 { body（已移除快照區塊）, summary（盤面總結，移到個股總覽下方顯示）}
+function extractSnapshot(md){
+  const lines = md.split("\n");
+  let start = -1;
+  for(let i=0;i<lines.length;i++){ if(/^#{1,3}\s*收盤價快照/.test(lines[i])){ start=i; break; } }
+  if(start < 0) return { body: md, summary: "" };
+  // 區塊結束：下一個 '---' 分隔線或下一個標題
+  let end = lines.length;
+  for(let i=start+1;i<lines.length;i++){
+    if(/^---\s*$/.test(lines[i]) || /^#{1,3}\s/.test(lines[i])){ end=i; break; }
+  }
+  // 總結＝區塊內非標題、非表格、非空白的文字
+  const summary = lines.slice(start+1, end)
+    .filter(l=>{ const t=l.trim(); return t && !t.startsWith("|") && !t.startsWith("#"); })
+    .join(" ").trim();
+  // 移除整個區塊；若結尾緊接 '---' 一併移除
+  let removeEnd = end;
+  if(removeEnd < lines.length && /^---\s*$/.test(lines[removeEnd])) removeEnd++;
+  const body = lines.slice(0,start).concat(lines.slice(removeEnd)).join("\n");
+  return { body, summary };
+}
+
 async function loadReport(mdUrl){
   const el=document.getElementById("report");
+  const ov=document.getElementById("ovSummary");
   try{
     const res=await fetch(mdUrl+"?_="+Date.now());
     if(!res.ok) throw new Error("no report");
-    el.innerHTML=marked.parse(await res.text());
+    const { body, summary } = extractSnapshot(await res.text());
+    el.innerHTML=marked.parse(body);
+    if(summary){ ov.innerHTML=marked.parseInline(summary); ov.style.display="block"; }
+    else { ov.innerHTML=""; ov.style.display="none"; }
   }catch(e){
     el.innerHTML='<span class="pending">找不到這一天的報告。</span>';
+    if(ov){ ov.style.display="none"; }
   }
 }
 
