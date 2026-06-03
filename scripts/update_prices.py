@@ -74,6 +74,79 @@ def pct_n_back(values, n):
     return None
 
 
+_FX_CACHE = {}
+
+
+def usd_per_unit(cur):
+    """1 單位 cur 等於多少美元（USD=1；其他用即時匯率）。失敗回 None。"""
+    if not cur or cur == "USD":
+        return 1.0
+    if cur in _FX_CACHE:
+        return _FX_CACHE[cur]
+    rate = None
+    try:
+        h = yf.Ticker(f"{cur}=X").history(period="5d")  # local per USD
+        c = h["Close"].dropna()
+        if len(c):
+            local_per_usd = float(c.iloc[-1])
+            rate = (1.0 / local_per_usd) if local_per_usd else None
+    except Exception as e:  # noqa: BLE001
+        print(f"  FX {cur}: {e}")
+    _FX_CACHE[cur] = rate
+    return rate
+
+
+def fetch_fundamentals(symbol):
+    """市值與『今年（2026）已公布季度淨利累計』，皆換算美元。任一失敗回 None，前端退回靜態值。"""
+    out = {"mcap_usd": None, "ni_usd": None, "ni_asof": None}
+    try:
+        t = yf.Ticker(symbol)
+        info = {}
+        try:
+            info = t.info or {}
+        except Exception:  # noqa: BLE001
+            info = {}
+
+        # 市值（以交易幣別換成美元）
+        mc = info.get("marketCap")
+        r_mc = usd_per_unit(info.get("currency"))
+        if mc and r_mc:
+            out["mcap_usd"] = round(mc * r_mc)
+
+        # 今年淨利（以財報幣別換成美元）
+        fcur = info.get("financialCurrency") or info.get("currency")
+        r_fin = usd_per_unit(fcur)
+        qdf = None
+        try:
+            qdf = t.quarterly_income_stmt
+        except Exception:  # noqa: BLE001
+            qdf = None
+        if qdf is not None and getattr(qdf, "empty", True) is False and r_fin:
+            row = None
+            for key in ("Net Income", "Net Income Common Stockholders", "NetIncome"):
+                if key in qdf.index:
+                    row = qdf.loc[key]
+                    break
+            if row is not None:
+                total = 0.0
+                last = None
+                found = False
+                for col in row.index:
+                    yr = getattr(col, "year", None)
+                    val = row[col]
+                    if yr == 2026 and val == val:  # 非 NaN
+                        total += float(val)
+                        found = True
+                        if last is None or col > last:
+                            last = col
+                if found:
+                    out["ni_usd"] = round(total * r_fin)
+                    out["ni_asof"] = f"{last.month}/{last.day}"
+    except Exception as e:  # noqa: BLE001
+        print(f"  fundamentals {symbol}: {e}")
+    return out
+
+
 def fetch_one(symbol: str):
     t = yf.Ticker(symbol)
     hist = t.history(period="1y", interval="1d", auto_adjust=False)
@@ -93,7 +166,7 @@ def fetch_one(symbol: str):
     ytd_base = next((v for d, v in zip(closes.index, values) if d.year == year), None)
     ytd = round((last - ytd_base) / ytd_base * 100, 2) if ytd_base else None
 
-    return {
+    out = {
         "symbol": symbol,
         "last": last,
         "ret_1d": pct_n_back(values, 1),
@@ -104,6 +177,8 @@ def fetch_one(symbol: str):
         "dates": dates,
         "closes": values,
     }
+    out.update(fetch_fundamentals(symbol))  # 市值、今年淨利（美元，自動刷新）
+    return out
 
 
 def main():
