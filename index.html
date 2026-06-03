@@ -90,6 +90,21 @@
   #report hr { border: none; border-top: 1px solid #e5e5e5; margin: 24px 0; }
   #report blockquote { border-left: 4px solid #d0d7de; margin: 16px 0; padding: 4px 16px; color: #57606a; background: #f6f8fa; }
   .pending { color: var(--muted); font-style: italic; }
+
+  /* 報告歷史選擇層 */
+  .report-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; }
+  .report-head h2 { border: none; padding: 0; margin: 0; }
+  .report-nav { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .report-nav label { white-space: nowrap; }
+  .report-nav select {
+    font-size: 14px; padding: 6px 30px 6px 10px; border: 1px solid var(--border);
+    border-radius: 8px; background: var(--card); color: var(--text); cursor: pointer;
+    max-width: 240px; font-variant-numeric: tabular-nums; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%2357606a' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+  }
+  .report-nav .count { font-size: 12px; }
+
   footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px; }
 
   @media (max-width: 640px) {
@@ -150,7 +165,14 @@
   </section>
 
   <section>
-    <h2>每日個股追蹤報告</h2>
+    <div class="report-head">
+      <h2>每日個股追蹤報告</h2>
+      <div class="report-nav">
+        <label for="reportPicker">📅 歷史報告</label>
+        <select id="reportPicker"><option>載入中…</option></select>
+        <span class="count" id="reportCount"></span>
+      </div>
+    </div>
     <div id="report"><span class="pending">載入最新報告中…</span></div>
   </section>
 </main>
@@ -229,19 +251,68 @@ async function loadPrices() {
   }
 }
 
-async function loadReport() {
+const REPO = "hh2119-hash/us-memory-ai-tracker";
+
+// 由檔名產生顯示標籤：2026-06-03.md -> 2026-06-03；2026-06-02-2.md -> 2026-06-02（第2次）
+function reportLabel(name) {
+  const base = name.replace(/\.md$/, "");
+  const m = base.match(/^(\d{4}-\d{2}-\d{2})(?:-(\d+))?$/);
+  if (!m) return base;
+  return m[2] ? `${m[1]}（第${m[2]}次）` : m[1];
+}
+
+async function loadReport(url) {
+  url = url || "./reports/latest.md";
+  const el = document.getElementById("report");
+  el.innerHTML = '<span class="pending">載入報告中…</span>';
   try {
-    const res = await fetch("./reports/latest.md?_=" + Date.now());
+    const res = await fetch(url + (url.includes("?") ? "&" : "?") + "_=" + Date.now());
     if (!res.ok) throw new Error("no report");
-    document.getElementById("report").innerHTML = marked.parse(await res.text());
+    el.innerHTML = marked.parse(await res.text());
   } catch (e) {
-    document.getElementById("report").innerHTML =
-      '<span class="pending">目前沒有可顯示的報告。</span>';
+    el.innerHTML = '<span class="pending">目前沒有可顯示的報告。</span>';
   }
 }
 
+// 列出 reports/ 內所有每日報告，建立歷史下拉選單（自動隨新報告更新，無需維護索引檔）
+async function loadReportList() {
+  const picker = document.getElementById("reportPicker");
+  const countEl = document.getElementById("reportCount");
+  let files = [];
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/reports?_=` + Date.now());
+    if (res.ok) {
+      const arr = await res.json();
+      files = arr
+        .filter(f => f.name.endsWith(".md") && f.name !== "latest.md")
+        .map(f => f.name)
+        .sort((a, b) => (a < b ? 1 : (a > b ? -1 : 0))); // 日期新→舊；同日第2次在前
+    }
+  } catch (e) { /* 靜默，改用 latest.md */ }
+
+  picker.innerHTML = "";
+  if (files.length) {
+    files.forEach((name, i) => {
+      const opt = document.createElement("option");
+      opt.value = "./reports/" + name;
+      opt.textContent = reportLabel(name) + (i === 0 ? "（最新）" : "");
+      picker.appendChild(opt);
+    });
+    countEl.textContent = `共 ${files.length} 份`;
+  } else {
+    const opt = document.createElement("option");
+    opt.value = "./reports/latest.md";
+    opt.textContent = "最新報告";
+    picker.appendChild(opt);
+    countEl.textContent = "";
+  }
+
+  picker.addEventListener("change", () => loadReport(picker.value));
+  loadReport(picker.value); // 預設載入最新一份
+}
+
 loadPrices();
-loadReport();
+loadReportList();
 </script>
 </body>
 </html>
