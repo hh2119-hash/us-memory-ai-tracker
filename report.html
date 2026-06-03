@@ -94,9 +94,25 @@
   @media (max-width: 640px) {
     header { padding: 14px 12px 10px; }
     header h1 { font-size: 18px; }
+    header .meta { font-size: 12px; }
     main { padding: 10px; }
-    #report { padding: 18px 14px; max-width: 100%; font-size: 15px; line-height: 1.8; }
-    #report h1 { font-size: 20px; } #report h2 { font-size: 17px; } #report h3 { font-size: 15px; }
+    h2 { font-size: 17px; }
+
+    /* 手機版個股總覽：只保留重點欄位（股票/類別/股價/當日/5日/YTD），隱藏 10日·20日·市值·Fwd P/E */
+    table.quote th:nth-child(6), table.quote td:nth-child(6),
+    table.quote th:nth-child(7), table.quote td:nth-child(7),
+    table.quote th:nth-child(9), table.quote td:nth-child(9),
+    table.quote th:nth-child(10), table.quote td:nth-child(10) { display: none; }
+    table.quote th, table.quote td { padding: 10px 8px; font-size: 13px; }
+    .legend { font-size: 11px; }
+
+    /* 報告本文：字體放大、行距加寬，方便手機閱讀 */
+    #report { padding: 18px 15px; max-width: 100%; font-size: 16px; line-height: 1.85; }
+    #report h1 { font-size: 20px; } #report h2 { font-size: 18px; } #report h3 { font-size: 16px; }
+    #report ul, #report ol { padding-left: 20px; }
+    /* 報告內的表格（如收盤價快照）可橫向捲動，不撐破畫面 */
+    #report table { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 14px; }
+    #report th, #report td { padding: 6px 8px; }
   }
 </style>
 </head>
