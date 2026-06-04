@@ -32,16 +32,18 @@
   header .meta { color: var(--muted); font-size: 13px; }
   header .meta b { color: var(--text); }
   header .meta b#repDate { color: #bc4c00; }
-  .markets { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 0; }
-  .markets .lbl { font-size: 13px; color: var(--muted); font-weight: 600; margin-right: 2px; }
+  .markets { margin: 12px 0 0; }
+  .markets .lbl { display: block; font-size: 12px; color: #64748b; font-weight: 400; margin: 0 0 6px; }
+  .markets .mkt-row { display: flex; gap: 6px; max-width: 560px; }
   .markets a {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 7px 14px; border-radius: 999px; text-decoration: none;
-    font-size: 13px; font-weight: 700; background: var(--card);
-    border: 1px solid var(--border); color: var(--text);
-    transition: border-color .12s, color .12s, box-shadow .12s;
+    flex: 1; text-align: center; padding: 7px 0; border-radius: 7px;
+    font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid;
+    transition: filter .12s, box-shadow .12s;
   }
-  .markets a:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 2px 8px rgba(9,105,218,.12); }
+  .markets a:hover { filter: brightness(.97); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  .markets a.m-us { color: #1d4ed8; background: #eff4ff; border-color: #bfd3fe; }
+  .markets a.m-tw { color: #15803d; background: #f0fdf4; border-color: #bbf7d0; }
+  .markets a.m-cn { color: #b91c1c; background: #fff5f5; border-color: #fecaca; }
   main { max-width: 1180px; margin: 0 auto; padding: 20px; }
   h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; font-size: 19px; }
 
@@ -152,10 +154,12 @@
     &nbsp;|&nbsp; 個股總覽收盤日：<b id="asOf">—</b>
   </div>
   <nav class="markets">
-    <span class="lbl">其他市場：</span>
-    <a href="https://hh2119-hash.github.io/us-stock-morning-report/">🇺🇸 美股</a>
-    <a href="https://hh2119-hash.github.io/taiwan-stock-daily/">🇹🇼 台股</a>
-    <a href="https://hh2119-hash.github.io/cn-stock-daily-report/">🇨🇳 A股</a>
+    <span class="lbl">看其他市場 →</span>
+    <div class="mkt-row">
+      <a class="m-us" href="https://hh2119-hash.github.io/us-stock-morning-report/">美股</a>
+      <a class="m-tw" href="https://hh2119-hash.github.io/taiwan-stock-daily/">台股</a>
+      <a class="m-cn" href="https://hh2119-hash.github.io/cn-stock-daily-report/">A股</a>
+    </div>
   </nav>
 </header>
 <main>

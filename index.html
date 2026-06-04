@@ -28,18 +28,19 @@
   .title h1 { font-size: 26px; margin: 0; }
   .title .tag { background: #ddf4ff; color: #0969da; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
 
-  /* 其他市場切換 */
-  .markets { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 18px; }
-  .markets .lbl { font-size: 13px; color: var(--muted); font-weight: 600; margin-right: 2px; }
+  /* 其他市場切換（與台股頁一致） */
+  .markets { margin: 0 0 18px; }
+  .markets .lbl { display: block; font-size: 12px; color: #64748b; font-weight: 400; margin: 0 0 6px; }
+  .markets .mkt-row { display: flex; gap: 6px; max-width: 560px; }
   .markets a {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 16px; border-radius: 999px; text-decoration: none;
-    font-size: 14px; font-weight: 700; background: var(--card);
-    border: 1px solid var(--border); color: var(--text);
-    transition: border-color .12s, color .12s, background .12s, box-shadow .12s;
+    flex: 1; text-align: center; padding: 7px 0; border-radius: 7px;
+    font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid;
+    transition: filter .12s, box-shadow .12s;
   }
-  .markets a:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 2px 8px rgba(9,105,218,.12); }
-  .markets a.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .markets a:hover { filter: brightness(.97); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  .markets a.m-us { color: #1d4ed8; background: #eff4ff; border-color: #bfd3fe; }
+  .markets a.m-tw { color: #15803d; background: #f0fdf4; border-color: #bbf7d0; }
+  .markets a.m-cn { color: #b91c1c; background: #fff5f5; border-color: #fecaca; }
 
   /* 歷史報告：週一到週五不同顏色 */
   .row .datebadge.wd-1 { background: #ddf4ff; color: #0969da; } /* 週一 藍 */
@@ -103,10 +104,12 @@
     <span class="tag">每日 08:00</span>
   </div>
   <nav class="markets">
-    <span class="lbl">其他市場：</span>
-    <a href="https://hh2119-hash.github.io/us-stock-morning-report/">🇺🇸 美股</a>
-    <a href="https://hh2119-hash.github.io/taiwan-stock-daily/">🇹🇼 台股</a>
-    <a href="https://hh2119-hash.github.io/cn-stock-daily-report/">🇨🇳 A股</a>
+    <span class="lbl">看其他市場 →</span>
+    <div class="mkt-row">
+      <a class="m-us" href="https://hh2119-hash.github.io/us-stock-morning-report/">美股</a>
+      <a class="m-tw" href="https://hh2119-hash.github.io/taiwan-stock-daily/">台股</a>
+      <a class="m-cn" href="https://hh2119-hash.github.io/cn-stock-daily-report/">A股</a>
+    </div>
   </nav>
   <div class="note">
     📅 報告於台灣時間每天 <b>08:00</b> 自動產出，每一期都保留「個股總覽 + 當日追蹤報告」完整版面。追蹤：MU · SNDK · DELL · ARM · MRVL · NVDA · TSM · ASX · Kioxia · Samsung · SK Hynix。
