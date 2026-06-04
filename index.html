@@ -28,6 +28,28 @@
   .title h1 { font-size: 26px; margin: 0; }
   .title .tag { background: #ddf4ff; color: #0969da; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
 
+  /* 其他市場切換 */
+  .markets { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 18px; }
+  .markets .lbl { font-size: 13px; color: var(--muted); font-weight: 600; margin-right: 2px; }
+  .markets a {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 999px; text-decoration: none;
+    font-size: 14px; font-weight: 700; background: var(--card);
+    border: 1px solid var(--border); color: var(--text);
+    transition: border-color .12s, color .12s, background .12s, box-shadow .12s;
+  }
+  .markets a:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 2px 8px rgba(9,105,218,.12); }
+  .markets a.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* 歷史報告：週一到週五不同顏色 */
+  .row .datebadge.wd-1 { background: #ddf4ff; color: #0969da; } /* 週一 藍 */
+  .row .datebadge.wd-2 { background: #dafbe1; color: #1a7f37; } /* 週二 綠 */
+  .row .datebadge.wd-3 { background: #fff1d6; color: #bc4c00; } /* 週三 橘 */
+  .row .datebadge.wd-4 { background: #f3eafd; color: #8250df; } /* 週四 紫 */
+  .row .datebadge.wd-5 { background: #ffe6ea; color: #cf222e; } /* 週五 紅 */
+  .row .datebadge.wd-6 { background: #d8f3f0; color: #137a6e; } /* 週六 青 */
+  .row .datebadge.wd-0 { background: #eef1f4; color: #57606a; } /* 週日 灰 */
+
   .note { background: #eef6ff; border-left: 4px solid var(--accent); color: #24405e; font-size: 14px; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; }
 
   /* 最新一期卡片 */
@@ -80,6 +102,12 @@
     <h1>📈 美股記憶體 / AI 硬體追蹤</h1>
     <span class="tag">每日 08:00</span>
   </div>
+  <nav class="markets">
+    <span class="lbl">其他市場：</span>
+    <a href="https://hh2119-hash.github.io/us-stock-morning-report/">🇺🇸 美股</a>
+    <a href="https://hh2119-hash.github.io/taiwan-stock-daily/">🇹🇼 台股</a>
+    <a href="https://hh2119-hash.github.io/cn-stock-daily-report/">🇨🇳 A股</a>
+  </nav>
   <div class="note">
     📅 報告於台灣時間每天 <b>08:00</b> 自動產出，每一期都保留「個股總覽 + 當日追蹤報告」完整版面。追蹤：MU · SNDK · DELL · ARM · MRVL · NVDA · TSM · ASX · Kioxia · Samsung · SK Hynix。
   </div>
@@ -115,6 +143,7 @@ function weekday(dstr){
   return isNaN(d) ? "" : ("週"+WD[d.getDay()]);
 }
 function mmdd(dstr){ const p=dstr.split("-"); return p.length===3 ? (p[1]+"/"+p[2]) : dstr; }
+function wdClass(dstr){ const d=new Date(dstr+"T00:00:00"); return isNaN(d) ? "" : (" wd-"+d.getDay()); }
 function stripMd(s){
   return s.replace(/\*\*/g,"").replace(/\[([^\]]+)\]\([^)]*\)/g,"$1").replace(/[#>`_]/g,"").replace(/\s+/g," ").trim();
 }
@@ -180,7 +209,7 @@ async function build(){
     a.className = "row";
     a.href = `./report.html?d=${it.base}`;
     a.innerHTML =
-      `<span class="datebadge">${mmdd(it.date)} ${weekday(it.date)}</span>` +
+      `<span class="datebadge${wdClass(it.date)}">${mmdd(it.date)} ${weekday(it.date)}</span>` +
       `<span class="rhead">${it.seq?`<b>${it.seq.replace(/[（）]/g,"")}</b> `:""}${it.head}</span>` +
       `<span class="chev">›</span>`;
     listEl.appendChild(a);

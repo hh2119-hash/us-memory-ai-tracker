@@ -32,6 +32,16 @@
   header .meta { color: var(--muted); font-size: 13px; }
   header .meta b { color: var(--text); }
   header .meta b#repDate { color: #bc4c00; }
+  .markets { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 0; }
+  .markets .lbl { font-size: 13px; color: var(--muted); font-weight: 600; margin-right: 2px; }
+  .markets a {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 999px; text-decoration: none;
+    font-size: 13px; font-weight: 700; background: var(--card);
+    border: 1px solid var(--border); color: var(--text);
+    transition: border-color .12s, color .12s, box-shadow .12s;
+  }
+  .markets a:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 2px 8px rgba(9,105,218,.12); }
   main { max-width: 1180px; margin: 0 auto; padding: 20px; }
   h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; font-size: 19px; }
 
@@ -141,6 +151,12 @@
     報告：<b id="repDate">載入中…</b>
     &nbsp;|&nbsp; 個股總覽收盤日：<b id="asOf">—</b>
   </div>
+  <nav class="markets">
+    <span class="lbl">其他市場：</span>
+    <a href="https://hh2119-hash.github.io/us-stock-morning-report/">🇺🇸 美股</a>
+    <a href="https://hh2119-hash.github.io/taiwan-stock-daily/">🇹🇼 台股</a>
+    <a href="https://hh2119-hash.github.io/cn-stock-daily-report/">🇨🇳 A股</a>
+  </nav>
 </header>
 <main>
   <section>
