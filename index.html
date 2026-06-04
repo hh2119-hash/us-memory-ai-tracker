@@ -169,25 +169,46 @@ function headlineFrom(md){
 async function build(){
   const listEl = document.getElementById("list");
   let files = [];
+  // 1) 同源 manifest（reports/index.json）：穩定可靠，不受 GitHub API 限流影響（手機網路常被限流）
+  try{
+    const r = await fetch("./reports/index.json?_="+Date.now());
+    if(r.ok){
+      const j = await r.json();
+      const arr = Array.isArray(j) ? j : (j.files||[]);
+      files = arr.filter(n => typeof n==="string" && n.endsWith(".md") && n!=="latest.md");
+    }
+  }catch(e){ /* 靜默 */ }
+  // 2) GitHub API（可能被限流）：若成功則合併補上 manifest 尚未列入的新報告
   try{
     const r = await fetch(`https://api.github.com/repos/${REPO}/contents/reports?_=`+Date.now());
     if(r.ok){
       const a = await r.json();
-      files = a.filter(f => f.name.endsWith(".md") && f.name!=="latest.md")
-               .map(f => f.name)
-               .sort((x,y)=>{ const kx=rkey(x), ky=rkey(y); return (ky[0]-kx[0])||(ky[1]-kx[1]); });
+      const apiFiles = a.filter(f => f.name.endsWith(".md") && f.name!=="latest.md").map(f => f.name);
+      files = files.concat(apiFiles);
     }
   }catch(e){ /* 靜默 */ }
+  // 去重 + 由新到舊排序
+  files = Array.from(new Set(files))
+               .sort((x,y)=>{ const kx=rkey(x), ky=rkey(y); return (ky[0]-kx[0])||(ky[1]-kx[1]); });
 
-  if(!files.length){
-    // 後備：至少提供 latest
+  // 最新卡片：永遠直接讀 latest.md（同源，手機也可靠，不受 API 限流影響）
+  try{
+    const md = await (await fetch("./reports/latest.md?_="+Date.now())).text();
+    const dm = md.match(/日期[:：]\s*(\d{4}-\d{2}-\d{2})/);
+    const ld = dm ? dm[1] : "";
+    document.getElementById("latestDate").textContent = ld ? `${ld}（${weekday(ld)}） 報告` : "最新報告";
+    document.getElementById("latestHead").textContent = headlineFrom(md) || "";
+  }catch(e){
     document.getElementById("latestDate").textContent = "最新報告";
     document.getElementById("latestHead").textContent = "";
-    document.getElementById("latestCard").href = "./report.html?d=latest";
+  }
+  document.getElementById("latestCard").href = "./report.html?d=latest";
+
+  // 歷史清單
+  if(!files.length){
     listEl.innerHTML = '<a class="row" href="./report.html?d=latest"><span class="datebadge">最新</span><span class="rhead">開啟最新報告</span><span class="chev">›</span></a>';
     return;
   }
-
   // 擷取每期標題
   const items = await Promise.all(files.map(async name=>{
     const base = name.replace(/\.md$/,"");
@@ -199,13 +220,6 @@ async function build(){
     return { base, date, seq, head };
   }));
 
-  // 最新卡片
-  const top = items[0];
-  document.getElementById("latestDate").textContent = `${top.date}（${weekday(top.date)}）${top.seq} 報告`;
-  document.getElementById("latestHead").textContent = top.head;
-  document.getElementById("latestCard").href = `./report.html?d=${top.base}`;
-
-  // 歷史清單
   listEl.innerHTML = "";
   items.forEach(it=>{
     const a = document.createElement("a");
