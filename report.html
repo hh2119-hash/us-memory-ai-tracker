@@ -23,20 +23,20 @@
   body {
     margin: 0; background: var(--bg); color: var(--text);
     font-family: -apple-system, "Segoe UI", "Noto Sans TC", Roboto, sans-serif;
-    line-height: 1.6;
+    line-height: 1.6; padding-bottom: 84px;
   }
-  header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); text-align: center; }
+  header { padding: 10px 20px 8px; border-bottom: 1px solid var(--border); text-align: center; }
   header .back { display: inline-block; color: var(--accent); text-decoration: none; font-size: 13px; margin-bottom: 10px; }
   header .back:hover { text-decoration: underline; }
-  header h1 { margin: 0 0 6px; font-size: 22px; }
+  header h1 { margin: 0 0 3px; font-size: 18px; }
   header .meta { color: var(--muted); font-size: 13px; }
   header .meta b { color: var(--text); }
   header .meta b#repDate { color: #bc4c00; }
-  .markets { margin: 12px 0 0; }
-  .markets .lbl { display: block; font-size: 12px; color: #64748b; font-weight: 400; margin: 0 0 6px; }
-  .markets .mkt-row { display: flex; gap: 6px; max-width: 400px; margin: 0 auto; }
+  .markets { margin: 7px 0 0; }
+  .markets .lbl { display: inline-block; font-size: 12px; color: #64748b; font-weight: 400; margin: 0 8px 0 0; vertical-align: middle; }
+  .markets .mkt-row { display: inline-flex; gap: 6px; max-width: 360px; margin: 0; vertical-align: middle; }
   .markets a {
-    flex: 1; text-align: center; padding: 7px 0; border-radius: 7px;
+    padding: 5px 16px; border-radius: 7px;
     font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid;
     transition: filter .12s, box-shadow .12s;
   }
@@ -117,28 +117,33 @@
   #ovSummary .up { color: var(--up); font-weight: 700; }
   #ovSummary .down { color: var(--down); font-weight: 700; }
 
-  /* 個股總覽下方：前一天 / 後一天 報告切換 */
-  .daynav { display: flex; gap: 8px; max-width: 560px; margin: 16px auto 0; }
-  .daynav a, .daynav span.dn-off {
-    flex: 1; text-align: center; padding: 9px 8px; border-radius: 8px;
-    text-decoration: none; border: 1px solid var(--border); background: #fff;
-    color: var(--accent); display: flex; flex-direction: column; gap: 2px; line-height: 1.3;
-    transition: filter .12s, box-shadow .12s;
+  /* 懸浮：前一天 / 首頁 / 後一天 報告切換（與美股日報同款膠囊式） */
+  .daynav {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 9999;
+    display: flex; gap: 8px; background: rgba(255,255,255,.96);
+    border-radius: 999px; padding: 8px 11px; box-shadow: 0 4px 18px rgba(0,0,0,.14);
   }
-  .daynav a:hover { filter: brightness(.98); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-  .daynav .dn-off { color: #b1b8c0; background: #f6f8fa; cursor: default; }
-  .daynav .dn-lbl { font-size: 11px; font-weight: 600; color: var(--muted); }
-  .daynav .dn-off .dn-lbl { color: #c4cad1; }
-  .daynav .dn-date { font-size: 14px; font-weight: 700; }
-  .daynav a.dn-home { color: #15803d; background: #f0fdf4; border-color: #bbf7d0; }
+  .daynav a, .daynav span.dn-off {
+    border-radius: 999px; padding: 9px 20px; font-size: 17px; font-weight: 600;
+    text-decoration: none; white-space: nowrap; border: 0; line-height: 1;
+    display: inline-flex; align-items: center; transition: filter .12s, box-shadow .12s;
+  }
+  .daynav a.dn-prev, .daynav a.dn-next { background: #0f1b3d; color: #fff; }
+  .daynav a.dn-home { background: #e2e8f0; color: #0f1b3d; }
+  .daynav span.dn-off { background: #f1f5f9; color: #cbd5e1; cursor: default; }
+  .daynav a:hover { filter: brightness(1.12); box-shadow: 0 2px 10px rgba(0,0,0,.18); }
 
   footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px; }
   footer a { color: var(--accent); text-decoration: none; }
 
   @media (max-width: 640px) {
-    header { padding: 14px 12px 10px; }
-    header h1 { font-size: 18px; }
+    header { padding: 8px 12px 7px; }
+    header h1 { font-size: 16px; margin: 0 0 2px; }
     header .meta { font-size: 12px; }
+    .markets { margin: 5px 0 0; }
+    .markets .lbl { display: block; margin: 0 0 4px; }
+    .markets .mkt-row { display: flex; }
+    .markets a { padding: 5px 14px; }
     main { padding: 10px; }
     h2 { font-size: 17px; }
 
@@ -151,10 +156,8 @@
     .legend { font-size: 11px; }
     #ovSummary { padding: 14px 16px; }
     #ovSummary .ovs-body { font-size: 16.5px; line-height: 1.9; }
-    .daynav { gap: 6px; }
-    .daynav a, .daynav span.dn-off { padding: 8px 4px; }
-    .daynav .dn-lbl { font-size: 10.5px; }
-    .daynav .dn-date { font-size: 13px; }
+    .daynav { gap: 6px; bottom: 12px; padding: 7px 9px; }
+    .daynav a, .daynav span.dn-off { padding: 8px 14px; font-size: 15px; }
 
     /* 報告本文：字體放大、行距加寬，方便手機閱讀 */
     #report { padding: 18px 15px; max-width: 100%; font-size: 16px; line-height: 1.85; }
@@ -210,7 +213,6 @@
       <span>市值與今年淨利皆以美元計（約 2026-06-03，亞股按即時匯率換算）；今年淨利＝2026 年已公布季度淨利累計，各公司會計年度不同，故標註截止月日（如「至 3/31」）；Fwd P/E 為靜態參考；股價與報酬率為該報告對應交易日之收盤計算。</span>
     </div>
     <div id="ovSummary" style="display:none"></div>
-    <nav class="daynav" id="dayNav" style="display:none"></nav>
   </section>
 
   <section>
@@ -221,6 +223,7 @@
 <footer>
   資料僅供參考，非投資建議。 &nbsp;|&nbsp; <a href="./index.html">← 歷史報告索引</a>
 </footer>
+<nav class="daynav" id="dayNav" style="display:none"></nav>
 
 <script>
 // 市值與今年淨利皆為美元（約 2026-06-03，亞股以即時匯率換算）。
@@ -398,6 +401,7 @@ async function setupDayNav(d){
     const arr=await (await fetch("./reports/index.json?_="+Date.now())).json();
     if(!Array.isArray(arr)||!arr.length) return;
     const toD=(f)=> f.replace(/\.md$/,"");
+    const toMD=(f)=>{ const m=toD(f).match(/^\d{4}-(\d{2})-(\d{2})/); return m?`${m[1]}/${m[2]}`:toD(f); };
     // 目前檔案：latest 對應最新一筆（陣列第 0 筆）
     const curFile = (d==="latest") ? arr[0] : (d+".md");
     const idx = arr.indexOf(curFile);
@@ -406,13 +410,13 @@ async function setupDayNav(d){
     const newerFile = (idx>0) ? arr[idx-1] : null;
     let html="";
     // 前一天（較舊）
-    if(olderFile) html+=`<a href="?d=${toD(olderFile)}"><span class="dn-lbl">← 前一天</span><span class="dn-date">${toD(olderFile)}</span></a>`;
-    else html+=`<span class="dn-off"><span class="dn-lbl">← 前一天</span><span class="dn-date">已是最早</span></span>`;
+    if(olderFile) html+=`<a class="dn-prev" href="?d=${toD(olderFile)}">← 前一天 ${toMD(olderFile)}</a>`;
+    else html+=`<span class="dn-off">← 前一天</span>`;
     // 首頁
-    html+=`<a class="dn-home" href="./index.html"><span class="dn-lbl">回首頁</span><span class="dn-date">歷史索引</span></a>`;
+    html+=`<a class="dn-home" href="./index.html">⌂ 首頁</a>`;
     // 後一天（較新）
-    if(newerFile) html+=`<a href="?d=${toD(newerFile)}"><span class="dn-lbl">後一天 →</span><span class="dn-date">${toD(newerFile)}</span></a>`;
-    else html+=`<span class="dn-off"><span class="dn-lbl">後一天 →</span><span class="dn-date">已是最新</span></span>`;
+    if(newerFile) html+=`<a class="dn-next" href="?d=${toD(newerFile)}">後一天 ${toMD(newerFile)} →</a>`;
+    else html+=`<span class="dn-off">後一天 →</span>`;
     nav.innerHTML=html;
     nav.style.display="flex";
   }catch(e){ /* index.json 讀取失敗則靜默不顯示 */ }
