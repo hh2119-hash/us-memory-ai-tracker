@@ -1,6 +1,6 @@
 {
-  "updated_at_utc": "2026-06-20 23:00 UTC",
-  "updated_at_tw": "2026-06-21 07:00 台灣時間",
+  "updated_at_utc": "2026-06-21 13:52 UTC",
+  "updated_at_tw": "2026-06-21 21:52 台灣時間",
   "stocks": {
     "Micron (MU)": {
       "symbol": "MU",
@@ -2588,7 +2588,7 @@
         289.54,
         310.58
       ],
-      "mcap_usd": 271695364096,
+      "mcap_usd": 271929278464,
       "ni_usd": 430600000,
       "ni_asof": "4/30"
     },
