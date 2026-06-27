@@ -1,4 +1,4 @@
-# 美股半導體 / AI 硬體追蹤報告
+# 美股記憶體 / AI 硬體 / Mag 7 追蹤報告
 日期：2026-06-27
 執行時間：台灣時間 08:00
 
@@ -107,6 +107,22 @@
 - 對股價可能影響：中性偏正（DRAM 獲利強，HBM 放緩屬策略選擇）。
 - 觀察重點：HBM4 放量時點、DRAM 報價與獲利率、capex 配置、HBM 市佔變化。
 
+## 2-A. Mag 7 科技巨頭追蹤（AAPL／MSFT／GOOGL／AMZN／META／NVDA／TSLA）
+
+> 註：以下價格為近期搜尋所得參考值並標註日期，非當日收盤；個股當日收盤總覽請見儀表板網頁。Mag 7 與本報告「記憶體/AI 硬體」高度連動——其 AI 資本支出（2026 合計上看約 7,250 億美元）正是 MU、SNDK、TSM、DELL 等記憶體與伺服器需求的源頭。
+
+| 公司 / 代號 | 近期動態 | 股價 / 今年表現 | 解讀 |
+|---|---|---|---|
+| Apple / AAPL | WWDC 推出由 Gemini 驅動的新版 Siri（年底上線）；6/25 因 Mac/iPad 漲價、零件成本上升，股價挫約 6% | 約 275 美元（6/25），今年約 -5% | AI 進度落後但 iPhone 17 銷售強；漲價反映記憶體等零件成本上升，與本報告漲價主軸呼應 |
+| Microsoft / MSFT | 2026 capex 上看約 1,900 億美元（季增 66%）；Azure Q3 FY26 +31%，但市場憂心 AI 投報與 OpenAI 風險 | 約 400 美元（6/15），近一月約 -5.6% | 重資本支出壓抑短線情緒，但 Azure AI 動能仍強；capex 是記憶體/伺服器需求關鍵支撐 |
+| Alphabet / GOOGL | 6/29 納入道瓊指數；Gemini 擴大企業雲端合作（IBM、EQT 等）；惟 Gemini 3.5 Pro 延至 7 月、多名 AI 人才出走 | 接近高檔；Q1 雲端營收創 200 億美元、margin 33% | 雲端與 AI 訂單（backlog 4,620 億美元）強勁，但人才流失與模型延遲為雜訊 |
+| Amazon / AMZN | 6/26 宣布 AWS EC2 ML 機時漲價（7/1 生效）；AWS 成長 28%、自研晶片營收破 200 億美元 run rate | 約 2% 今年漲幅，自 5 月高點回落約 16% | 今年落後其他巨頭，但 AWS/AI 與 Prime Day 為潛在催化；AWS 晶片題材與 ASIC 生態相關 |
+| Meta / META | 2026 capex 上修至最高約 1,450 億美元（近 2025 的兩倍）；推進閉源可變現大模型（Avocado/Muse Spark），Llama 維持開源 | 約 585 美元（6/5），今年約 -14% | capex 暴增為最大疑慮；AI 變現（訂閱/廣告）成關鍵，BofA 看好 9 個月內估值重評 |
+| NVIDIA / NVDA | 資料中心運算營收創高 604 億美元（年增 77%）、網通 148 億（年增 199%）；與 OpenAI 合作 10GW、Computex 推 PC 晶片（詳見第 2 節） | 6 月一度跌約 6%、短暫失守 5 兆美元市值 | AI 火車頭，HBM/CoWoS 與本報告供應鏈直接連動；估值高、隨大盤波動 |
+| Tesla / TSLA | 6 月初 Austin 推出無人監督 Robotaxi（Dallas/Houston 4 月已上路）；J.P. Morgan 6/5 上調至 Neutral、目標價 475 | 約 399 美元，今年約 -7% | 估值轉向自駕/機器人（AI）敘事；Robotaxi 執行進度為股價關鍵，與記憶體主軸關聯較低 |
+
+**Mag 7 共同觀察：** 七雄今年表現分歧——AI 基礎建設「賣鏟子」的 NVDA 與雲端龍頭相對強勢，AAPL、AMZN、META、TSLA 則因 AI 進度、漲價或重資本支出壓力而落後。對本報告而言最重要的連結是：**Mag 7 合計約 7,250 億美元的 2026 AI 資本支出，是記憶體（MU/SNDK）、封裝（TSM/ASX）與 AI 伺服器（DELL）需求的最上游驅動力**；任何 capex 上修/下修或 AI 投報疑慮，都會反向傳導至本清單個股。
+
 ## 3. 產業共同趨勢
 
 - **DRAM：** Q2 2026 合約價季增 58–63%，漲勢延續至 Q3、Q4；Q1 已季增逾 90%，2026 年至今價格約翻倍。三大廠產能向 HBM 傾斜，排擠標準型供給。
@@ -204,4 +220,5 @@
 - Kioxia：[Bloomberg（美國 ADR 計畫）](https://www.bloomberg.com/news/articles/2026-06-25/japan-s-kioxia-plans-to-offer-us-depositary-shares-next-spring)、[TradingKey](https://www.tradingkey.com/analysis/stocks/us-stocks/261989507-kioxia-plans-issue-adr-us-spring-2027-ai-storage-boom-japanese-chip-giant-accelerate-embrace-global-capital-tradingkey)、[TrendForce（日美 NAND 聯盟）](https://www.trendforce.com/news/2026/06/01/news-japan-u-s-nand-alliance-steps-up-investment-as-kioxia-sandisk-capex-reportedly-rises-40-yoy/)
 - Samsung / SK Hynix：[TrendForce（HBM4 策略分歧）](https://www.trendforce.com/news/2026/06/23/news-memory-giants-split-on-hbm4-strategy-samsung-hbm4-sales-reportedly-tops-1b-sk-hynix-slows-ramp/)、[DCD（擴產）](https://www.datacenterdynamics.com/en/news/samsung-and-sk-hynix-to-scale-up-memory-production-capacity-in-2026-to-meet-ai-demand/)
 - 記憶體報價 / 產業：[Tom's Hardware（Q2 DRAM/NAND）](https://www.tomshardware.com/pc-components/dram/dram-and-nand-contract-prices-to-climb-again-in-q2)、[TrendForce（1Q26 DRAM +81% QoQ）](https://www.trendforce.com/presscenter/news/20260601-13070.html)、[Bloomberg（記憶體缺貨）](https://www.bloomberg.com/graphics/2026-ai-boom-memory-chip-shortage/)、[IDC](https://www.idc.com/resource-center/blog/global-memory-shortage-crisis-market-analysis-and-the-potential-impact-on-the-smartphone-and-pc-markets-in-2026/)
+- Mag 7：[CNBC（Apple 漲價）](https://www.cnbc.com/2026/06/25/apple-stock-gets-slammed-on-bigger-mac-ipad-price-hikes-why-it-can-weather-the-storm.html)、[NPR（Siri AI）](https://www.npr.org/2026/06/08/nx-s1-5847937/apple-wwdc-2026-siri-ai-tim-cook)、[TradingKey（MSFT capex）](https://www.tradingkey.com/analysis/stocks/us-stocks/261940833-microsoft-stock-forecast-ai-infrastructure-spending-msft-buy-tradingkey)、[Yahoo（Alphabet Gemini 雲端）](https://finance.yahoo.com/sectors/technology/articles/alphabet-extends-gemini-ai-deeper-131843692.html)、[24/7 Wall St.（Google 人才出走）](https://247wallst.com/investing/2026/06/25/5-top-google-ai-brains-bolted-in-7-days-as-gemini-falls-behind-and-alphabet-stock-is-feeling-it/)、[GuruFocus（AWS 漲價）](https://www.gurufocus.com/news/8934289/amazon-amzn-raises-aws-ec2-capacity-block-prices-for-machine-learning)、[Yahoo（Meta capex 1,450 億）](https://finance.yahoo.com/sectors/technology/article/meta-stock-sinks-after-q1-earnings-as-company-raises-2026-ai-spending-forecast-to-125-billion-145-billion-160136308.html)、[Tickeron（Tesla Robotaxi）](https://tickeron.com/blogs/tesla-pushes-robotaxi-rollout-and-draws-analyst-upgrades-for-tsla-14274/)
 - 大盤 / 總經：[Detroit News（類股賣壓）](https://www.detroitnews.com/story/business/2026/06/23/600-billion-spacex-slide-takes-tech-stocks-along-for-the-ride/90657174007/)、[Tom's Hardware（capex 7,250 億）](https://www.tomshardware.com/tech-industry/big-tech/big-techs-ai-spending-plans-reach-725-billion)、[Dell'Oro（資料中心 capex）](https://www.delloro.com/news/ai-infrastructure-buildouts-and-memory-cost-inflation-drove-data-center-capex-higher-in-1q-2026/)
