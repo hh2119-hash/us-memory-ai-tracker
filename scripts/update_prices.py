@@ -59,6 +59,13 @@ TICKERS = {
     "Kioxia (285A.T)": "285A.T",
     "Samsung (005930.KS)": "005930.KS",
     "SK Hynix (000660.KS)": "000660.KS",
+    # Mag 7 科技巨頭（NVDA 已列於上方）
+    "Apple (AAPL)": "AAPL",
+    "Microsoft (MSFT)": "MSFT",
+    "Alphabet (GOOGL)": "GOOGL",
+    "Amazon (AMZN)": "AMZN",
+    "Meta (META)": "META",
+    "Tesla (TSLA)": "TSLA",
 }
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
