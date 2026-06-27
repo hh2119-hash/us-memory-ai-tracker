@@ -11,7 +11,7 @@
 </script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>美股記憶體 / AI 硬體追蹤報告</title>
+<title>美股記憶體 / AI 硬體 / Mag 7 追蹤報告</title>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
 <style>
   :root {
@@ -80,6 +80,8 @@
   .badge-equip   { background: #f7ecfb; color: #ae3ec9; } /* 半導體設備 */
   .badge-foundry { background: #e9f6ec; color: #2b8a3e; } /* 晶圓代工 */
   .badge-osat    { background: #f4ede5; color: #9c6644; } /* 封測/CoWoS */
+  .badge-net     { background: #e7f5ff; color: #1971c2; } /* 網路/軟體/雲端 */
+  .badge-consumer{ background: #ffe8cc; color: #e8590c; } /* 消費電子/電動車 */
   table.quote td.mcap { color: var(--muted); }
   .fpe-cheap { color: #1a7f37; font-weight: 700; }
   .fpe-mid { color: var(--text); }
@@ -174,7 +176,7 @@
 <body>
 <header>
   <div class="hd-left">
-    <h1>美股記憶體 / AI 硬體追蹤報告</h1>
+    <h1>美股記憶體 / AI 硬體 / Mag 7 追蹤報告</h1>
     <div class="meta">
       報告：<b id="repDate">載入中…</b>
       &nbsp;|&nbsp; 個股總覽收盤日：<b id="asOf">—</b>
@@ -220,6 +222,26 @@
   </section>
 
   <section>
+    <h2>Mag 7 科技巨頭（當日收盤）</h2>
+    <div class="table-wrap">
+      <table class="quote">
+        <thead>
+          <tr>
+            <th class="name">股票</th><th class="cat">類別</th><th>股價</th>
+            <th>當日</th><th>5日</th><th>10日</th><th>20日</th><th>YTD</th>
+            <th>Fwd P/E</th><th class="ni-h">今年淨利</th><th>市值</th>
+          </tr>
+        </thead>
+        <tbody id="rowsMag7"><tr><td class="name pending" colspan="11">載入中…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span>Apple、Microsoft、Alphabet、Amazon、Meta、NVIDIA、Tesla 七大科技巨頭，其 AI 資本支出為記憶體與 AI 伺服器需求的最上游驅動。</span>
+      <span>市值與今年淨利皆以美元計（每日自動更新，亞股按即時匯率換算）；Fwd P/E 為靜態參考；股價與報酬率為該報告對應交易日之收盤計算。</span>
+    </div>
+  </section>
+
+  <section>
     <h2>當日追蹤報告</h2>
     <div id="report"><span class="pending">載入報告中…</span></div>
   </section>
@@ -246,15 +268,27 @@ const META = {
   "ASX":{cat:"封測/CoWoS",badge:"badge-osat",mcap:"861億",fpe:null,ni:"4.5億",niAsOf:"3/31"},
   "285A.T":{cat:"NAND",badge:"badge-mem",mcap:"2,713億",fpe:10,ni:"25.5億",niAsOf:"3/31"},
   "005930.KS":{cat:"DRAM/HBM/NAND",badge:"badge-mem",mcap:"1.56兆",fpe:7.3,ni:"308億",niAsOf:"3/31"},
-  "000660.KS":{cat:"DRAM/HBM/NAND",badge:"badge-mem",mcap:"1.10兆",fpe:7.7,ni:"264億",niAsOf:"3/31"}
+  "000660.KS":{cat:"DRAM/HBM/NAND",badge:"badge-mem",mcap:"1.10兆",fpe:7.7,ni:"264億",niAsOf:"3/31"},
+  // Mag 7 科技巨頭（市值/淨利優先用 prices.json 動態值；fpe 為靜態參考）
+  "AAPL":{cat:"消費電子",badge:"badge-consumer",mcap:"4.10兆",fpe:28,ni:null,niAsOf:null},
+  "MSFT":{cat:"軟體/雲端",badge:"badge-net",mcap:"2.97兆",fpe:30,ni:null,niAsOf:null},
+  "GOOGL":{cat:"網路/雲端",badge:"badge-net",mcap:"2.40兆",fpe:21,ni:null,niAsOf:null},
+  "AMZN":{cat:"電商/雲端",badge:"badge-net",mcap:"2.30兆",fpe:30,ni:null,niAsOf:null},
+  "META":{cat:"社群/AI",badge:"badge-net",mcap:"1.50兆",fpe:22,ni:null,niAsOf:null},
+  "TSLA":{cat:"電動車/AI",badge:"badge-consumer",mcap:"1.30兆",fpe:90,ni:null,niAsOf:null}
 };
 // 顯示名稱：英文（代號/公司名）在前，中文在後
 const NAME = {
   "MU":"MU 美光", "SNDK":"SNDK 晟碟", "DELL":"DELL 戴爾", "ARM":"ARM 安謀",
   "MRVL":"MRVL 邁威爾", "AMD":"AMD 超微", "INTC":"INTC 英特爾", "AVGO":"AVGO 博通",
   "NVDA":"NVDA 輝達", "TSM":"TSM 台積電", "ASX":"ASX 日月光",
-  "285A.T":"Kioxia 鎧俠", "005930.KS":"Samsung 三星", "000660.KS":"SK Hynix 海力士"
+  "285A.T":"Kioxia 鎧俠", "005930.KS":"Samsung 三星", "000660.KS":"SK Hynix 海力士",
+  "AAPL":"AAPL 蘋果", "MSFT":"MSFT 微軟", "GOOGL":"GOOGL 谷歌",
+  "AMZN":"AMZN 亞馬遜", "META":"META Meta", "TSLA":"TSLA 特斯拉"
 };
+// 主表（記憶體/AI 硬體核心清單）與 Mag 7 科技巨頭分組顯示
+const CORE_SET = new Set(["MU","SNDK","DELL","ARM","MRVL","AMD","INTC","AVGO","NVDA","TSM","ASX","285A.T","005930.KS","000660.KS"]);
+const MAG7_SET = new Set(["AAPL","MSFT","GOOGL","AMZN","META","NVDA","TSLA"]);
 function fmtPrice(v){ return (v==null)?"—":Number(v).toLocaleString(undefined,{maximumFractionDigits:2}); }
 function pctCell(v){ if(v==null) return '<td class="flat">—</td>'; const c=v>0?"up":(v<0?"down":"flat"); return `<td class="${c}">${v>0?"+":""}${v}%</td>`; }
 function catCell(m){ return m?`<td class="cat"><span class="badge ${m.badge}">${m.cat}</span></td>`:'<td class="cat">—</td>'; }
@@ -311,44 +345,54 @@ function resolve(d){
   return { mdUrl:"./reports/"+d+".md", label, baseDate };
 }
 
+// 渲染一張個股總覽表：依 allowSet 過濾、依 20 日報酬由強到弱排序。回傳此表最新收盤日。
+function renderQuoteTable(tbodyId, data, baseDate, allowSet){
+  const rows=document.getElementById(tbodyId);
+  if(!rows) return null;
+  const refDate = baseDate || "9999-12-31";
+  rows.innerHTML="";
+  let shownAsOf=null;
+  const list=[];
+  for(const [name,s] of Object.entries(data.stocks||{})){
+    if(allowSet && !allowSet.has(s.symbol)) continue;
+    const snap=snapshotAsOf(s, refDate);
+    if(!snap) continue;
+    if(!shownAsOf || snap.asOf>shownAsOf) shownAsOf=snap.asOf;
+    list.push({name, s, snap});
+  }
+  list.sort((a,b)=>{
+    const av=a.snap.ret_20d, bv=b.snap.ret_20d;
+    if(av==null && bv==null) return 0;
+    if(av==null) return 1;
+    if(bv==null) return -1;
+    return bv-av; // 20D 由大到小
+  });
+  for(const {name, s, snap} of list){
+    const m=META[s.symbol];
+    const disp=NAME[s.symbol]||name;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="name">${disp}</td>`+catCell(m)+
+      `<td class="last">${fmtPrice(snap.last)}</td>`+
+      pctCell(snap.ret_1d)+pctCell(snap.ret_5d)+pctCell(snap.ret_10d)+
+      pctCell(snap.ret_20d)+pctCell(snap.ret_ytd)+fpeCell(m)+niCell(s,m)+mcapCell(s,m);
+    rows.appendChild(tr);
+  }
+  if(!rows.children.length) rows.innerHTML='<tr><td class="name pending" colspan="11">尚無資料</td></tr>';
+  return shownAsOf;
+}
+
 async function loadOverview(baseDate){
   const rows=document.getElementById("rows");
+  const rowsMag7=document.getElementById("rowsMag7");
   try{
     const data=await (await fetch("./data/prices.json?_="+Date.now())).json();
-    // baseDate 為 null（latest）時用各檔最後一筆
-    const refDate = baseDate || "9999-12-31";
-    document.getElementById("asOf").textContent = "—";
-    rows.innerHTML="";
-    let shownAsOf=null;
-    // 先算各檔快照，再依 20 日報酬由強到弱排序（無資料者排最後）
-    const list=[];
-    for(const [name,s] of Object.entries(data.stocks||{})){
-      const snap=snapshotAsOf(s, refDate);
-      if(!snap) continue;
-      if(!shownAsOf || snap.asOf>shownAsOf) shownAsOf=snap.asOf;
-      list.push({name, s, snap});
-    }
-    list.sort((a,b)=>{
-      const av=a.snap.ret_20d, bv=b.snap.ret_20d;
-      if(av==null && bv==null) return 0;
-      if(av==null) return 1;
-      if(bv==null) return -1;
-      return bv-av; // 20D 由大到小
-    });
-    for(const {name, s, snap} of list){
-      const m=META[s.symbol];
-      const disp=NAME[s.symbol]||name;
-      const tr=document.createElement("tr");
-      tr.innerHTML=`<td class="name">${disp}</td>`+catCell(m)+
-        `<td class="last">${fmtPrice(snap.last)}</td>`+
-        pctCell(snap.ret_1d)+pctCell(snap.ret_5d)+pctCell(snap.ret_10d)+
-        pctCell(snap.ret_20d)+pctCell(snap.ret_ytd)+fpeCell(m)+niCell(s,m)+mcapCell(s,m);
-      rows.appendChild(tr);
-    }
+    const a1=renderQuoteTable("rows", data, baseDate, CORE_SET);     // 主表：記憶體/AI 硬體核心清單
+    const a2=renderQuoteTable("rowsMag7", data, baseDate, MAG7_SET); // 下方：Mag 7 科技巨頭
+    const shownAsOf=(a1&&a2)?(a1>a2?a1:a2):(a1||a2);
     document.getElementById("asOf").textContent = shownAsOf || (data.updated_at_tw||"—");
-    if(!rows.children.length) rows.innerHTML='<tr><td class="name pending" colspan="11">尚無資料</td></tr>';
   }catch(e){
-    rows.innerHTML='<tr><td class="name pending" colspan="11">股價讀取失敗</td></tr>';
+    if(rows) rows.innerHTML='<tr><td class="name pending" colspan="11">股價讀取失敗</td></tr>';
+    if(rowsMag7) rowsMag7.innerHTML='<tr><td class="name pending" colspan="11">股價讀取失敗</td></tr>';
   }
 }
 
@@ -430,7 +474,7 @@ async function setupDayNav(d){
   const d=getParam();
   const r=resolve(d);
   document.getElementById("repDate").textContent=r.label;
-  document.title="美股記憶體/AI 追蹤報告 — "+r.label;
+  document.title="美股記憶體 / AI / Mag 7 追蹤報告 — "+r.label;
   loadOverview(r.baseDate);
   loadReport(r.mdUrl);
   setupDayNav(d);
