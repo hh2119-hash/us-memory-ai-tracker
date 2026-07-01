@@ -287,7 +287,7 @@ const NAME = {
   "AMZN":"AMZN 亞馬遜", "META":"META Meta", "TSLA":"TSLA 特斯拉"
 };
 // 主表（記憶體/AI 硬體核心清單）與 Mag 7 科技巨頭分組顯示
-const CORE_SET = new Set(["MU","SNDK","DELL","ARM","MRVL","AMD","INTC","AVGO","NVDA","TSM","ASX","285A.T","005930.KS","000660.KS"]);
+const CORE_SET = new Set(["MU","SNDK","DELL","ARM","MRVL","AMD","INTC","AVGO","TSM","ASX","285A.T","005930.KS","000660.KS"]);
 const MAG7_SET = new Set(["AAPL","MSFT","GOOGL","AMZN","META","NVDA","TSLA"]);
 function fmtPrice(v){ return (v==null)?"—":Number(v).toLocaleString(undefined,{maximumFractionDigits:2}); }
 function pctCell(v){ if(v==null) return '<td class="flat">—</td>'; const c=v>0?"up":(v<0?"down":"flat"); return `<td class="${c}">${v>0?"+":""}${v}%</td>`; }
