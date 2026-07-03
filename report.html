@@ -423,7 +423,11 @@ async function loadReport(mdUrl){
   const el=document.getElementById("report");
   const ov=document.getElementById("ovSummary");
   try{
-    const res=await fetch(mdUrl+"?_="+Date.now());
+    let res=await fetch(mdUrl+"?_="+Date.now());
+    // Pages 部署落後（404）時退回 raw.githubusercontent 取最新內容
+    if(!res.ok && mdUrl.startsWith("./reports/")){
+      res=await fetch("https://raw.githubusercontent.com/hh2119-hash/us-memory-ai-tracker/main/reports/"+mdUrl.slice("./reports/".length)+"?_="+Date.now());
+    }
     if(!res.ok) throw new Error("no report");
     const { body, summary } = extractSnapshot(await res.text());
     el.innerHTML=marked.parse(body);

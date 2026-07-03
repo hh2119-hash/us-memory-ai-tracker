@@ -163,7 +163,7 @@ function headlineFrom(md){
     const first = seg.split(/。/)[0];
     if(first) return (first.length>64 ? first.slice(0,64)+"…" : first) + "。";
   }
-  return "每日記憶體 / AI 硬體追蹤報告";
+  return "美股記憶體 / AI 硬體 / Mag 7 追蹤報告";
 }
 
 async function build(){
@@ -193,7 +193,9 @@ async function build(){
 
   // 最新卡片：永遠直接讀 latest.md（同源，手機也可靠，不受 API 限流影響）
   try{
-    const md = await (await fetch("./reports/latest.md?_="+Date.now())).text();
+    let lr = await fetch("./reports/latest.md?_="+Date.now());
+    if(!lr.ok) lr = await fetch(`https://raw.githubusercontent.com/${REPO}/main/reports/latest.md?_=`+Date.now());
+    const md = await lr.text();
     const dm = md.match(/日期[:：]\s*(\d{4}-\d{2}-\d{2})/);
     const ld = dm ? dm[1] : "";
     document.getElementById("latestDate").textContent = ld ? `${ld}（${weekday(ld)}） 報告` : "最新報告";
@@ -215,8 +217,13 @@ async function build(){
     const m = base.match(/^(\d{4}-\d{2}-\d{2})(?:-(\d+))?$/);
     const date = m ? m[1] : base;
     const seq  = (m && m[2]) ? `（第${m[2]}次）` : "";
-    let head = "每日記憶體 / AI 硬體追蹤報告";
-    try{ head = headlineFrom(await (await fetch("./reports/"+name+"?_="+Date.now())).text()); }catch(e){}
+    let head = "美股記憶體 / AI 硬體 / Mag 7 追蹤報告";
+    try{
+      // 先讀同源（Pages）；若 Pages 部署落後（404），退回 raw.githubusercontent 取最新內容
+      let r = await fetch("./reports/"+name+"?_="+Date.now());
+      if(!r.ok) r = await fetch(`https://raw.githubusercontent.com/${REPO}/main/reports/${name}?_=`+Date.now());
+      if(r.ok) head = headlineFrom(await r.text());
+    }catch(e){}
     return { base, date, seq, head };
   }));
 
