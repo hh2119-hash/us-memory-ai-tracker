@@ -178,18 +178,17 @@ async function build(){
       files = arr.filter(n => typeof n==="string" && n.endsWith(".md") && n!=="latest.md");
     }
   }catch(e){ /* 靜默 */ }
-  // 2) GitHub API（可能被限流）：若成功則合併補上 manifest 尚未列入的新報告
-  try{
-    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/reports?_=`+Date.now());
-    if(r.ok){
-      const a = await r.json();
-      const apiFiles = a.filter(f => f.name.endsWith(".md") && f.name!=="latest.md").map(f => f.name);
-      files = files.concat(apiFiles);
-    }
-  }catch(e){ /* 靜默 */ }
   // 去重 + 由新到舊排序
   files = Array.from(new Set(files))
                .sort((x,y)=>{ const kx=rkey(x), ky=rkey(y); return (ky[0]-kx[0])||(ky[1]-kx[1]); });
+  // 只保留最近 2 週（以最新一期日期往回 14 天），避免一次下載所有歷史報告造成載入緩慢
+  if(files.length){
+    const k0 = String(rkey(files[0])[0]);
+    const newest = new Date(k0.slice(0,4)+"-"+k0.slice(4,6)+"-"+k0.slice(6,8)+"T00:00:00");
+    const cut = new Date(newest.getTime() - 13*86400000);
+    const cutKey = Number(cut.getFullYear()+String(cut.getMonth()+1).padStart(2,"0")+String(cut.getDate()).padStart(2,"0"));
+    files = files.filter(n => rkey(n)[0] >= cutKey);
+  }
 
   // 最新卡片：永遠直接讀 latest.md（同源，手機也可靠，不受 API 限流影響）
   try{
@@ -220,7 +219,7 @@ async function build(){
     let head = "美股記憶體 / AI 硬體 / Mag 7 追蹤報告";
     try{
       // 先讀同源（Pages）；若 Pages 部署落後（404），退回 raw.githubusercontent 取最新內容
-      let r = await fetch("./reports/"+name+"?_="+Date.now());
+      let r = await fetch("./reports/"+name);
       if(!r.ok) r = await fetch(`https://raw.githubusercontent.com/${REPO}/main/reports/${name}?_=`+Date.now());
       if(r.ok) head = headlineFrom(await r.text());
     }catch(e){}
