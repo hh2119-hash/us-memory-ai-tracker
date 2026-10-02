@@ -43,6 +43,36 @@ def drop_in_progress(symbol, closes):
         return closes.iloc[:-1]
     return closes
 
+def fill_last_close(t, symbol, closes):
+    """Yahoo 有時最新一根日 K 的 Close 為 NaN（已收盤但日 K 尚未結算），
+    若直接 dropna 會讓儀表板停在前一日。此時改用 history_metadata 的
+    regularMarketPrice 補上——僅在該價格時間落在同一交易日且已過收盤時間時才補。"""
+    if len(closes) == 0 or closes.iloc[-1] == closes.iloc[-1]:  # 非 NaN 不需處理
+        return closes
+    try:
+        meta = t.history_metadata or {}
+        rmp = meta.get("regularMarketPrice")
+        rmt = meta.get("regularMarketTime")
+        if not rmp or not rmt:
+            return closes
+        tz_name, ch, cm = market_for(symbol)
+        tz = ZoneInfo(tz_name)
+        if isinstance(rmt, (int, float)):
+            rmt_dt = datetime.fromtimestamp(rmt, tz)
+        else:
+            rmt_dt = rmt.astimezone(tz) if hasattr(rmt, "astimezone") else None
+        if rmt_dt is None:
+            return closes
+        last_date = closes.index[-1].date()
+        closed = (rmt_dt.hour, rmt_dt.minute) >= (ch, cm) or datetime.now(tz).date() > last_date
+        if rmt_dt.date() == last_date and closed:
+            closes = closes.copy()
+            closes.iloc[-1] = float(rmp)
+            print(f"  FIX {symbol}: last bar {last_date} close was NaN -> {rmp}")
+    except Exception as e:  # noqa: BLE001
+        print(f"  fill_last_close {symbol}: {e}")
+    return closes
+
 # 追蹤清單：顯示名稱 -> Yahoo Finance 代碼
 TICKERS = {
     "Micron (MU)": "MU",
@@ -160,7 +190,9 @@ def fetch_one(symbol: str):
     if hist.empty:
         return None
 
-    closes = hist["Close"].dropna()
+    closes = hist["Close"]
+    closes = fill_last_close(t, symbol, closes)  # Yahoo 偶爾最後一根日 K 收盤為空值，用官方收盤價補上
+    closes = closes.dropna()
     closes = drop_in_progress(symbol, closes)  # 只保留已收盤價，剔除盤中未收盤 K 棒
     if len(closes) == 0:
         return None
