@@ -1,108 +1,167 @@
 # 美股記憶體 / AI 硬體 / Mag 7 追蹤報告
-日期：2026-10-27
+日期：2026-10-28
 執行時間：台灣時間 08:00
 
-> 收盤價已用 Yahoo 同源 API 與 StockAnalysis 交叉核對一致；DELL 10/26 收盤 $467.09（+2.33%）。
-
-今日主要參考來源：24/7 Wall St、Invezz、Tech-Insider、FinanceFeeds、Sammy Fans(Counterpoint)、Bloomberg（搜尋摘要）、StockAnalysis。Reuters 搜尋當日被 proxy 拒絕、ForexFactory／FinancialJuice 當日無可用結果。
-收盤價核對：10/26 收盤 MU $903.70（+2.98%）、SNDK $1,255.58（+1.42%）— Yahoo 與 StockAnalysis 一致；儀表板 prices.json 落後於 10/01，已嘗試重跑更新。
+今日主要參考來源：FinancialJuice（美股收盤快訊）、Seoul Economic Daily（SK hynix Q3）、MarketBeat/The Cerbat Gem、FinanceFeeds、24/7 Wall St.、TrendForce、MoneyToday、StockStory/FinancialContent、SentiSense、Bloomberg（搜尋摘要，付費牆）、Yahoo Finance（收盤價）。
+收盤價核對：10/27 收盤 MU $928.76（+2.77%）、SNDK $1,304.84（+3.92%）— 取自 Yahoo Finance（regularMarketTime 為美東 16:00 之後）。第二來源 StockAnalysis 僅取得盤中快照（MU 約 $917.77，非最終收盤）、SNDK 頁面無法讀取，故**第二來源無法交叉確認，以 Yahoo 為準**。儀表板 prices.json 仍停在 10/26 收盤（Yahoo 日 K 的 10/27 收盤欄位為空值）；已手動重跑 Actions（#313 成功），但資料仍未更新到 10/27，需人工檢查更新腳本。
 
 ## 1. 今日重點摘要
-1. 美股記憶體股週一反彈：MU 收 $903.70（+2.98%）、SNDK 收 $1,255.58（+1.42%）；盤中 BofA 重申 MU Buy、目標價 $1,550，指客戶記憶體供應合約由一年內拉長到 3–5 年。（24/7 Wall St，10/26）
-2. 本週是記憶體財報週：SK Hynix 10/28、Samsung 10/29、SanDisk 10/29（盤後）；市場擔心 AI capex 放緩與記憶體獲利接近循環高點。
-3. 韓股持續修正：KOSPI 較 6 月高點跌逾 35%；Goldman 10/25 將 KOSPI 目標價由 12,000 降至 9,000，仍看約 62% 上行空間。
-4. SK Hynix 傳規劃以出售 Kioxia 持股所得發特別股息（Bloomberg 報導；公司稱尚未決定，將於 Q3 財報公布股東回報）。
-5. Counterpoint：YMTC 2026 Q2 NAND 出貨超越 SanDisk、Kioxia、Micron 升至第三；已遞交 STAR Market IPO 申請，並測試 LPDDR5 顯示可能跨入 DRAM。
-6. 10/26 收盤：ARM +6.19%、NVDA +2.39%、MRVL +2.31%、TSM +1.40%、ASX +3.15%，AI 硬體整體走強。
-7. 本週同時有 Fed 決議與 Mag 7 財報（見 2-A），為大盤與 AI capex 敘事關鍵。
+1. **SK hynix 公布 Q3 財報，大幅優於預期**：營收 104.6 兆韓元（首度破 100 兆，季增 31.9%）、營業利益 83.3 兆韓元（季增 37.6%，優於券商均值 76.0 兆約 9.7%），營業利益率 79.7% 創高；並傳出約 100 兆韓元規模的股東回饋計畫（Seoul Economic Daily）。對 MU、SNDK 與整個記憶體族群為正面訊號。
+2. **10/27 美股科技股走強**：Nasdaq 100 +1.3%、費城半導體指數 +3.6%（FinancialJuice），MU +2.77%、SNDK +3.92%、MRVL +4.19%、TSM +2.95%、ASX +5.39%、DELL +7.47%（收盤）。
+3. **記憶體股此前剛經歷回檔**：10/22 SNDK -8%、MU -6%、WDC -7%，市場擔憂中國 CXMT/YMTC 增產壓抑報價、AI 資本支出降溫（24/7 Wall St.）；10/27 為反彈。
+4. **今晚至明日是關鍵事件密集期**：Fed 利率決議（美東 10/28）、Microsoft 與 Alphabet 財報（10/28 盤後）、Amazon（10/29 盤後）、**SanDisk 財報（10/29 盤後）**、Samsung 完整財報（10/29）。
+5. **SNDK 財報預期**：財測 EPS $44–46、營收 $103–108 億美元；市場共識 EPS 約 $45.2–46.3；選擇權隱含波動約 8–14%（FinanceFeeds）。
+6. **Samsung Q3 初步財報（10/8）**：營業利益約 107.4 兆韓元，首度突破 100 兆，主要受 HBM4 與傳統 DRAM 漲價推動。
+7. **宏觀**：Brent 原油收在約 $114 以下，中東緊張局勢略有緩和；美元走強；Meta 250 億美元股票發行獲 5 倍超額認購（FinancialJuice）。
+8. **Dell +7.47%**：資安/韌性服務擴充與 AI PC 發表（StockStory）；年初至今漲幅約 294%。
+9. **中國變數**：CXMT DRAM 全球營收份額 2Q26 達 9.5%（1Q26 為 7.6%）；YMTC 第三座武漢廠預計 2026 年底投產、2027 放量（TrendForce）。
 
 ## 2. 個股最新消息
+
 ### SNDK / SanDisk
-- 最新消息：10/29 盤後公布 FQ1'27 財報；公司指引非 GAAP EPS $44–46、營收 $10.3–10.8B，市場共識 $45.2–46.2 位於指引上緣，僅符合指引可能被視為不及預期。（FinanceFeeds）
-- 股價：10/26 收 $1,255.58（+1.42%）；10/22 曾單日 -8.51%。
-- 解讀：期權隱含財報後波動約 8–14%。
-- 影響：偏多情境 $1,400、基準 $1,150–1,330、偏空 $1,090（媒體情境，非預測）。分析師共識 Buy，平均目標約 $2,144（Mizuho 2,050、Citi 2,100、Goldman 2,200、Bernstein 3,000；BNP Exane 1,400 最低）。
-- 觀察：NAND 報價是否延續漲勢至 2027、毛利率、資本支出、YMTC 競爭。
+- 最新消息：10/29 盤後發布 FQ1'27 財報（美東盤後，電話會議 1:30pm PT）。公司稱供應「承諾至 2027 年之後」，預期長約涵蓋 FY27 超過一半位元量。
+- 股價：10/27 收盤 $1,304.84（+3.92%）；52 週高點 $2,354.39，目前約低 45%。
+- 重要新聞摘要：10/22 因記憶體族群賣壓下跌 8%（$1,262）；Mizuho 重申 Outperform，認為中國以外產能大致不變、快閃記憶體價格應維持穩定。分析師目標價：TipRanks 平均約 $2,206（區間 $1,550–$3,000）；Citi Buy $2,100、Mizuho Buy $2,050；BNP Paribas Exane $1,400 為近期最低（FinanceFeeds）。
+- 解讀：財報是釐清「NAND 報價是否見頂」與「中國供給衝擊」的最直接事件。SNDK 過去四季均優於 EPS 共識，但股價對「優於預期」的反應已不一致。
+- 對股價可能影響：財報前被 SK hynix 強勁業績與族群反彈支撐；選擇權隱含約 ±8–14% 波動，雙向風險都大。
+- 觀察重點：FQ2 財測、毛利率、長約占比、NAND ASP 趨勢、對 YMTC 的看法。
 
 ### MU / Micron
-- 最新消息：BofA（Vivek Arya）Buy、PT $1,550；長約化（3–5 年）為重點。（24/7 Wall St）
-- 股價：10/26 收 $903.70（+2.98%）；10/23 $877.55（+2.46%）；10/22 -6.26%。盤中曾 $913.77（+4%）僅為盤中引用。
-- 解讀：長約降低循環波動疑慮，但股價較 10/01（$1,097）仍低約 18%。
-- 影響：受 SK Hynix/Samsung 財報與 AI capex 訊號牽動。
-- 觀察：10/28–29 韓廠 HBM/DRAM 指引。
+- 最新消息：最近一次財報（9/30）EPS $33.42 vs 共識 $31.77；營收 $542.3 億 vs $513.3 億；FQ1'27 EPS 財測 $37.15–39.15（MarketBeat）。BofA 重申 Buy，指客戶鎖定多年產能。
+- 股價：10/27 收盤 $928.76（+2.77%）；50 日均線約 $982.7、200 日均線約 $729.9；市值約 $1.05 兆美元。
+- 重要新聞摘要：分析師目標價——Cantor $2,000、UBS $1,625、Baird $1,520、Mizuho $1,400；MarketBeat 共識目標價約 $1,408。另有 Invezz 報導某分析師給 $3,000 目標價（10/22，MU 當日跌約 5–6%）。
+- 解讀：基本面強勁，但股價近期低於 50 日均線，反映市場對「記憶體週期高點」與 AI capex 持續性的擔憂。
+- 對股價可能影響：SK hynix 財報偏正面；今晚 MSFT/GOOGL 與明日 AMZN 的 capex 指引是主要外生變數。
+- 觀察重點：大型雲端 capex、DRAM/HBM 合約價（J.P. Morgan 上修 Q4 DRAM 合約價漲幅至 10–15%）、內部人賣股（CEO 8/21 以均價 $968.90 賣 4 萬股）。
 
 ### DELL / Dell
-- 最新消息：今日暫無重大更新。股價：10/23 收 $456.44（+0.77%，10/26 資料來源未更新，待確認）。
-- 觀察：AI 伺服器訂單、記憶體成本上升對毛利影響。
+- 最新消息：10/27 擴充 AI 環境資安與韌性服務，並推出 AI PC（StockStory）。
+- 股價：10/27 收盤 $501.96（+7.47%）；52 週高點 $588.40（9 月），約低 14.6%。
+- 重要新聞摘要：6 天前因 Super Micro 上修財測（營收 $185–195 億）而上漲 6.3%；Dell AI Factory 已有超過 6,500 家客戶。
+- 解讀：AI 伺服器族群情緒升溫，單日漲幅偏大，屬事件與族群帶動，非基本面重大改變。
+- 對股價可能影響：短線動能強，但波動大（過去一年有 46 次單日漲跌超過 5%）。
+- 觀察重點：AI 伺服器訂單與 backlog、記憶體成本對毛利的壓力。
 
 ### ARM / Arm
-- 最新消息：今日無搜尋到個別重大新聞。10/26 收 $223.35（+6.19%）。
-- 解讀：單日大漲似為 AI 硬體族群風險偏好回升，原因未確認。
+- 最新消息：今日暫無重大更新（本次搜尋未找到 24 小時內個股重大消息）。
+- 股價：10/27 收盤 $226.60（+1.46%）。
+- 解讀：隨半導體族群上行；Oracle 將提供 Cerebras 晶片雲服務，顯示 AI 加速器生態多元化。
+- 觀察重點：大型雲端 capex 指引、ARM 架構伺服器滲透。
 
 ### MRVL / Marvell
-- 今日暫無重大更新。10/26 收 $233.78（+2.31%）。觀察：客製化 ASIC、光通訊。
+- 最新消息：今日暫無重大更新。
+- 股價：10/27 收盤 $243.57（+4.19%）。
+- 解讀：客製化 ASIC／光通訊為 AI 資料中心受惠題材，上漲與族群同步。
+- 觀察重點：雲端客戶 capex、客製 ASIC 專案進度。
 
 ### NVDA / NVIDIA
-- 今日暫無重大更新。10/26 收 $216.00（+2.39%）。觀察：本週 Mag 7 財報與 hyperscaler capex 指引。
+- 最新消息：Cerebras 獲 Oracle 雲端採用，挑戰 NVIDIA 加速器地位（FinancialJuice）；Samsung 稱 HBM4 需求與 NVIDIA Vera Rubin 平台掛鉤。
+- 股價：10/27 收盤 $217.94（+0.90%）。
+- 解讀：NVIDIA 仍為 HBM4 需求的核心驅動，競爭者新聞短期影響有限。
+- 觀察重點：Vera Rubin 出貨節奏、雲端客戶 capex。
 
 ### TSM / TSMC
-- 今日暫無重大更新。10/26 收 $424.37（+1.40%）。觀察：CoWoS 產能、先進製程報價。
+- 最新消息：今日暫無重大更新。
+- 股價：10/27 收盤 $436.87（+2.95%）。
+- 解讀：隨費半 +3.6% 上行；CoWoS 產能與先進製程報價仍是核心觀察。
 
 ### ASX / ASE Technology
-- 今日暫無重大更新。10/26 收 $39.91（+3.15%）。觀察：先進封裝訂單。
+- 最新消息：今日暫無重大更新。
+- 股價：10/27 收盤 $42.06（+5.39%）。
+- 解讀：漲幅大於族群，可能反映先進封裝/CoWoS 相關題材與族群情緒（原因未經消息證實）。
 
 ### Kioxia
-- 早盤傳漲約 1.2% 至 12,895 日圓（未證實，TradingKey/MiTRADE 經 Tech-Insider 轉述）；SK Hynix 持股處分與特別股息傳聞與其相關。
+- 最新消息：本次未找到 24 小時內重大消息。7 月 Nomura 曾提高目標價至 12.6 萬日圓、維持 Buy，並上修 NAND 位元價格預估（此為較舊資料）。
+- 股價：10/27 東京收盤 ¥12,605（取自儀表板 prices.json）。
+- 解讀：NAND 報價與 SNDK 財報將是下一個催化劑。
+- 觀察重點：10/29 SNDK 財報對 NAND 報價的看法、SK hynix NAND 表現。
 
 ### Samsung Electronics
-- 10/26 早盤小幅下跌（約 -0.6~-0.7%，約 214,250 韓元）；10/8 預告 Q3 營收 195 兆韓元、營業利益 107.4 兆韓元；10/29 公布財報。較 9/1 低約 18.2%。
+- 最新消息：Q3 初步財報（10/8）營業利益約 107.4 兆韓元（年增約 783%），營收約 195 兆韓元；HBM 位元出貨季增近 50%；完整財報與事業部明細 10/29 公布。
+- 股價：10/27 首爾收盤 ₩222,000（取自儀表板）。
+- 解讀：Samsung 與 Micron 皆預期記憶體供給緊俏延續至 2028；風險為中國競爭與可能的美國晶片關稅。
+- 觀察重點：10/29 完整財報（DS 部門、HBM4 良率/出貨）。
 
 ### SK Hynix
-- 10/26 早盤上漲約 0.8–1.9%（約 1,287,000 韓元）；10/28 公布 Q3，FnGuide 共識營收 98.23 兆、營業利益 76.96 兆韓元；已完成 40 兆韓元庫藏股；較 9/1 低約 25.4%。
+- 最新消息：10/28 公布 Q3 財報——營收 104.6155 兆韓元、營業利益 83.3338 兆韓元、營業利益率 79.7%，皆優於預期；股東回饋計畫約 100 兆韓元（依 Seoul Economic Daily 摘要，細節未見）。
+- 股價：10/27 首爾收盤 ₩1,341,000（財報公布前，取自儀表板）。
+- 解讀：Counterpoint 估 2Q26 HBM 營收份額 SK hynix 50%、Samsung 33%、Micron 18%；J.P. Morgan 預期 SK hynix 佔今年 NVIDIA HBM 供應 54%。
+- 觀察重點：今日韓股開盤反應、HBM4 定價、Q4 展望與回饋計畫細節。
 
 ## 2-A. Mag 7 科技巨頭追蹤
-| 公司 | 近期動態 | 股價/表現 | 解讀 |
-|---|---|---|---|
-| NVDA | 10/26 收 $216.00（+2.39%） | 見左 | AI GPU 需求為記憶體最上游 |
-| AAPL/MSFT/GOOGL/AMZN/META/TSLA | 本次搜尋未取得可靠的當日個別消息與價格 | 待確認 | 本週財報與 capex 指引待追蹤，請以儀表板為準 |
 
-Mag 7 共同觀察：搜尋結果未提供可驗證的本週確切財報日（部分結果為舊年度文章），不編造日期；AI capex 指引仍是記憶體需求最大變數。
+| 公司代號 | 近期動態 | 股價或今年表現 | 解讀 |
+|---|---|---|---|
+| AAPL | 預計 11/2 公布財報（SentiSense，Apple 尚未確認） | 10/26 收盤 $343.91（儀表板） | 與記憶體成本、手機/PC 需求相關，待財報 |
+| MSFT | 10/28 盤後財報；共識 EPS $4.71／營收 $906 億；Azure 成長指引約 45%；2026 資本支出約 $1,750 億（含融資租賃） | 10/26 收盤 $532.60 | 雲端 capex 指引為記憶體/AI 伺服器需求核心 |
+| GOOGL | 10/28 盤後財報；共識 EPS $3.03／營收 $1,279 億；2026 capex 指引 $1,950–2,050 億，預期 2027 顯著增加 | 10/26 收盤 $316.80 | capex 是否再上修對 MU/SNDK/HBM 影響最大 |
+| AMZN | 10/29 盤後財報；共識 EPS $1.96／營收 $2,022 億；2026 現金 capex 約 $2,200 億 | 10/26 收盤 $249.09 | 選擇權隱含波動 ±7.3%，為 Mag 7 最大 |
+| META | 已於 10/21 公布；250 億美元股票發行獲 5 倍超額認購 | 10/26 收盤 $630.56 | 融資擴大 AI 投資的訊號 |
+| NVDA | Cerebras 獲 Oracle 採用；HBM4/Vera Rubin 需求強 | 10/27 收盤 $217.94 | 見上方個股 |
+| TSLA | 本次未找到重大消息；Musk 稱機器人可能需要比任何應用更多記憶體（MarketBeat 引述） | 10/26 收盤 $391.62 | 長期題材，短期影響有限 |
+
+Mag 7 共同觀察：本週三家（MSFT、GOOGL、AMZN）財報合計 capex 指引，是判斷 2027 年記憶體與 AI 伺服器需求的最重要事件；股價為參考值（儀表板 10/26 收盤，非 10/27），個股收盤總覽以儀表板網頁為準。選擇權隱含波動：MSFT 約 4.2%、GOOGL 約 5.3%、AMZN 約 7.3%。
 
 ## 3. 產業共同趨勢
-- DRAM/HBM：BofA 指長約 3–5 年；Nvidia 已認證三大廠 HBM4（Bloomberg，6/5）。市場擔憂獲利近循環高點。
-- NAND：報價上行敘事仍在，但 YMTC 出貨升至第三（Counterpoint Q2），並傳 IPO 與進軍 DRAM，是對 SNDK、MU、Kioxia 的中長期競爭與報價壓力；Sammy Fans 稱其份額由 2025 初 9% 升至 2026 年 14%（口徑為營收份額，與出貨排名口徑未必一致）。Bloomberg 9/4 報告則稱韓廠擴產將擴大對中國領先。
-- 資金面：Goldman 認為韓股半導體估值隱含 2027 年獲利降 65%，過度悲觀。
-- AI Server／Data center capex／供應鏈：今日無新增可驗證數據。
+- **DRAM／Memory pricing**：J.P. Morgan 上修 Q4 DRAM 合約價漲幅預估至 10–15%（原 3–8%）；Meritz 估 SK hynix Q3 DRAM 售價 +22%、NAND +15%。Samsung 與 Micron 皆稱供給緊俏可至 2028。
+- **NAND Flash**：J.P. Morgan 上修 Q4 NAND 合約價漲幅至 15–20%（原 0–5%）。Western Digital 財報後兩日跌約 9%，顯示市場擔憂報價見頂與成本壓力（FinanceFeeds）。Kioxia 此前（7 月）Nomura 看 NAND 位元價格續漲。
+- **HBM**：Counterpoint 2Q26 HBM 份額 SK hynix 50%／Samsung 33%／Micron 18%（FinanceFeeds 另引 Counterpoint 估 SK hynix 將降至 50%、前期 58%）；HBM4 與 NVIDIA Vera Rubin 掛鉤；Samsung HBM 位元出貨季增近 50%。
+- **AI Server／PC／Server demand**：Dell AI Factory 客戶逾 6,500 家；Super Micro 上修營收財測。Samsung DX 部門（消費電子）預期虧損擴大。
+- **Data center capex**：本週 MSFT／GOOGL／AMZN 指引為重點；Alphabet 2026 capex 指引 $1,950–2,050 億、Amazon 約 $2,200 億。
+- **Semiconductor supply chain／AI accelerator**：Oracle 將提供 Cerebras 晶片雲服務；Lutnick 曾（7 月，Bloomberg）施壓 SK hynix、Samsung 增加美國記憶體產能。MRVL 著重客製 ASIC／光通訊；TSM／ASX 著重先進製程與 CoWoS／先進封裝（本日無新消息）。
+- **YMTC／CXMT（中國變數）**：CXMT DRAM 月產能預計由約 32 萬片增至 2027 年約 42 萬片；其全球 DRAM 營收份額 1Q26 7.6%→2Q26 9.5%，居第四。YMTC 第三座武漢廠預計 2026 年底投產、2027 放量；中國 AI／雲端需求可能吸收大部分新增產出，機構認為對全球供需影響「不足以扭轉失衡」，實質衝擊多落在 2027 年之後。對 SNDK、MU、Kioxia 的影響：短期情緒（如 10/22 賣壓）大於實質供給，中期需追蹤 YMTC 外銷與 CXMT 入侵 NAND 的動作（Reuters 報導 CXMT 規劃 NAND 產線）。
 
 ## 4. 新聞重要性分級
-- 高：SK Hynix/Samsung/SanDisk 本週財報；BofA 長約論點；Fed 決議週。
-- 中：YMTC 升至 NAND 第三與 IPO；SK Hynix 特別股息傳聞；Goldman 下調 KOSPI。
-- 低：ARM、ASX 單日漲幅（原因未確認）。
+- **高重要性**：SK hynix Q3 財報大幅優於預期；SNDK 10/29 財報；MSFT／GOOGL／AMZN 財報與 capex 指引；Fed 利率決議。
+- **中重要性**：Samsung 10/29 完整財報；J.P. Morgan 上修 Q4 DRAM／NAND 合約價預估；CXMT／YMTC 擴產動態；Dell 資安與 AI PC 發表。
+- **低重要性**：Cerebras–Oracle 合作（對 NVIDIA 短期影響有限）；Micron 愛達荷州社區投資；Meta 股票發行（背景資訊）。
 
 ## 5. 需要持續追蹤的訊號
-10/28 SK Hynix、10/29 Samsung 與 SanDisk 財報（NAND/HBM 指引、capex）；Fed 決議；Mag 7 capex；分析師目標價調整；NAND/DRAM 現貨與合約價；YMTC IPO 與擴產；SK Hynix 股東回報公告。
+- 10/28：Fed 決議；MSFT／GOOGL 盤後財報；SK hynix 股價反應。
+- 10/29：SNDK 財報（盤後）、Samsung 完整財報、AMZN 財報。
+- 11/2：Apple 財報（預計）。
+- 未來 1–2 週：記憶體合約價（DRAM／NAND Q4 報價）、HBM4 供應與良率、AI Server 訂單、大廠 capex 上修幅度、分析師目標價調整、YMTC 第三廠投產進度與 CXMT 擴產。
 
 ## 6. 前瞻觀點與分析師綜合看法
-(a) 多面向：
-①基本面：韓廠 Q3 獲利預估極高，長約化增加能見度。
-②估值面：Goldman 稱 KOSPI 約 4 倍預期盈餘；SNDK 分析師平均目標 $2,144 遠高於現價（目標價可能落後於股價）。
-③技術面：MU 自 10/01 的 $1,097 回落至約 $904；SNDK 自 $1,788 回落至約 $1,256，位階處於高檔回檔。
-④籌碼/資金面：韓股外資賣壓、KOSPI 較高點跌逾 35%；ETF DRAM 單日 +3~4%。
-⑤循環位置：部分分析師認為接近高峰，另一派認為長約改變循環。
-(b) 目標價：BofA MU $1,550（Buy）；SNDK：Mizuho 2,050、Citi 2,100、Goldman 2,200、Rosenblatt 2,400、Susquehanna 2,745、Bernstein 3,000、BNP Exane 1,400。Goldman KOSPI 9,000。
-(c) 情境（6–12 個月）：多頭—NAND/DRAM 報價續漲、長約落實、capex 不降；基準—報價高位持平、股價隨族群震盪；空頭—AI capex 放緩、報價回落、YMTC/CXMT 擴產壓價。
-(d) 催化劑：近期 10/28–29 財報、Fed；1–2 個月 hyperscaler capex 與 YMTC IPO；中期 HBM4 放量與長約簽署。
+
+**(a) 多面向分析**
+1. 基本面：SK hynix（營業利益率 79.7%）、Samsung（單季營業利益 107 兆韓元）、Micron（營收年增 379%）皆處於歷史高峰；供給緊俏預期延續至 2028。
+2. 估值面：MU 本益比約 12.5 倍（MarketBeat），在高成長與週期高點下顯得偏低，市場實際在定價「獲利見頂」風險；SNDK 距 52 週高點約 -45%，已部分反映擔憂。
+3. 技術面與位階：MU 低於 50 日均線（約 $983）但高於 200 日均線（約 $730）；SNDK 自高點 $2,354 回落至約 $1,305；近期波動劇烈（10/22 單日 -6% 至 -8%，10/27 反彈）。
+4. 籌碼／資金面：Micron 內部人過去一季賣出約 8.4 萬股、約 $7,850 萬；族群 ETF（如 Roundhill DRAM）同步放量波動。
+5. 產業循環位置：報價仍在上行（J.P. Morgan 上修 Q4 預估），但市場已提前交易「高點」；財報行情的反應函數趨於不對稱。
+
+**(b) 分析師目標價與評級**：MU——Cantor $2,000（Overweight）、UBS $1,625（Buy）、Baird $1,520、Mizuho $1,400；MarketBeat 共識「Moderate Buy」，目標約 $1,408。SNDK——TipRanks 平均約 $2,206（區間 $1,550–3,000）、Citi $2,100、Mizuho $2,050、BNP Paribas Exane $1,400。多方理由：供給長約化、HBM／企業級 SSD 需求；空方理由：報價見頂、中國供給、AI capex 放緩、估值週期性折價。
+
+**(c) 情境推演（6–12 個月）**
+- 多頭：大型雲端持續上修 capex，Q4 合約價如 J.P. Morgan 預期上行，SNDK／SK hynix 財報確認 NAND 漲勢延續至 2027；MU／SNDK 回測前高。
+- 基準：報價高位持平、獲利創高但邊際成長放緩，股價在區間震盪，隨財報與 capex 消息波動。
+- 空頭：capex 指引不如預期或 AI 投資回報受質疑，CXMT／YMTC 加速入侵，合約價反轉；記憶體股估值進一步壓縮。
+
+**(d) 催化劑時間軸**
+- 近期（本週）：Fed、MSFT／GOOGL／AMZN、SNDK、Samsung 財報。
+- 1–2 個月：Q4 記憶體合約價、Apple 財報、年底 YMTC 第三廠投產、Micron 12 月財報。
+- 中期：2027 年 capex 指引、HBM4 競爭格局、美國對中出口管制與晶片關稅政策。
+
 以上為綜合市場與分析師公開觀點及情境推演，非投資建議，個股估值偏高請自行評估風險。
 
 ## 7. 結論
-週一記憶體股在 BofA 長約論點帶動下反彈（MU +2.98%、SNDK +1.42%），但本週韓廠與 SanDisk 財報是決定方向的關鍵。短線最值得關注 SNDK 與 SK Hynix 財報；風險在於 AI capex 放緩、獲利見頂疑慮與 YMTC 競爭。本報告部分價格僅單一來源，且儀表板與 GitHub 推送未完成。
+昨日（10/27）科技與半導體全面反彈，費半 +3.6%，MU +2.77%、SNDK +3.92%；今晨 SK hynix 公布 Q3 營業利益 83.3 兆韓元、利益率 79.7%，明顯優於預期，為記憶體族群提供基本面支撐。短線最值得關注的是 10/29 盤後的 SNDK 財報，以及本週 MSFT／GOOGL／AMZN 的 capex 指引與 Fed 決議。主要風險包括報價見頂擔憂、中國 CXMT／YMTC 增產、AI 資本支出降溫與利率／油價帶來的宏觀波動。
 
 ### 來源連結
-- [24/7 Wall St：Micron/BofA](https://247wallst.com/investing/2026/10/26/micron-climbs-4-as-bank-of-america-grows-more-positive-on-memory-western-digital-rises-5-sandisk-gains-3/)
-- [Invezz：Samsung/SK Hynix/Goldman](https://invezz.com/news/2026/10/26/samsung-sk-hynix-stocks-fall-again-but-goldman-sees-60-upside-heres-why)
-- [Tech-Insider：Kospi 10/26](https://tech-insider.org/kospi-opens-lower-samsung-sk-hynix-kioxia-softbank-2026/)
-- [FinanceFeeds：SNDK 財報前](https://financefeeds.com/sandisk-sndk-stock-1238-monday-three-sessions-before-29-october-results-bull-1400-bear-1090/)
-- [Sammy Fans：YMTC](https://www.sammyfans.com/2026/10/14/ymtc-rises-to-no-3-in-nand-shipments/amp/)
-- [Bloomberg：HBM4 認證](https://www.bloomberg.com/news/articles/2026-06-05/nvidia-green-lit-big-three-memory-firms-to-supply-hbm4-ceo-says)
-- [Bloomberg：韓國記憶體對中國領先](https://www.bloomberg.com/news/articles/2026-09-04/korea-s-memory-chip-lead-over-china-set-to-grow-report-says)
-- [StockAnalysis MU](https://stockanalysis.com/stocks/mu/history/)、[SNDK](https://stockanalysis.com/stocks/sndk/history/)
+- [FinancialJuice 美股收盤快訊 10/27](https://features.financialjuice.com/2026/10/27/tech-stocks-rally-ahead-of-big-earnings-and-fed-decision-us-market-wrap/)
+- [Seoul Economic Daily：SK hynix Q3](https://en.sedaily.com/finance/2026/10/28/sk-hynix-posts-record-797-percent-operating-margin-in-third)
+- [CNBC：SK Hynix Q3（搜尋摘要）](https://www.cnbc.com/2026/10/28/sk-hynix-third-quarter-profit.html)
+- [MoneyToday：SK hynix 預期與 HBM 份額（10/19）](https://www.mt.co.kr/en/industry/2026/10/19/2026101913371799572)
+- [FinanceFeeds：SNDK 財報前瞻（10/25）](https://financefeeds.com/sandisk-sndk-stock-1238-sunday-four-sessions-before-29-october-results-sk-hynix-seagate-week-bull-1400-bear-1090/)
+- [24/7 Wall St.：記憶體賣壓（10/22）](https://247wallst.com/investing/2026/10/22/sandisk-sinks-8-as-memory-selloff-deepens-ahead-of-earnings-western-digital-drops-7-micron-falls-6/)
+- [The Cerbat Gem：MU（10/27）](https://www.thecerbatgem.com/2026/10/27/micron-technology-nasdaqmu-shares-up-2-8-heres-what-happened.html)
+- [Invezz：MU 目標價 $3,000（10/22）](https://invezz.com/news/2026/10/22/micron-stock-falls-5-why-this-analyst-gave-it-a-3000-target-price/)
+- [TrendForce：Samsung Q3 初步財報（10/8）](https://trendforce.com/news/2026/10/08/news-samsung-sees-3q26-operating-profit-soaring-783-to-record-krw-107-4-trillion-on-hbm4-memory-price-gains)
+- [TrendForce：CXMT／YMTC 擴產](https://www.trendforce.com/news/?p=64555)
+- [Bloomberg：記憶體晶片搜尋結果](https://www.bloomberg.com/news/articles/2026-07-09/lutnick-presses-sk-hynix-samsung-to-boost-memory-output-in-us)
+- [Bloomberg 評論：CXMT 來攪局（7/15）](https://www.bloomberg.com/opinion/articles/2026-07-15/china-s-cxmt-is-coming-to-crash-the-memory-chip-party)
+- [StockStory／FinancialContent：Dell（10/27）](https://markets.financialcontent.com/stocks/article/stockstory-2026-10-27-why-is-dell-dell-stock-soaring-today)
+- [SentiSense：Big Tech 本週財報](https://sentisense.ai/blog/big-tech-earnings-this-week/)
+- [Nomura 看 Kioxia（7/17，較舊）](https://www.itiger.com/news/1190648283)
+- [Yahoo Finance 收盤價資料](https://finance.yahoo.com/quote/MU/)
