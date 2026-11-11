@@ -1,156 +1,185 @@
 # 美股記憶體 / AI 硬體 / Mag 7 追蹤報告
-日期：2026-11-10
+日期：2026-11-11
 執行時間：台灣時間 08:00
 
-今日主要參考來源：Motley Fool、FinancialJuice、24/7 Wall St.、TIKR、Blocks & Files、Korea Times、FourWeekMBA、TrendForce、TechNode、Yahoo Finance。（Reuters／Bloomberg／WSJ／MarketWatch 限定網域搜尋當日未回傳可用結果；ForexFactory 僅取得標題。）
-收盤價核對：MU $733.15（+6.25%）、SNDK $886.51（+6.16%）— 11/9 收盤以 Yahoo 為準；MU 另有 Motley Fool 報導同為 $733.15 交叉驗證；StockAnalysis 歷史頁僅更新至 11/6（MU $690.00、SNDK $835.06，與 Yahoo 一致），SNDK 11/9 收盤暫僅單一來源。儀表板 prices.json 最後日期 2026-11-09，價格與 Yahoo 完全一致，無需重跑。
+今日主要參考來源：Yahoo Finance、Motley Fool、CNBC（標題）、24/7 Wall St.、TradingKey、Seoul Economic Daily、Bloomberg（標題）、Reuters（經轉載）、StockAnalysis、TrendForce、Counterpoint、TIKR、ad-hoc-news、Caproasia。（Reuters／WSJ／MarketWatch 限定網域搜尋當日被搜尋端拒絕、未回傳結果；ForexFactory／FinancialJuice 當日未取得可用的 11/10 內容，總經部分改以 Yahoo、Quartz 標題與 24/7 Wall St. 補充。）
+收盤價核對：MU $725.11（-1.10%）、SNDK $859.99（-2.99%）— 11/10 收盤；Yahoo 與 StockAnalysis（MU $724.77、SNDK $859.91）差距 < 0.05%，一致。儀表板 prices.json 美股最後日期仍停在 11/9，已手動「Run workflow」重跑（#348），重跑後 11/10 收盤已同步且與 Yahoo 一致。
 
 ## 1. 今日重點摘要
-- 11/9（週一）美股強勢反彈：S&P 500 約 +2.4%、Nasdaq 約 +2.8%，承接上週四（11/5）因期中選舉後「資料中心建設恐被放緩」引發的重挫（Nasdaq 100 單日 -6.4%、費半 -12%）。
-- 記憶體/儲存股領漲：MU 收 $733.15（+6.25%）、SNDK 收 $886.51（+6.16%）；報導指 Seagate、WDC 同日漲約 11%（該篇 24/7 Wall St. 內文未能讀取，僅見標題）。
-- MRVL +9.49%、ASX +8.63%、ARM +6.69%、DELL +5.41%、TSM +3.51%；唯 NVDA 逆勢 -4.27% 收 $178.67（當日原因未查得確切報導，不臆測）。
-- MU 自 6 月高點回落逾 40%（52 週區間 $192.59–$1,255.00），多空爭論焦點為「估值便宜／回購」vs「AI 資料中心政策風險」。
-- Kioxia 7–9 月營收創高 ¥2.48 兆（+453% YoY），但 10–12 月指引僅 ¥2.5 兆、獲利大致持平，被市場解讀為漲價動能放緩（Kioxia 股價 11/9 收 ¥8,302）。
-- 韓股：11/5 KOSPI 單日 -5.28%，SK 海力士 -9.46%、三星 -7.57%；儀表板顯示 11/9 SK 海力士 ₩1,136,000、三星 ₩189,900，仍低於 11/2 的 ₩1,472,000／₩229,000。
-- TrendForce（9/30）預估 4Q26 DRAM 合約價 +10–15% QoQ、NAND +15–20% QoQ，企業級 SSD 為唯一漲幅加速品類。
-- 總經：FinancialJuice 指經濟數據強化 12 月 Fed 再升息預期，殖利率與美元走強，為估值壓力來源。
+- **NVDA 執行長醜聞擴大，連兩日重挫**：11/10 收 $168.89（-5.47%），成交量 4.2 億股（約 3 個月均量 3.3 倍），逼近 52 週低點 $164.27。董事會獨立委員會調查黃仁勳，The Information 報導一個與其關係人相關的網絡自 2023 年起協助約 $75 億 Nvidia 硬體流入中國企業。11/17 財報前不確定性大增。
+- **10 月 CPI 偏熱**：核心 CPI 月增 0.3%（預期 0.2%），整體月增約 0.4%，12 月 Fed 升息機率上升；S&P 500 -0.38%（7,521）、Nasdaq -0.74%（25,066）。
+- **記憶體股回吐週一部分漲幅**：MU 收 $725.11（-1.10%）、SNDK 收 $859.99（-2.99%）；盤後分別回升至約 $733、$872（StockAnalysis，盤後價非收盤）。
+- **Anthropic IPO 定價區間 $70–78、預計 11/19 掛牌**（CNBC 標題），並獲 Nvidia、Alphabet、Micron、AMD 等 7 家科技公司承諾以 IPO 價合計認購約 $260 億；報導指 Micron 參與約 $10 億 — 記憶體廠直接押注 AI 模型商、強化客戶綁定。
+- **台積電傳應 Nvidia 要求評估生產 3D DRAM**（多家媒體轉述），TSM 11/10 收 $396.48（+2.02%），對 MU/三星/SK 海力士屬中長期潛在競爭變數。
+- **亞股 11/10 大漲**：KOSPI +4.39%（5,239），SK 海力士 ₩1,212,000（+6.69%）、三星 ₩198,900（+4.74%）；Kioxia +9.23% 至 ¥9,068。
+- **AMD（+1.30%）、AVGO（+3.91%）逆勢上漲**，資金在 AI 晶片內部由 NVDA 轉向其他加速器供應商。
+- **YMTC IPO 延後**：Reuters 獨家（11/4）指 YMTC 因市場轉弱暫緩 IPO；Caproasia 指其 $49 億、估值 $490 億的上海 IPO 由 2026Q4 延至 2027H1。
 
 ## 2. 個股最新消息
 
 ### SNDK / SanDisk
-- 最新消息：無公司新聞；走勢由產業與情緒主導。11/5 單日 -22.26%，11/6 +3.55%，11/9 +6.16%。
-- 股價：11/9 收盤 $886.51（+6.16%）。11/4 收 $1,037.40，仍低於暴跌前。
-- 重要新聞摘要：TIKR（11/6）指反彈與 IREN 財報（AI 雲營收 $200M、積壓訂單 $20.3B、舊 H100 合約重新定價約兩倍）帶動 AI 算力需求樂觀有關；利空包括 Kioxia 指引持平、民主黨勝選引發資料中心建設疑慮（UBS 估計恐影響 2028 年約 30% 美國預期新增容量）、Reuters 報導 YMTC 計畫第四座 NAND 廠。
-- 解讀：基本面（NAND 供不應求、共識 FY2027 EPS $227.80 vs FY2026 $70.88；TIKR 平均目標價 $2,029）與股價之間落差大，顯示市場在定價「循環見頂」與政策風險。
-- 對股價可能影響：高 beta，短線隨 AI 資本支出情緒與 Kioxia/MU 動向波動。
-- 觀察重點：NAND 合約價、YMTC 擴產、1 月下旬財報與 3 月季指引。
+- 最新消息：無公司重大新聞；隨記憶體族群與 CPI 數據走弱。
+- 股價：11/10 收盤 $859.99（-2.99%）；盤中區間 $826.67–914.82；盤後約 $871.75（+1.38%，盤後價）。
+- 重要新聞摘要：TradingKey（11/10）將跌勢歸因於 NAND 現貨與合約報價轉弱、OEM 採購保守、企業級儲存進入「暫時消化期」；技術指標 RSI 約 29（超賣）。該文同時彙整近一月分析師平均目標價約 $2,024（高 $3,000／低 $1,020），StockAnalysis 共識目標價 $2,047、評級「Strong Buy」。（TradingKey 文章為 AI 輔助撰寫，部分利空細節未附原始來源，僅供參考。）
+- 解讀：股價自 11/4 的 $1,037 回落約 17%，市場持續以「NAND 漲價動能見頂」定價；本益比（TTM）約 6.9x、前瞻約 3.5x，估值極低但反映循環疑慮。
+- 對股價可能影響：短線受 NVDA 醜聞與升息預期拖累，技術面超賣有反彈空間，但缺乏新催化劑。
+- 觀察重點：11 月 NAND 合約價、Kioxia 長約價格、YMTC 份額（Counterpoint 估 YMTC 約 14%）。
 
 ### MU / Micron
-- 最新消息：11/9 反彈，盤中區間 $689.65–$744.74，成交量 31.9M（均量 27.9M）。
-- 股價：11/9 收盤 $733.15（+6.25%）；市值約 $7,807 億；毛利率約 80.7%。
-- 重要新聞摘要：Motley Fool（11/9）指最新季營收 $54.2B（+379% YoY）；上漲因晶片股自 11/5 賣壓反彈。Fool 另有「自 6 月高點跌逾 40%」「上月下跌 17%」等標題。
-- 解讀：基本面極強但股價受政策／情緒壓抑；該文作者也提醒 40/41 項資料中心地方公投對產業不利，建設延遲可能影響需求節奏。
-- 對股價可能影響：短線反彈延續與否取決於 AI capex 敘事是否穩定。
-- 觀察重點：DRAM/HBM 報價、回購進度、分析師目標價調整（24/7 Wall St. 目標價文未能讀取）。
+- 最新消息：參與 Anthropic IPO 同步認購（報導約 $10 億）；股價隨 CPI 走弱。
+- 股價：11/10 收盤 $725.11（-1.10%）；盤後約 $733.01（+1.14%，盤後價）。本益比（TTM）約 9.75x、前瞻約 4.1x（StockAnalysis）。
+- 重要新聞摘要：GuruFocus 標題稱「熱 CPI 蓋過 $10 億 Anthropic 投資」；24/7 Wall St.（11/10）標題提出「MU 號稱擺脫景氣循環，如今又面臨另一個循環懸崖」的空方論點；Motley Fool 則持多方觀點認為股價仍值得買進。
+- 解讀：投資 Anthropic 屬策略性綁定 AI 終端需求，金額相對 MU 市值（約 $8,200 億）有限；股價主軸仍是「循環見頂 vs 結構性 HBM 需求」之爭。
+- 對股價可能影響：中性偏震盪；NVDA 11/17 財報對 HBM 需求的說法將是下一個關鍵。
+- 觀察重點：NVDA 財報中 Vera Rubin 記憶體採購承諾（24/7 Wall St. 提及 NVDA 供應承諾 $2,790 億、多為記憶體）、台積電 3D DRAM 傳聞進展、12 月 FOMC。
 
 ### DELL / Dell
-- 最新消息：當日無個別公司重大消息。
-- 股價：11/9 收盤 $346.31（+5.41%）。
-- 解讀：隨 AI 伺服器鏈反彈；Intel 於 10/30 因 PC 需求弱與記憶體成本壓力指引疲弱（-28%），顯示記憶體漲價對 PC 端為成本壓力，Dell 的 PC 毛利需留意。
-- 觀察重點：AI 伺服器出貨、記憶體成本轉嫁。
+- 最新消息：無新公司公告。
+- 股價：11/10 收盤 $334.38（-3.44%）。
+- 重要新聞摘要：TIKR（11/5）指選後資料中心政策疑慮（德州州長當選人承諾暫停資料中心建設）使 DELL 一度連跌；前瞻本益比約 13–14x，接近 5 年平均。Q3 財報預定 11/24，管理層指引 AI 伺服器營收約 $190 億、AI 積壓訂單約 $950 億（TIKR 引述）。
+- 解讀：DELL 是 AI 伺服器出貨與記憶體成本轉嫁的雙重觀察點，記憶體漲價壓縮硬體毛利為潛在風險。
+- 對股價可能影響：財報前偏弱勢整理。
+- 觀察重點：11/24 財報的 AI 伺服器訂單、毛利率與記憶體成本說明。
 
 ### ARM / Arm
-- 最新消息：11/5 Arm 與 Qualcomm 因展望不如預期下跌（FinancialJuice）。
-- 股價：11/9 收盤 $186.30（+6.69%）。
-- 解讀：展望失望後的技術性反彈，非新利多。
-- 觀察重點：授權/權利金成長與資料中心 CPU 採用。
+- 最新消息：今日暫無重大更新。
+- 股價：11/10 收盤 $181.49（-2.58%）。
+- 解讀：隨 NVDA 與大盤成長股回落；11 月初財報後對前景「僅略優於預期」的反應仍在消化。
+- 觀察重點：資料中心 CPU 授權與自研晶片計畫進度。
 
 ### MRVL / Marvell
-- 最新消息：Trefis 11/6 有「Marvell 股價變動原因」文章，內文未能讀取。
-- 股價：11/9 收盤 $154.60（+9.49%），為清單中漲幅最大。
-- 解讀：客製化 ASIC／光通訊屬 AI capex 高 beta 標的，隨風險偏好回升大幅反彈。
-- 觀察重點：客製 XPU 專案、光互連需求。
+- 最新消息：今日暫無重大更新。
+- 股價：11/10 收盤 $154.39（-0.14%），在 11/9 大漲 9.49% 後持穩。
+- 解讀：AMD、AVGO 同日上漲，顯示客製化 ASIC／非 NVDA 加速器生態獲資金青睞，MRVL 相對抗跌。
+- 觀察重點：12 月初財報、光通訊與 AWS 客製晶片訂單。
 
 ### NVDA / NVIDIA
-- 最新消息：11/5 單日 -9.26%（收 $181.60，市值蒸發約 $4,500 億，為 DeepSeek 事件以來最大單日跌幅）；11/6 +2.8%；11/9 -4.27%。
-- 股價：11/9 收盤 $178.67（-4.27%）。
-- 重要新聞摘要：24/7 Wall St.（11/6）：上季營收 $962.2 億（+105.8% YoY），本季指引 $1,080 億；前瞻本益比約 15 倍；共識目標價 $327.14；供應承諾 $2,790 億（多為 Vera Rubin 用記憶體）；財報預計 11/17 收盤後公布。
-- 解讀：估值低但政策與資本支出疑慮壓抑；11/9 逆勢下跌原因本次未查得，標示「原因待確認」。
-- 觀察重點：11/17 財報、中國 H200 核准傳聞。
+- 最新消息：黃仁勳醜聞延燒。董事會 11/8 成立獨立董事委員會調查；黃仁勳向員工承認婚外情並致歉；The Information 報導與其關係人相關網絡自 2023 年起協助約 $75 億 Nvidia 硬體流向中國企業（焦點包括新加坡公司 Megaspeed）；川普表示 FBI 正在調查但表態支持黃仁勳。董事會稱無理由相信國安或公司機密外洩；公司與黃仁勳已遭起訴。
+- 股價：11/10 收盤 $168.89（-5.47%），連兩日下跌；量 4.2 億股。
+- 重要新聞摘要：耶魯 Jeffrey Sonnenfeld 認為黃仁勳留任機率約五五波（24/7 Wall St.）；Q2 FY27 營收 $962 億（+106%），Q3 指引 $1,080 億 ±2%。
+- 解讀：基本面未變，但「關鍵人物風險＋出口管制合規風險」同時出現，可能影響對中國業務與政府關係；CNBC 標題則認為「壞消息出盡、市場見底」的格言正在應驗，晶片股整體反而上漲。
+- 對股價可能影響：高。11/17 財報前波動加劇，若調查擴大或涉及出口管制違規，可能拖累整個 AI 供應鏈情緒（含 HBM 供應商）。
+- 觀察重點：董事會調查結果、美國政府動向、11/17 財報與 Rubin 進度。
 
 ### TSM / TSMC
-- 最新消息：當日無重大公司消息（Webull 有美國晶圓廠規劃調整相關標題，內文未讀）。
-- 股價：11/9 收盤 $388.62（+3.51%）。
-- 觀察重點：CoWoS 產能、先進製程報價、10 月營收。
+- 最新消息：多家媒體轉述，台積電正應 Nvidia 要求評估生產 3D DRAM（先進記憶體），Yahoo Finance 標題稱台積電股價因此大漲 6%。
+- 股價：11/10 收盤 $396.48（+2.02%，ADR）。
+- 解讀：若成真，代表 AI 記憶體缺口大到客戶願意扶植新供應者；短期屬評估階段，量產需數年，對 MU/三星/SK 海力士的 HBM 寡占（三家合計約 88%，FourWeekMBA 標題）構成長期潛在挑戰。
+- 觀察重點：台積電官方說法、11 月營收（12 月上旬公布）、CoWoS 產能。
 
 ### ASX / ASE Technology
-- 最新消息：無個別消息。
-- 股價：11/9 收盤 $34.36（+8.63%）。
-- 解讀：隨先進封裝／AI 鏈反彈，漲幅大屬情緒回補。
+- 最新消息：今日暫無重大更新。
+- 股價：11/10 收盤 $35.48（+3.26%）。
+- 解讀：與台積電同步走強，先進封裝需求敘事延續。
 
 ### Kioxia
-- 最新消息：（Blocks & Files，11/2）7–9 月營收 ¥2.48 兆（+453% YoY）、淨利 ¥1.35 兆；10–12 月指引營收 ¥2.5 兆、獲利大致持平；2027 年產能已售罄，逾 50% 的 2028 年量已簽長約；10 月完成 1 拆 3 股票分割。
-- 股價：11/9 收 ¥8,302（儀表板資料）。
-- 解讀：業績極強但「指引持平」被視為漲價動能放緩訊號，對 SNDK/MU 情緒有牽動。
-- 觀察重點：長約定價機制、bit 成長（2026 年高十位數 %、2027 年約低二十位數 %）。
+- 最新消息：Bloomberg（11/10）報導 Kioxia 相關槓桿產品在香港睽違一年後重新上市；Nikkei 估計月底 TOPIX 權重調整帶來的被動買盤約 ¥4,700 億（低於先前約 ¥1 兆估計，因股價下跌）。
+- 股價：11/10 收 ¥9,068（+9.23%）。
+- 重要新聞摘要：10–12 月指引營收約 ¥2.5 兆、獲利大致持平，市場擔憂 NAND 漲價動能放緩；Bernstein 11/4 重申賣出評級（ad-hoc-news 轉述）。
+- 解讀：反彈主要由日股大漲（日經 +2.87%）與軟銀等科技股帶動，基本面疑慮仍在。
+- 觀察重點：TOPIX 調整生效日買盤、NAND 長約價。
 
 ### Samsung Electronics
-- 股價：11/9 收 ₩189,900（11/5 ₩201,500；11/2 ₩229,000）。
-- 重要新聞：11/5 KOSPI -5.28%，外資淨賣約 3.39 兆韓元，觸發程式交易暫停（FourWeekMBA，內容部分為摘要，可信度中）。10 月韓國半導體出口 $56.4B（+259.4% YoY）。
-- 觀察重點：NAND 增產（ProPakistan 10/22 標題指 YMTC 在 NAND 排名威脅三星，內文未能讀取）。
+- 最新消息：11/10 隨 KOSPI 大漲（觸發買方 sidecar），外資淨買主板約 ₩3,586 億。
+- 股價：11/10 收 ₩198,900（+4.74%，Seoul Economic Daily）。
+- 解讀：前一週外資大賣後回補；台積電 3D DRAM 傳聞對三星代工＋記憶體雙業務均有競爭意涵。
+- 觀察重點：HBM4 對 NVDA 供貨進度、外資流向。
 
 ### SK Hynix
-- 股價：11/9 收 ₩1,136,000（11/5 ₩1,264,000；11/2 ₩1,472,000）。
-- 重要新聞：SK Square 宣布將回饋至少 4.3 兆韓元（Korea Times 11/2）；HBM 供給仍緊，TrendForce 標題指 2027 HBM 平均價預估 +121% YoY（僅讀標題）。
-- 觀察重點：HBM4 供應、外資買賣超。
+- 最新消息：11/10 領漲韓股。
+- 股價：11/10 收 ₩1,212,000（+6.69%，Seoul Economic Daily；TradingKey 盤中快照為 ₩1,218,000）。
+- 解讀：HBM 龍頭，NVDA 醜聞若影響 Rubin 時程將是主要風險；目前市場視為情緒面而非需求面衝擊。
+- 觀察重點：NVDA 財報 HBM 需求說法、外資回流持續性。
 
 ## 2-A. Mag 7 科技巨頭追蹤
 
-| 代號 | 近期動態 | 股價（11/9 收） | 解讀 |
+| 公司代號 | 近期動態 | 11/10 收盤（參考） | 解讀 |
 |---|---|---|---|
-| AAPL | 11/5 發行 $75 億債券、需求穩健 | $350.69 | 大型科技舉債潮的一環 |
-| MSFT | 無本次查得的重大消息 | $545.18 | AI capex 敘事核心，受政策風險牽動 |
-| GOOGL | 同上 | $288.15 | 同上 |
-| AMZN | 同上 | $266.93 | 同上 |
-| META | 同上 | $641.37 | 同上 |
-| NVDA | 見上，11/5 重挫、11/9 -4.27% | $178.67 | 與記憶體需求高度連動 |
-| TSLA | 11/5 單日至少 -9% | $378.05 | 風險偏好指標 |
+| AAPL | 今日暫無重大更新；先前有關記憶體成本上升的警示受關注 | $348.51（-0.62%） | 記憶體漲價對硬體毛利為壓力 |
+| MSFT | 今日暫無重大更新；隨成長股回落 | $533.16（-2.20%） | AI capex 最大買家之一，政策與利率敏感 |
+| GOOGL | 承諾以 IPO 價認購 Anthropic 股份（$260 億認購團成員） | $287.38（-0.27%） | 加深 AI 模型生態綁定，間接支撐 TPU 與記憶體需求 |
+| AMZN | 今日暫無重大更新 | $270.87（+1.48%） | Anthropic 主要投資人，IPO 可能帶來帳面收益 |
+| META | 今日暫無重大更新 | $641.39（0.00%） | 持平 |
+| NVDA | CEO 醜聞與董事會調查；Anthropic 認購團成員 | $168.89（-5.47%） | 七雄中唯一大跌，關鍵人物風險 |
+| TSLA | 今日暫無重大更新 | $379.78（+0.46%） | 小幅上漲 |
 
-Mag 7 共同觀察：本次來源集中於 11/5 的大型科技賣壓與債券發行，未查得各家最新 capex 數字；政策面（資料中心許可、電力）已成為 AI capex 的主要不確定性，直接影響 HBM／DRAM／企業級 SSD 需求預期。價格為參考值，標日期 11/9。
+**Mag 7 共同觀察**：七雄 11/10 表現分化，NVDA 個案利空為主，其餘多為隨 CPI 小幅波動。Anthropic IPO 的「供應商兼投資人」結構（Nvidia、Alphabet、Micron 等同步認購）顯示 AI 資本循環持續加深，有人批評為「自己餵自己錢」（Yahoo Finance 標題）；對記憶體而言，短期 capex 需求未見下修跡象，但政策（選後資料中心建設）與利率仍是主要變數。價格為參考值，個股收盤總覽以儀表板網頁為準。
 
 ## 3. 產業共同趨勢
-- DRAM／Memory pricing：TrendForce（9/30）預估 4Q26 傳統 DRAM 合約價 +10–15% QoQ；伺服器 DRAM 4Q 仍短缺；PC DRAM 2027 供給可能減少。
-- NAND：4Q26 合約價 +15–20% QoQ，企業級 SSD 需求 2026 年 bit +80% YoY；NAND 晶圓價處歷史高點、零售通路消化吃力，模組廠態度保守；PC 品牌下調主流機種 SSD 容量以控成本。
-- HBM：供給持續吃緊，2027 年價格預估上修（TrendForce 標題）；GDDR7 受 AI 晶片帶動，GDDR6 供應商退出。
-- YMTC／CXMT：YMTC 全球 NAND 營收份額 13%（6 月，Counterpoint／TechNode，背景資料）；11/6 Reuters（經 TIKR 轉述）指 YMTC 規劃第四座 NAND 廠；Korea 媒體指 CXMT 在 DRAM 份額上升。對 SNDK、MU、Kioxia 的影響：中長期為供給與報價壓力，短期被需求缺口掩蓋。
-- AI Server／Data center capex：期中選舉後政策疑慮升溫（40/41 資料中心公投不利產業），為當前最大情緒變數；IREN 報告顯示 AI 算力租賃價格仍強。
-- PC／Server：Intel 10/30 因 PC 需求弱與記憶體成本壓力指引疲弱。
-- 供應鏈／AI 加速器：MRVL（客製 ASIC）、TSM（CoWoS）、ASX（封測）11/9 同步大漲，反映 AI 鏈風險偏好回升。
-- 總經：12 月 Fed 再升息預期升溫（FinancialJuice 11/6）。
+- **DRAM / HBM**：TrendForce 先前預估 4Q26 DRAM 合約價 +10–15% QoQ，但現貨市場停滯（11/4 DDR4 現貨小跌 0.09%、買方觀望）；台積電評估 3D DRAM 顯示 AI 記憶體缺口仍大，但也代表長期供給新增者可能出現。
+- **NAND Flash**：TrendForce 先前預估 4Q26 NAND 合約價 +15–20%，但近期有報導指現貨與部分合約價轉弱、OEM 採購保守（TradingKey）；Kioxia 指引持平強化「漲價動能放緩」看法。
+- **YMTC / CXMT（中國競爭變數）**：Counterpoint 指 YMTC 已升至全球 NAND 第 3 名並計畫跨入 DRAM；另有報導指 YMTC 第四座武漢廠瞄準 300 層以上 NAND。其 IPO 因市場轉弱延至 2027H1（Reuters 獨家、Caproasia）。對 SNDK、Kioxia 的中長期威脅在於消費級與中低階 SSD 報價；對 MU 主要在消費型 NAND。IPO 延後短期減少擴產資金，略緩和壓力。
+- **AI Server / Data center capex**：Anthropic 獲 $260 億策略認購＋IPO，代表 AI 模型商融資管道暢通，有利 2027 年算力採購；但選後資料中心建設政策風險未解。
+- **AI accelerator 生態**：NVDA 醜聞期間 AMD、AVGO 上漲，資金分散至替代加速器與客製 ASIC（MRVL 受惠邏輯）。
+- **晶圓代工／封裝**：TSM、ASX 逆勢上漲；Bloomberg 報導日本 Rapidus 可能錯過量產期限（僅標題），先進製程仍集中於台積電。
+- **總經**：10 月核心 CPI 0.3%（預期 0.2%），12 月升息預期升溫；布蘭特原油因美伊談判進展跌破 $90（TradingKey）。
 
 ## 4. 新聞重要性分級
-- 高：期中選舉後資料中心政策風險與 11/5 重挫／11/9 反彈；Kioxia 持平指引；TrendForce 4Q26 報價預估。
-- 中：YMTC 第四座廠；NVDA 11/17 財報前布局；Intel 弱指引。
-- 低：SK Square 回饋股東、Mag 7 債券發行等背景資訊。
+- **高重要性**：NVDA 執行長調查與 $75 億對中出貨報導；10 月 CPI 偏熱推升 12 月升息機率；Anthropic IPO 與 $260 億科技巨頭認購（含 Micron）。
+- **中重要性**：台積電評估 3D DRAM；NAND 現貨／合約價轉弱跡象；YMTC IPO 延後；韓股外資回流。
+- **低重要性**：Kioxia 香港槓桿產品上市與 TOPIX 被動買盤估計下修；Rapidus 量產延遲；ARM/MRVL/ASX 無個股新聞的隨盤波動。
 
 ## 5. 需要持續追蹤的訊號（未來 1–2 週）
-- 11/17 NVDA 財報（收盤後）。
-- 12 月 FOMC 與升息預期。
-- 11 月 DRAM/NAND 合約價（TrendForce／DRAMeXchange 月底公布）。
-- 資料中心政策與新州議案；hyperscaler capex 更新。
-- 分析師目標價調整（MU、SNDK）。
-- YMTC／CXMT 擴產與美國出口管制。
-- Kioxia 長約定價、SNDK 1 月下旬財報。
-- 韓股外資流向（SK 海力士、三星）。
+- 11/17 NVDA 財報（盤後）與董事會調查進度。
+- 11/19 前後 Anthropic 掛牌（預計），觀察 AI 資本市場情緒。
+- 11/24 DELL 財報：AI 伺服器訂單、記憶體成本。
+- 12 月 FOMC 升息機率；近期 PPI、零售銷售等數據。
+- 11 月底 DRAM/NAND 合約價（TrendForce）、Kioxia TOPIX 權重調整。
+- 台積電 3D DRAM 是否獲官方證實。
+- MU、SNDK 分析師目標價調整；韓股外資流向。
+- YMTC／CXMT 擴產與美國出口管制（NVDA 對中出貨事件可能催化更嚴格管制）。
 
 ## 6. 前瞻觀點與分析師綜合看法
 (a) 多面向分析
-- 基本面：MU 最新季營收 $54.2B（+379%）、毛利率約 80.7%；Kioxia 產能 2027 年售罄；需求面強勁，但成長率環比放緩（Kioxia 指引持平）。
-- 估值面：NVDA 前瞻 P/E 約 15x；SNDK 前瞻 P/E 一度僅約 4.4x（TIKR，11/6，屬循環頂部定價特徵）；估值極低反映市場預期獲利見頂。
-- 技術面／位階：MU 較 6 月高點 $1,255 低約 42%；SNDK 較 11/4 的 $1,037 低約 15%；短線處於急跌後的反彈段，波動極大（單日 ±6–22%）。
-- 籌碼／資金面：韓股外資 11/5 淨賣 3.39 兆韓元；Nasdaq 100 11/5 為 2020 年 3 月以來最差單日，VIX 大幅上升，槓桿去化後的回補與再次殺低皆有可能。
-- 產業循環：價格仍在漲，但漲幅預期由加速轉為放緩，且政策風險疊加；中國 YMTC／CXMT 擴產是中期供給變數。
-(b) 分析師目標價與評級：TIKR 彙整 SNDK 平均目標價 $2,029；NVDA 共識目標價 $327.14（10 強買、49 買、2 持有、1 賣出，24/7 Wall St.）；9/22 Rosenblatt 以買進評級啟動 SNDK 覆蓋、目標價 $2,400（24/7 Wall St. 標題）。MU 最新目標價未能讀取，待下次補充。
-(c) 情境推演（6–12 個月）
-- 多頭：資料中心政策風險淡化、NAND/DRAM 長約維持高價、HBM 缺貨延續 → 估值回補，MU/SNDK 重返前高區。
-- 基準：報價續漲但斜率放緩，股價在寬幅區間震盪，隨 capex 消息輪動。
-- 空頭：政策限制建設、hyperscaler 縮減 capex、YMTC/CXMT 擴產壓低價格、Fed 升息 → 獲利預期下修，循環見頂。
-(d) 催化劑時間軸：近期—11/17 NVDA 財報、11 月合約價；1–2 個月—12 月 FOMC、年底 capex 指引、新國會就任（1 月）；中期—SNDK/MU 財報（1 月下旬／3 月）、YMTC 新廠進度。
+- ①基本面：MU 營收（TTM）$1,332 億、淨利 $850 億；SNDK 營收（TTM）$290 億、淨利 $194 億（StockAnalysis）。需求面仍強，但 NAND 漲價斜率轉緩訊號增加。
+- ②估值面：MU 前瞻本益比約 4.1x、SNDK 約 3.5x，遠低於半導體同業；NVDA 跌至約 $169 後估值進一步壓縮。低估值反映市場預期「獲利見頂」。
+- ③技術面／位階：MU 較 6 月高點 $1,255 回落約 42%；SNDK 52 週區間 $183–2,354，現價約距高點 -63%；SNDK RSI 約 29 處超賣。NVDA 逼近 52 週低點 $164.27，為關鍵支撐。
+- ④籌碼／資金面：11/10 韓股外資轉為淨買；NVDA 爆量 4.2 億股顯示機構調節；資金在 AI 鏈內部輪動（NVDA → AMD/AVGO/TSM）。
+- ⑤產業循環：報價仍處上升段但加速度轉負，屬「循環中後段」特徵；台積電切入 DRAM、YMTC 擴產為中期供給變數。
+(b) 分析師目標價與評級
+- SNDK：StockAnalysis 共識目標價 $2,047（Strong Buy）；TradingKey 彙整近一月均價 $2,024（高 $3,000、低 $1,020），並提及 Fox Advisors 降評、Morningstar 與 Wells Fargo 下調目標價（未附原文，待確認）。
+- NVDA：先前共識目標價約 $327（24/7 Wall St.，11/9 報告引述），尚未見因醜聞而大規模調整。
+- Kioxia：Bernstein 11/4 重申賣出。
+- MU：今日未取得最新目標價彙整，待下次補充。
+(c) 情境推演（未來 6–12 個月）
+- 多頭（Bull）：NVDA 調查平息、11/17 財報與 Rubin 指引強勁；Fed 未升息；HBM／企業級 SSD 長約維持高價 → MU、SNDK 估值修復，重返前高區。
+- 基準（Base）：報價續漲但斜率放緩，股價寬幅震盪，隨 NVDA 財報、CPI、capex 消息輪動。
+- 空頭（Bear）：NVDA 醜聞引發管理層更替或出口管制處分、Fed 12 月升息、資料中心建設受政策限制、YMTC/CXMT 與台積電新增供給 → 獲利預期下修，循環正式反轉。
+(d) 關鍵前瞻催化劑時間軸
+- 近期（1–2 週）：11/17 NVDA 財報、11/19 Anthropic 掛牌（預計）、11/24 DELL 財報、11 月合約價。
+- 1–2 個月：12 月 FOMC、MRVL 財報、MU 12 月財報、年底 hyperscaler capex 指引、新國會 1 月就任。
+- 中期：SNDK 1 月下旬財報、YMTC 2027H1 IPO、台積電 3D DRAM 進展、Rubin 量產。
+
 以上為綜合市場與分析師公開觀點及情境推演，非投資建議，個股估值偏高請自行評估風險。
 
 ## 7. 結論
-11/9 在上週重挫後出現強力反彈，MU（+6.25%）與 SNDK（+6.16%）領漲，儲存與 AI 鏈高 beta 標的普遍大漲，唯 NVDA 逆勢下跌。基本面（報價續漲、Kioxia 產能售罄）仍強，但市場焦點已轉向資料中心政策、Fed 升息與漲價動能放緩。短線最值得關注 MU、SNDK 與 11/17 的 NVDA 財報；風險為單日波動極大、政策不確定與中國記憶體擴產。
+11/10 最重要的變化是 NVDA 執行長醜聞擴大（收 $168.89，-5.47%）與 10 月 CPI 偏熱推升升息預期，記憶體股回吐部分漲幅（MU 收 $725.11，-1.10%；SNDK 收 $859.99，-2.99%），但亞股（SK 海力士 +6.69%、Kioxia +9.23%）與 TSM、AMD、AVGO 走強，顯示 AI 需求面未被否定。短線最值得關注 NVDA（11/17 財報與調查）、MU 與 SNDK（超賣後能否守穩）。風險包括關鍵人物與出口管制風險、Fed 升息、NAND 漲價動能放緩，以及台積電與 YMTC 帶來的中長期供給變數。
 
 ### 來源連結
-- [Motley Fool：Why Micron Technology Stock Gained On Monday（11/9）](https://www.fool.com/investing/2026/11/09/why-micron-technology-stock-gained-on-monday/)
-- [24/7 Wall St.：Micron 上漲 6% 與 Seagate/WDC（11/9，僅標題）](https://247wallst.com/investing/2026/11/09/micron-rises-6-as-bulls-tout-its-bargain-valuation-and-buyback-firepower-seagate-and-western-digital-jump-11/)
-- [FinancialJuice：Chipmakers Rebound（11/6）](https://features.financialjuice.com/2026/11/06/chipmakers-rebound-as-dip-buyers-lift-stocks-despite-fed-rate-hike-bets-us-market-wrap/)
-- [FinancialJuice：Tech Stocks Plunge（11/5）](https://features.financialjuice.com/2026/11/05/tech-stocks-plunge-as-post-election-ai-concerns-spark-broad-market-selloff-us-market-wrap/)
-- [TrendForce 4Q26 記憶體報價（9/30）](https://www.trendforce.com/presscenter/news/20260930-13258.html)
-- [TIKR：Sandisk 反彈（11/6）](https://www.tikr.com/blog/sandisk-soars-7-after-thursdays-22-crash-as-chip-stocks-rebound)
-- [FourWeekMBA：三星/SK 海力士（11/5）](https://fourweekmba.com/ai-samsung-sk-hynix-lose-144b-as-kospi-closes-down-5-3/)
-- [Blocks & Files：Kioxia（11/2）](https://www.blocksandfiles.com/flash/2026/11/02/kioxias-ssd-revenues-explode/5306907)
-- [24/7 Wall St.：Nvidia worst day（11/6）](https://247wallst.com/investing/2026/11/06/nvidia-just-had-its-worst-day-since-deepseek-losing-about-450-billion/)
-- [Korea Times：KOSPI（11/2）](https://www.koreatimes.co.kr/economy/20261102/kospi-rallies-over-2-as-investors-look-past-us-tech-rout)
-- [TechNode：YMTC 份額（6/22）](https://technode.com/2026/06/22/ymtc-nand-market-share-climbs-to-13/)
-- [StockAnalysis MU 歷史](https://stockanalysis.com/stocks/mu/history/)、[SNDK 歷史](https://stockanalysis.com/stocks/sndk/history/)
+- [Motley Fool：Stock Market Today 11/10 — Nvidia 跌 5.5%](https://www.fool.com/coverage/stock-market-today/2026/11/10/stock-market-today-nov-10-nvidia-stock-plunges-5-5-as-ceo-scandal-overshadows-its-upcoming-earnings-report/)
+- [Yahoo Finance：Nvidia 因對中出貨報導續跌（11/10）](https://finance.yahoo.com/markets/article/nvidia-stock-drops-3-extending-decline-on-report-alleged-chinese-spy-linked-to-nvidia-ceo-aided-75-billion-in-china-chip-shipments-152654028.html)
+- [24/7 Wall St.：Nvidia 董事會調查黃仁勳（11/10）](https://247wallst.com/investing/2026/11/10/nvidia-falls-4-as-board-probe-of-jensen-huang-weighs-on-shares-amd-and-broadcom-gain-3/)
+- [CNBC：Chip stocks rally amid Nvidia scandal（11/10，僅標題）](https://www.cnbc.com/2026/11/10/chip-stocks-rally-nvidia-scandal.html)
+- [CNBC：Anthropic IPO 定價區間 $70–78（11/10，僅標題）](https://www.cnbc.com/2026/11/10/anthropic-sets-price-range-of-70-to-78-in-upcoming-ipo.html)
+- [Motley Fool：Nvidia、Alphabet、Micron 認購 $260 億（11/10）](https://www.fool.com/investing/2026/11/10/nvidia-alphabet-and-micron-just-agreed-to-buy-26-billion-of-stock-in-one-of-their-biggest-customers/)
+- [GuruFocus：Micron 因熱 CPI 下跌、$10 億 Anthropic 投資（11/10，僅標題）](https://www.gurufocus.com/news/9189062/micron-technology-stocks-slip-127-as-hot-cpi-overshadows-1-billion-anthropic-bet)
+- [Yahoo Finance：Google、Nvidia 等「自己餵自己錢」](https://finance.yahoo.com/markets/stocks/articles/google-nvidia-microsoft-literally-feeding-182134309.html)
+- [Yahoo Finance：11/10 盤勢 — 熱 CPI 推升升息機率](https://finance.yahoo.com/markets/live/stock-market-today-tuesday-november-10-dow-sp-500-nasdaq-inflation-data-cpi-090627830.html)
+- [Quartz：10 月核心 CPI 0.3%（僅標題）](https://qz.com/core-cpi-october-stocks-fall-fed-rate-hike-111026)
+- [24/7 Wall St.：Micron 面臨另一個循環懸崖（11/10，僅標題）](https://247wallst.com/investing/2026/11/10/micron-supposedly-outgrew-its-boom-bust-commodity-pricing-now-it-faces-another-cyclical-cliff/)
+- [Motley Fool：Why is Micron stock crashing（11/10）](https://www.fool.com/investing/2026/11/10/why-is-micron-stock-crashing-and-is-it-a-generational-buying-opportunity/)
+- [TradingKey：SNDK 11/10 下跌 3.59% 原因](https://www.tradingkey.com/news/market-movers/262299096-market-movers-sndk-20261110)
+- [Seoul Economic Daily：三星、SK 海力士領 KOSPI 反彈 4.4%（11/10）](https://en.sedaily.com/market/2026/11/10/samsung-sk-hynix-lead-kospi-44-percent-rebound-past-5200)
+- [TradingKey：日韓股 — Kioxia +9%、SK 海力士 +7%（11/10）](https://www.tradingkey.com/analysis/stocks/more/262297846-japan-korea-stocks-skhy-kospi-nikkei-samsung-skhynix-softbank-kioxia-nvda-sox-cpi-ppi-tradingkey)
+- [ad-hoc-news：Kioxia 面臨指數買盤縮水與 NAND 價格壓力（11/10）](https://www.ad-hoc-news.de/boerse/news/unternehmensnachrichten/kioxia-faces-twin-test-shrinking-index-demand-and-a-nand-price-squeeze/70488431)
+- [Bloomberg：Kioxia 槓桿產品香港上市（11/10，僅標題）](https://www.bloomberg.com/news/articles/2026-11-10/kioxia-leveraged-product-debuts-in-hk-after-one-year-hiatus)
+- [Bloomberg：Rapidus 恐錯過量產期限（11/10，僅標題）](https://www.bloomberg.com/news/articles/2026-11-10/japan-s-rapidus-is-said-likely-to-miss-mass-production-deadline)
+- [Yahoo Finance：台積電傳為 Nvidia 生產記憶體](https://finance.yahoo.com/markets/stocks/articles/tsmc-jumped-6-report-could-151351522.html)
+- [FourWeekMBA：TSMC 評估 3D DRAM，三大廠合計 88%（僅標題）](https://fourweekmba.com/ai-tsmc-said-to-weigh-3d-dram-for-nvidia-3-rivals-hold-88/)
+- [Reuters 獨家（轉載）：YMTC 暫緩 IPO（11/4）](https://srnnews.com/exclusive-chinese-chipmaker-ymtc-puts-ipo-on-hold-as-weaker-markets-weigh-sources-say/)
+- [Caproasia：YMTC IPO 延至 2027H1（11/7）](https://www.caproasia.com/2026/11/07/china-state-backed-semiconductor-company-yangtze-memory-technologies-co-ymtc-parent-ccsh-corporation-delays-shanghai-ipo-to-raise-4-9-billion-at-49-billion-valuation-from-2026-q4-to-2027-1h-found/)
+- [Counterpoint：YMTC 升至 NAND 第 3 名](https://counterpointresearch.com/en/insights/ymtc-files-for-landmark-ipo-after-climbing-to-no-3-in-global-nand-race-with-dram-next)
+- [TrendForce：記憶體現貨價（11/4）](https://www.trendforce.com/news/2026/11/04/insights-memory-spot-price-update-mainstream-ddr4-prices-dip-0-09-as-spot-premium-keeps-buyers-on-sidelines/)
+- [TIKR：Dell 選後重挫與財報前瞻（11/5）](https://www.tikr.com/blog/dell-sinks-another-11-as-post-midterm-tech-sell-off-deepens)
+- [StockAnalysis：MU](https://stockanalysis.com/stocks/mu/)、[SNDK](https://stockanalysis.com/stocks/sndk/)
+- [Yahoo Finance：MU 報價](https://finance.yahoo.com/quote/MU/)
