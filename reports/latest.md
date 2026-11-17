@@ -3,7 +3,7 @@
 執行時間：台灣時間 08:00（涵蓋 11/16 週一美股盤中至收盤、亞洲 11/16 收盤與 11/17 韓股盤前）
 
 今日主要參考來源：Yahoo Finance（11/16 盤勢直播、報價 API）、Motley Fool、24/7 Wall St.、TradingView／GuruFocus、MarketBeat、Korea JoongAng Daily、Seoul Economic Daily、NPR、Reuters（經 Business Reporter 轉載）、Bloomberg／Washington Post／Axios／Benzinga（標題／摘要層級，內文無法讀取）、TSMC IR／SEC 6-K、AlphaBetaStock（Zacks 共識）。WSJ／MarketWatch 未取得可用內文；ForexFactory／FinancialJuice 本日網域搜尋請求遭拒，總經資料改以 Yahoo 直播頁補足。
-收盤價核對：MU $719.02（−7.62%）、SNDK $809.11（−8.58%）— 11/16 收盤；Yahoo 報價 API（regularMarketTime 為美東 16:00 收盤）與 24/7 Wall St.／MarketBeat／首爾經濟日報引用之收盤漲跌幅一致（StockAnalysis 歷史頁本日尚未更新至 11/16，未能作為第二來源）。儀表板 prices.json 美股與 Kioxia 已同步至 11/16；Samsung、SK Hynix 停在 11/13，已手動「Run workflow」重跑（結果見結語）。
+收盤價核對：MU $719.02（−7.62%）、SNDK $809.11（−8.58%）— 11/16 收盤；Yahoo 報價 API（regularMarketTime 為美東 16:00 收盤）與 24/7 Wall St.／MarketBeat／首爾經濟日報引用之收盤漲跌幅一致（StockAnalysis 歷史頁本日尚未更新至 11/16，未能作為第二來源）。儀表板 prices.json 美股與 Kioxia 已同步至 11/16；Samsung、SK Hynix 停在 11/13，已手動「Run workflow」（#364）重跑，重跑後已同步至 11/16 收盤（三星 ₩196,800、SK 海力士 ₩1,120,000）。
 
 ## 1. 今日重點摘要
 
